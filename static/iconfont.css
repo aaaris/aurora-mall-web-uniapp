@@ -1,0 +1,34 @@
+@font-face {
+	font-family: "iconfont";
+	/* Project id 3768619 */
+	src:
+		url('/static/iconfont.ttf') format('truetype');
+}
+
+.iconfont {
+	font-family: "iconfont" !important;
+	font-size: 16px;
+	font-style: normal;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-order-fill:before {
+	content: "\e786";
+}
+
+.icon-money:before {
+	content: "\e668";
+}
+
+.icon-product-fill:before {
+	content: "\e788";
+}
+
+.icon-wallet:before {
+	content: "\e792";
+}
+
+.icon-truck:before {
+	content: "\e797";
+}

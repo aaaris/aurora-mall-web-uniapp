@@ -1,11 +1,72 @@
 {
-	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
-		{
-			"path": "pages/index/index",
-			"style": {
-				"navigationBarTitleText": "uni-app"
-			}
-		}
+	"pages" : [
+	    //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+	    {
+	        "path" : "pages/index/index",
+	        "style" : {
+	            "navigationStyle" : "custom"
+	        }
+	    },
+	    {
+	        "path" : "pages/index/category",
+	        "style" : {
+	            "navigationStyle" : "custom"
+	        }
+	    },
+	    {
+	        "path" : "pages/index/cart",
+	        "style" : {
+	            "navigationStyle" : "custom"
+	        }
+	    },
+	    {
+	        "path" : "pages/index/user",
+	        "style" : {
+	            "navigationStyle" : "custom"
+	        }
+	    },
+	    {
+	        "path" : "pages/product/productDetail",
+	        "style" : {
+	            "navigationStyle" : "custom"
+	        }
+	    },
+	    {
+	        "path" : "pages/order/createOrder",
+	        "style" : {
+	            "navigationStyle" : "custom"
+	        }
+	    },
+	    {
+	        "path" : "pages/search/search",
+	        "style" : {
+	            "navigationStyle" : "custom"
+	        }
+	    },
+	    {
+	        "path" : "pages/search/searchResult",
+	        "style" : {
+	            "navigationStyle" : "custom"
+	        }
+	    },
+	    {
+	        "path" : "pages/addressbook/addressBook",
+	        "style" : {
+	            "navigationStyle" : "custom"
+	        }
+	    },
+	    {
+	        "path" : "pages/addressbook/addressBookEdit",
+	        "style" : {
+	            "navigationStyle" : "custom"
+	        }
+	    },
+	    {
+	        "path" : "pages/index/about",
+	        "style" : {
+	            "navigationStyle" : "custom"
+	        }
+	    }
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -13,5 +74,17 @@
 		"navigationBarBackgroundColor": "#F8F8F8",
 		"backgroundColor": "#F8F8F8"
 	},
-	"uniIdRouter": {}
+	"tabBar": {
+		"list": [{
+				"pagePath": "pages/index/index"
+			},
+			{
+				"pagePath": "pages/index/category"
+			}, {
+				"pagePath": "pages/index/cart"
+			}, {
+				"pagePath": "pages/index/user"
+			}
+		]
+	}
 }
