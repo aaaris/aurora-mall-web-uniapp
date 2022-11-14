@@ -14,7 +14,7 @@
 							{{item.desc}}
 						</text>
 					</view>
-					<u-icon name="edit-pen" size="40" @click="gotoEdit()"></u-icon>
+					<u-icon name="edit-pen" size="40" @click="gotoEdit(item)"></u-icon>
 				</view>
 			</u-card>
 		</view>
@@ -33,17 +33,20 @@
 						name: "张三",
 						phone: "13511111111",
 						desc: "翻斗市区翻斗大街A1104",
+						region:"",
 						inUse: true,
 					}, {
 						name: "李四",
 						phone: "13511111111",
 						desc: "翻斗市区翻斗大街A1104",
+						region:"",
 						inUse: false,
 					},
 					{
 						name: "王五",
 						phone: "13511111111",
 						desc: "翻斗市区翻斗大街A1104",
+						region:"",
 						inUse: false,
 					}
 				]
@@ -54,10 +57,10 @@
 
 		},
 		methods: {
-			gotoEdit() {
+			gotoEdit(target) {
 				console.log("go to edit address...")
 				uni.navigateTo({
-					url: "/pages/addressbook/addressBookEdit"
+					url: "/pages/addressbook/addressBookEdit?item=" + encodeURIComponent(JSON.stringify(target))
 				})
 			}
 		}

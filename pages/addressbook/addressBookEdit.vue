@@ -18,7 +18,7 @@
 							</u-select>
 						</u-form-item>
 						<u-form-item label="详细地址" label-width="150"  :border-bottom="false">
-							<u-input v-model="addressForm.phone" placeholder="详细地址"></u-input>
+							<u-input v-model="addressForm.desc" placeholder="详细地址"></u-input>
 						</u-form-item>
 					</u-form>
 				</view>
@@ -112,8 +112,9 @@
 		onReady() {
 			this.$refs.addressForm.setRules(this.rules);
 		},
-		onLoad() {
-
+		onLoad(query) {
+			if (query.item) {
+				this.addressForm = JSON.parse(decodeURIComponent(query.item))}
 		},
 		methods: { 
 			// 下拉框确认回调函数

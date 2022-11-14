@@ -7,8 +7,6 @@
 				</u-search>
 			</view>
 		</u-navbar>
-		<!-- tab选择区 -->
-		
 	</view>
 </template>
 
@@ -16,25 +14,8 @@
 	export default {
 		data() {
 			return {
-				keyword:"",
-				searchBtnStyle: {
-					backgroundColor: "#f15d07",
-					color: "#fff",
-					borderRadius: "10px",
-					zIndex: "998",
-					position: "relative",
-					left: "-50px"
-				}
+				keyword:""
 			};
-		},
-		onLoad(query) { 
-			if (query.keyword)
-			this.keyword = query.keyword
-		},
-		methods:{
-			searchSubmit(word) { 
-				console.log(word)
-			},
 		}
 	}
 </script>

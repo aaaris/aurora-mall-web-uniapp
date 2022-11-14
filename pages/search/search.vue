@@ -71,6 +71,9 @@
 		methods: {
 			searchSubmit(word) {
 				console.log(`submit search keyword ${word}`)
+				uni.navigateTo({
+					url:`/pages/search/searchResult?keyword=${word}`
+				})
 			},
 			clearSearchHistory() {
 				console.log("clear search history")
