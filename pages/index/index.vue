@@ -13,7 +13,7 @@
 		<view class="body">
 			<!-- 搜索框 -->
 			<view style="margin: 0 30rpx 50rpx;">
-				<u-search v-model="keyword" :showAction="false"></u-search>
+				<u-search v-model="keyword" :showAction="false" :disabled="true" @click="gotoSearch"></u-search>
 			</view>
 			<!-- 高点击商品轮播图 -->
 			<view style="margin: 0 30rpx;">
@@ -174,6 +174,11 @@
 			click(index) {
 				console.log(`click ${index}`)
 			},
+			gotoSearch(){
+				uni.navigateTo({
+					url:"/pages/search/search"
+				})
+			}
 		}
 	}
 </script>
