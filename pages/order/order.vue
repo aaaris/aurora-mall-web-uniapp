@@ -56,7 +56,7 @@
 								</view>
 							</view>
 							<u-loadmore :status="loadStatus[0]" bgColor="#f2f2f2"></u-loadmore>
-						</view>
+ 						</view>
 					</scroll-view>
 				</swiper-item>
 				<swiper-item class="swiper-item">
