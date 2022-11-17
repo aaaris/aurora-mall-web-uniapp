@@ -4,6 +4,13 @@
        url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAO0AAsAAAAACAgAAANmAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHFQGYACDHAqDEIJrATYCJAMQCwoABCAFhQsHSBsXB8ieBXaMnlY2M/tmoksmDB4+u3/v4Gn2y84GgFtIZXLojqr/5Vo+UStRrS6Q/EpghQrTZHOU8KZAxn2FrNE1puP7CRAg1QABZrKnv5+6SsFnH4ByTUGRRUkDm0VbnkeljXADmSBvkd0RqEW/ggAMeWpIu9nZZW12zEAytSUaI1dAHC7GjMxYrcdL0TXhAjcCJ3SlRmzAAXKlvAus9z8vvlKQGyQOhbFPh+2L2u8H++MmtaBxAdQb3BwEeLQEHIACshYmFyPqFYM0Q0cWhSmztSgBtbmRMGjDio+bGhsptimR2/zLA4FEgXBihHoBUEScCj7YNgQBH1dAkPBxkxsFPJXxbsAAC4EdhBp1k0ahPOkej9EmQrtmr3qw4OHqxwsfde82922eZYxYeMj4rDqAXnDQsvY/X/002r1g9WEhFkZsC+kirNXBwV13MqadbrZccAXe45pQAw3W8NUHawb5dN992Jq++ipYjtkLb+r7LDx+2ZrIQPT2muBuvPPiniQmNI8/9D8M+LrXZkXi/akXfGcOny30SfVp4uOwvewxuzs3tiX73ccXJOQvOBr0qs+IP/tIF9W58GjZbc/Qld1ja8UzibQjl+1bJum1h+oOuboETueX+b0lEyZMA5j3iMLwjBrHO2J4/E/8iHBf4Micdibq2peokJYZ/xnpXgP8n/3rK5nAOEvdkC8BVDf5DECVyzOv7zesq+n5p79v1f+epQF4v3vwdyrVdENuPwpGXpa4DzCrVo2gdRnPxn4AsZ2YhAQMBng7HgjwbghJIDgUBBaBMZC4iAEKi2SipuYRHdRKopPaDBgydYQHGz9HE6E9QIr1GAhCnAUSH+4ARYiXRE39SXBwcxCd1Ehg6Fb+bhYpLW8yCRmhgMeZUAy2RlpxxFMkq9f05ueYJcWCmBhZrzHEAufDVk5eifsQDYb+5sRp2TZNkSAnWQ0Hw56HSllwk2yJnNbzKeTGG7nDyt6yzsfr2q4AMQQJYJBXYCTOMqS7jXBJRCxtreZ7zqFMojChPoMS2zUUeFFBugPy5ciDEQ9FBppygfMne5LZNgWRwDAKd1OBZksehhTFAhPKh5UQR9aN6GBzxnLNbMOgovVpJfqGlwEGYw8tpFBCCwfO0VNZIYrRMTNEilqTI5XqTB/o6JFqNQAA') format('woff2');
 }
 
+/* CDN 服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
+@font-face {
+  font-family: "站酷高端黑 Regular";font-weight: 400;src: url("//at.alicdn.com/wf/webfont/TaW0l0h5r0ci/hbWBIfBMsPB_N8hIKpta-.woff2") format("woff2"),
+  url("//at.alicdn.com/wf/webfont/TaW0l0h5r0ci/QQloFVHhxtUrzMygy_BUO.woff") format("woff");
+  font-display: swap;
+}
+
 .custom-icon {
   font-family: "custom-icon" !important;
   font-size: 16px;
