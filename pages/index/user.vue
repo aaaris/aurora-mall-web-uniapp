@@ -24,9 +24,9 @@
 			</view>
 			<!-- 订单状态栏 -->
 			<view class="order-bar-items">
-				<view class="order-bar-item" v-for="(item,index) in orderStatusList" :key="index">
+				<view class="order-bar-item" v-for="(item,index) in orderStatusList" :key="index" @click="goToOrderStatus(index)">
 					<u-icon custom-prefix="custom-icon" :name="item.iconName" size="45" color="#a7a7a7"
-						@click="goToOrderStatus(index)"></u-icon>
+						></u-icon>
 					<text style="display: block;">{{item.desc}}</text>
 				</view>
 			</view>
@@ -78,7 +78,7 @@
 			goToOrderStatus(idx) {
 				console.log(`go to order status page ${idx}`)
 				uni.navigateTo({
-					url:"/pages/order/order"
+					url:"/pages/order/order?state=" + idx
 				})
 			},
 			// 跳转设置页

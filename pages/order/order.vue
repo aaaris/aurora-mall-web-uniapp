@@ -308,6 +308,9 @@
 			this.getOrderList(0);
 			this.getOrderList(1);
 			this.getOrderList(3);
+			if (query.state) {
+				this.change(query.state)
+			}
 		},
 		computed: {
 			// 价格小数
