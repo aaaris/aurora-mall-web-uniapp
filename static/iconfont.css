@@ -1,34 +1,26 @@
 @font-face {
-	font-family: "iconfont";
-	/* Project id 3768619 */
-	src:
-		url('/static/iconfont.ttf') format('truetype');
+  font-family: "custom-icon"; /* Project id 3768674 */
+  src: 
+       url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAO0AAsAAAAACAgAAANmAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHFQGYACDHAqDEIJrATYCJAMQCwoABCAFhQsHSBsXB8ieBXaMnlY2M/tmoksmDB4+u3/v4Gn2y84GgFtIZXLojqr/5Vo+UStRrS6Q/EpghQrTZHOU8KZAxn2FrNE1puP7CRAg1QABZrKnv5+6SsFnH4ByTUGRRUkDm0VbnkeljXADmSBvkd0RqEW/ggAMeWpIu9nZZW12zEAytSUaI1dAHC7GjMxYrcdL0TXhAjcCJ3SlRmzAAXKlvAus9z8vvlKQGyQOhbFPh+2L2u8H++MmtaBxAdQb3BwEeLQEHIACshYmFyPqFYM0Q0cWhSmztSgBtbmRMGjDio+bGhsptimR2/zLA4FEgXBihHoBUEScCj7YNgQBH1dAkPBxkxsFPJXxbsAAC4EdhBp1k0ahPOkej9EmQrtmr3qw4OHqxwsfde82922eZYxYeMj4rDqAXnDQsvY/X/002r1g9WEhFkZsC+kirNXBwV13MqadbrZccAXe45pQAw3W8NUHawb5dN992Jq++ipYjtkLb+r7LDx+2ZrIQPT2muBuvPPiniQmNI8/9D8M+LrXZkXi/akXfGcOny30SfVp4uOwvewxuzs3tiX73ccXJOQvOBr0qs+IP/tIF9W58GjZbc/Qld1ja8UzibQjl+1bJum1h+oOuboETueX+b0lEyZMA5j3iMLwjBrHO2J4/E/8iHBf4Micdibq2peokJYZ/xnpXgP8n/3rK5nAOEvdkC8BVDf5DECVyzOv7zesq+n5p79v1f+epQF4v3vwdyrVdENuPwpGXpa4DzCrVo2gdRnPxn4AsZ2YhAQMBng7HgjwbghJIDgUBBaBMZC4iAEKi2SipuYRHdRKopPaDBgydYQHGz9HE6E9QIr1GAhCnAUSH+4ARYiXRE39SXBwcxCd1Ehg6Fb+bhYpLW8yCRmhgMeZUAy2RlpxxFMkq9f05ueYJcWCmBhZrzHEAufDVk5eifsQDYb+5sRp2TZNkSAnWQ0Hw56HSllwk2yJnNbzKeTGG7nDyt6yzsfr2q4AMQQJYJBXYCTOMqS7jXBJRCxtreZ7zqFMojChPoMS2zUUeFFBugPy5ciDEQ9FBppygfMne5LZNgWRwDAKd1OBZksehhTFAhPKh5UQR9aN6GBzxnLNbMOgovVpJfqGlwEGYw8tpFBCCwfO0VNZIYrRMTNEilqTI5XqTB/o6JFqNQAA') format('woff2');
 }
 
-.iconfont {
-	font-family: "iconfont" !important;
-	font-size: 16px;
-	font-style: normal;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+.custom-icon {
+  font-family: "custom-icon" !important;
+  font-size: 16px;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-order-fill:before {
-	content: "\e786";
+.custom-icon-kuaidi:before {
+  content: "\e644";
 }
 
-.icon-money:before {
-	content: "\e668";
+.custom-icon-product-fill:before {
+  content: "\e788";
 }
 
-.icon-product-fill:before {
-	content: "\e788";
+.custom-icon-wallet:before {
+  content: "\e792";
 }
 
-.icon-wallet:before {
-	content: "\e792";
-}
-
-.icon-truck:before {
-	content: "\e797";
-}

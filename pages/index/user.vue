@@ -25,8 +25,8 @@
 			<!-- 订单状态栏 -->
 			<view class="order-bar-items">
 				<view class="order-bar-item" v-for="(item,index) in orderStatusList" :key="index">
-					<uni-icons customPrefix="iconfont" :type="item.iconName" size="35" color="#a7a7a7"
-						@click="goToOrderStatus(index)"></uni-icons>
+					<u-icon custom-prefix="custom-icon" :name="item.iconName" size="45" color="#a7a7a7"
+						@click="goToOrderStatus(index)"></u-icon>
 					<text style="display: block;">{{item.desc}}</text>
 				</view>
 			</view>
@@ -52,20 +52,14 @@
 		data() {
 			return {
 				orderStatusList: [{
-					iconName: "icon-wallet",
+					iconName: "custom-icon-wallet",
 					desc: "待付款"
-				}, {
-					iconName: "icon-product-fill",
+				}, {            
+					iconName: "custom-icon-product-fill",
 					desc: "待发货"
-				}, {
-					iconName: "icon-truck",
+				}, {            
+					iconName: "custom-icon-kuaidi",
 					desc: "待收货"
-				}, {
-					iconName: "icon-order-fill",
-					desc: "待评价"
-				}, {
-					iconName: "icon-money",
-					desc: "退换货"
 				}],
 				settingItemList: [{
 						title: "我的收货地址"
@@ -83,6 +77,9 @@
 			// 跳转订单页对应状态tab
 			goToOrderStatus(idx) {
 				console.log(`go to order status page ${idx}`)
+				uni.navigateTo({
+					url:"/pages/order/order"
+				})
 			},
 			// 跳转设置页
 			goToSetting(idx) {
