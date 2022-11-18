@@ -251,8 +251,7 @@
 							}
 						],
 					}
-				],
-				isList: true,
+				], 
 				value1: 1,
 				value2: 1,
 				options1: [{
@@ -311,7 +310,7 @@
 				if (this.current != 2) {
 					this.loadStatus.splice(this.current, 1, "loading")
 					setTimeout(() => {
-						this.getOrderList(this.current);
+						// this.getOrderList(this.current);
 					}, 1200);
 				}
 			},
@@ -319,11 +318,10 @@
 				uni.navigateTo({
 					url: "/pages/shop/shopDetail?id=" + id
 				})
-			},
-			changeProdShowStyle() {
-				this.isList = !this.isList
+			},  
+			getOrderList(idx){
+				
 			}
-
 		}
 	}
 </script>

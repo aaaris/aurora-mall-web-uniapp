@@ -1,7 +1,7 @@
 <template>
 	<view class="product-items">
 		<!-- 商品条 -->
-		<view class="product-item" v-for="(item,index) in list" :key="index">
+		<view class="product-item" v-for="(item,index) in list" :key="index" @click="gotoProduct">
 			<!-- 商品图片 -->
 			<view class="product-item-left">
 				<image :src="item.goodsUrl" style="height:200rpx; width:200rpx; border-radius: 10rpx;"
@@ -9,7 +9,7 @@
 			</view>
 			<!-- 商品描述区 -->
 			<view class="product-item-right">
-				<view class="product-item-text">
+				<view :class="(isKill ?  'u-line-1 product-item-text' : 'u-line-3' )">
 					<!-- 商品名 -->
 					<text>{{item.title}}</text>
 				</view>
@@ -24,8 +24,8 @@
 					<text style="color: #ff1d1d;"><text style="font-size: 10px;">￥</text>{{item.price}}</text>
 					<!-- 秒杀按钮 -->
 					<view class="product-item-btn" v-if="isKill">
-						<u-button :type="(Date.parse(item.date)< Date.now() ? 'error' : 'success')" shape="circle"
-							size="mini" @click="gotoProduct">{{(Date.parse(item.date)< Date.now() ? '抢！' : '抢先看')}}
+						<u-button :type="(item.date< Date.now() ? 'error' : 'success')" shape="circle"
+							size="mini" @click="gotoProduct">{{(item.date< Date.now() ? '抢！' : '抢先看')}}
 						</u-button>
 					</view>
 				</view>
@@ -56,7 +56,7 @@
 <style lang="scss" scoped>
 	// 商品条区
 	.product-items {
-		margin: 16rpx 30rpx;
+		margin: 0 30rpx;
 		padding: 10rpx;
 		display: flex;
 		flex-direction: column;
@@ -82,10 +82,7 @@
 			flex-direction: column;
 			justify-content: space-between;
 			.product-item-text {
-				width: 400rpx; 
-				text-overflow: ellipsis;
-				white-space: nowrap;
-				overflow: hidden;
+				width: 400rpx;  
 			} 
 
 			// 商品描述尾部 包含价格和抢购按钮
