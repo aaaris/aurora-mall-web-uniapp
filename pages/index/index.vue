@@ -53,7 +53,7 @@
 		<view class="killBar">
 			<text style="font-size: 16px; font-weight: bold;">秒杀专区</text>
 			<view style="height: 10rpx;margin: 20rpx; background-color: #fc141d;"></view>
-			<u-swiper :list="killItemlist" :effect3d="true" mode="round"></u-swiper>
+			<u-swiper :list="killItemlist" :effect3d="true" mode="round" @click="gotoSeckill"></u-swiper>
 		</view>
 		<view class="itemShowBar">
 			<text style="font-size: 16px; font-weight: bold;">最热商品</text>
@@ -178,6 +178,13 @@
 				uni.navigateTo({
 					url:"/pages/search/search"
 				})
+			},
+			gotoSeckill(idx)
+			{
+				uni.navigateTo({
+					url:"/pages/sale/seckill"
+				})
+				
 			}
 		}
 	}
