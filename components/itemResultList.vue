@@ -14,10 +14,14 @@
 					<text>{{item.title}}</text>
 				</view>
 				<!-- 秒杀进度条 -->
-				<view class="product-item-progress" v-if="isKill">
+				<view class="product-item-progress" v-if="(isKill &&  Date.now() > item.date)">
 					<u-line-progress round :striped="true" :striped-active="true" 
 					active-color="#ff9900" :percent="item.progress">
 					</u-line-progress>
+				</view>
+				<!-- 秒杀时间 -->
+				<view class="" v-if="(isKill && item.date > Date.now())">
+					<text style="color: #b3ff6c;">{{$u.timeFormat("item.date".substr(0,-3), 'hh:MM')}}</text>
 				</view>
 				<view class="product-item-bottom">
 					<!-- 商品售价 -->

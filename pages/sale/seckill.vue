@@ -48,7 +48,7 @@
 					goodsUrl: '//img13.360buyimg.com/n7/jfs/t1/103005/7/17719/314825/5e8c19faEb7eed50d/5b81ae4b2f7f3bb7.jpg',
 					title: '【冬日限定】现货 原创jk制服女2020冬装新款小清新宽松软糯毛衣外套女开衫短款百搭日系甜美风',
 					price: '348.58',
-					date: "1668734571681",
+					date: "1668300000000",
 					progress: 33
 				}, {
 					goodsUrl: '//img10.360buyimg.com/n7/jfs/t22300/31/1505958241/171936/9e201a89/5b2b12ffNe6dbb594.jpg!q90.jpg',
@@ -56,7 +56,7 @@
 					type: '4K，广色域',
 					deliveryTime: '珍藏10年好酒',
 					price: '1543',
-					date: "1668734571681",
+					date: "1668300000000",
 					progress: 33
 				},
 				{
@@ -65,7 +65,7 @@
 					type: '一打',
 					deliveryTime: '口感好',
 					price: '120',
-					date: "1669734600000",
+					date: "1668900000000",
 					progress: 33
 				}, {
 					goodsUrl: '//img14.360buyimg.com/n7/jfs/t6007/205/4099529191/294869/ae4e6d4f/595dcf19Ndce3227d.jpg!q90.jpg',
@@ -73,7 +73,7 @@
 					type: '容量大，速冻',
 					deliveryTime: '保质5年',
 					price: '2354',
-					date: "1669734600000",
+					date: "1668900000000",
 					progress: 33
 				}
 			]
