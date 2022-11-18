@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<!-- 导航栏 -->
-		<u-navbar :background="{backgroundColor:'#fe5e48'}" :border-bottom="false" title="个人中心" title-color="#fff"
+		<u-navbar :background="{backgroundColor:'#fc141d'}" :border-bottom="false" title="个人中心" title-color="#fff"
 			back-icon-color="#fff"></u-navbar>
 		<!-- 用户信息 -->
 		<view class="user-info">
@@ -24,9 +24,9 @@
 			</view>
 			<!-- 订单状态栏 -->
 			<view class="order-bar-items">
-				<view class="order-bar-item" v-for="(item,index) in orderStatusList" :key="index" @click="goToOrderStatus(index)">
-					<u-icon custom-prefix="custom-icon" :name="item.iconName" size="45" color="#a7a7a7"
-						></u-icon>
+				<view class="order-bar-item" v-for="(item,index) in orderStatusList" :key="index"
+					@click="goToOrderStatus(index)">
+					<u-icon custom-prefix="custom-icon" :name="item.iconName" size="45" color="#a7a7a7"></u-icon>
 					<text style="display: block;">{{item.desc}}</text>
 				</view>
 			</view>
@@ -54,14 +54,16 @@
 				orderStatusList: [{
 					iconName: "custom-icon-wallet",
 					desc: "待付款"
-				}, {            
+				}, {
 					iconName: "custom-icon-product-fill",
 					desc: "待发货"
-				}, {            
+				}, {
 					iconName: "custom-icon-kuaidi",
 					desc: "待收货"
 				}],
 				settingItemList: [{
+						title: "我的收藏商品"
+					}, {
 						title: "我的收货地址"
 					},
 					{
@@ -78,19 +80,23 @@
 			goToOrderStatus(idx) {
 				console.log(`go to order status page ${idx}`)
 				uni.navigateTo({
-					url:"/pages/order/order?state=" + idx
+					url: "/pages/order/order?state=" + idx
 				})
 			},
 			// 跳转设置页
 			goToSetting(idx) {
 				console.log(`go to setting page ${idx}`)
-				if (idx === 0) { 
+				if (idx === 0) {
 					uni.navigateTo({
-						url:"/pages/addressbook/addressBook"
+						url: "/pages/index/collect"
 					})
-				}else if (idx === 1) {
+				} else if (idx === 1) {
 					uni.navigateTo({
-						url:"/pages/index/about"
+						url: "/pages/addressbook/addressBook"
+					})
+				} else if (idx === 2) {
+					uni.navigateTo({
+						url: "/pages/index/about"
 					})
 				}
 			}
@@ -109,7 +115,7 @@
 	.user-info {
 		margin: -1rpx 0 50rpx;
 		padding: 75rpx 0 0 75rpx;
-		background-color: #fe5e48;
+		background-color: #fc141d;
 		width: 100%;
 		height: 350rpx;
 		display: flex;

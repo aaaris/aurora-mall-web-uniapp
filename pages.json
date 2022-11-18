@@ -75,6 +75,22 @@
             }
             
         }
+        ,{
+            "path" : "pages/index/collect",
+            "style" :                                                                                    
+            {
+	            "navigationStyle" : "custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/sale/seckill",
+            "style" :                                                                                    
+            {
+	            "navigationStyle" : "custom"
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
