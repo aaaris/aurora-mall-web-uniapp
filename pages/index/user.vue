@@ -25,8 +25,8 @@
 			<!-- 订单状态栏 -->
 			<view class="order-bar-items">
 				<view class="order-bar-item" v-for="(item,index) in orderStatusList" :key="index"
-					@click="goToOrderStatus(index)">
-					<u-icon custom-prefix="custom-icon" :name="item.iconName" size="45" color="#a7a7a7"></u-icon>
+					@click="goToOrderStatus(index + 1)">
+					<u-icon custom-prefix="custom-icon" :name="item.iconName" size="50" color="#a7a7a7"></u-icon>
 					<text style="display: block;">{{item.desc}}</text>
 				</view>
 			</view>
@@ -60,11 +60,14 @@
 				}, {
 					iconName: "custom-icon-kuaidi",
 					desc: "待收货"
+				}, {
+					iconName: "custom-icon-yiwancheng",
+					desc: "已完成"
 				}],
 				settingItemList: [{
-						title: "我的收藏商品"
+						title: "商品收藏"
 					}, {
-						title: "我的收货地址"
+						title: "地址管理"
 					},
 					{
 						title: "关于我们"

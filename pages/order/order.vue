@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<!-- 导航栏 -->
-		<u-navbar :background="{backgroundColor:'#fe5e48'}" :border-bottom="false" title="订单" title-color="#fff"
+		<u-navbar :background="{backgroundColor:'#fe5e48'}" :border-bottom="false" title="我的订单" title-color="#fff"
 			back-icon-color="#fff"></u-navbar>
 		<view class="wrap">
 			<view class="u-tabs-box">
@@ -10,6 +10,7 @@
 			</view>
 			<swiper class="swiper-box" :current="swiperCurrent" @transition="transition"
 				@animationfinish="animationfinish">
+				<!-- 全部订单 -->
 				<swiper-item class="swiper-item">
 					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
 						<view class="page-box">
@@ -47,22 +48,24 @@
 									</text>
 								</view>
 								<view class="bottom">
-									<view class="more">
-										<u-icon name="more-dot-fill" color="rgb(203,203,203)"></u-icon>
+									<view class="logistics btn" @click="cancelOrder" v-if="(res.dealStat===0)">订单详情
 									</view>
-									<view class="logistics btn">查看物流</view>
-									<view class="exchange btn">卖了换钱</view>
-									<view class="evaluate btn">评价</view>
+									<view class="logistics btn" @click="cancelOrder" v-if="(res.dealStat===1||res.dealStat===2)">取消订单</view>
+									<view class="evaluate btn" @click="createOrder" v-if="(res.dealStat===1)">立即付款
+									</view>
+									<view class="evaluate btn" v-if="(res.dealStat===3)" @click="createOrder">确认收货
+									</view>
 								</view>
 							</view>
 							<u-loadmore :status="loadStatus[0]" bgColor="#f2f2f2"></u-loadmore>
- 						</view>
+						</view>
 					</scroll-view>
 				</swiper-item>
+				<!-- 待付款 -->
 				<swiper-item class="swiper-item">
 					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
 						<view class="page-box">
-							<view class="order" v-for="(res, index) in  orderList[1]" :key="res.id">
+							<view class="order" v-for="(res, index) in orderList[1]" :key="res.id">
 								<view class="top">
 									<view class="left">
 										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
@@ -95,19 +98,74 @@
 										<text class="decimal">{{ priceDecimal(totalPrice(res.goodsList)) }}</text>
 									</text>
 								</view>
+
 								<view class="bottom">
-									<view class="more">
-										<u-icon name="more-dot-fill" color="rgb(203,203,203)"></u-icon>
+									<view class="logistics btn" @click="cancelOrder" v-if="(res.dealStat===0)">订单详情
 									</view>
-									<view class="logistics btn">查看物流</view>
-									<view class="exchange btn">卖了换钱</view>
-									<view class="evaluate btn">评价</view>
+									<view class="logistics btn" @click="cancelOrder" v-if="(res.dealStat===1||res.dealStat===2)">取消订单</view>
+									<view class="evaluate btn" @click="createOrder" v-if="(res.dealStat===1)">立即付款
+									</view>
+									<view class="evaluate btn" v-if="(res.dealStat===3)" @click="createOrder">确认收货
+									</view>
 								</view>
 							</view>
 							<u-loadmore :status="loadStatus[1]" bgColor="#f2f2f2"></u-loadmore>
 						</view>
 					</scroll-view>
 				</swiper-item>
+				<!-- 待发货 -->
+				<swiper-item class="swiper-item">
+					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
+						<view class="page-box">
+							<view class="order" v-for="(res, index) in  orderList[2]" :key="res.id">
+								<view class="top">
+									<view class="left">
+										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
+										<view class="store">{{ res.store }}</view>
+										<u-icon name="arrow-right" color="rgb(203,203,203)" :size="26"></u-icon>
+									</view>
+									<view class="right">{{ res.deal }}</view>
+								</view>
+								<view class="item" v-for="(item, index) in res.goodsList" :key="index">
+									<view class="left">
+										<image :src="item.goodsUrl" mode="aspectFill"></image>
+									</view>
+									<view class="content">
+										<view class="title u-line-2">{{ item.title }}</view>
+										<view class="type">{{ item.type }}</view>
+										<view class="delivery-time">发货时间 {{ item.deliveryTime }}</view>
+									</view>
+									<view class="right">
+										<view class="price">
+											￥{{ priceInt(item.price) }}
+											<text class="decimal">.{{ priceDecimal(item.price) }}</text>
+										</view>
+										<view class="number">x{{ item.number }}</view>
+									</view>
+								</view>
+								<view class="total">
+									共{{ totalNum(res.goodsList) }}件商品 合计:
+									<text class="total-price">
+										￥{{ priceInt(totalPrice(res.goodsList)) }}.
+										<text class="decimal">{{ priceDecimal(totalPrice(res.goodsList)) }}</text>
+									</text>
+								</view>
+
+								<view class="bottom">
+									<view class="logistics btn" @click="cancelOrder" v-if="(res.dealStat===0)">订单详情
+									</view>
+									<view class="logistics btn" @click="cancelOrder" v-if="(res.dealStat===1||res.dealStat===2)">取消订单</view>
+									<view class="evaluate btn" @click="createOrder" v-if="(res.dealStat===1)">立即付款
+									</view>
+									<view class="evaluate btn" v-if="(res.dealStat===3)" @click="createOrder">确认收货
+									</view>
+								</view>
+							</view>
+							<u-loadmore :status="loadStatus[2]" bgColor="#f2f2f2"></u-loadmore>
+						</view>
+					</scroll-view>
+				</swiper-item>
+				<!-- 待收货 -->
 				<swiper-item class="swiper-item">
 					<scroll-view scroll-y style="height: 100%;width: 100%;">
 						<view class="page-box">
@@ -125,10 +183,11 @@
 						</view>
 					</scroll-view>
 				</swiper-item>
+				<!-- 已完成 -->
 				<swiper-item class="swiper-item">
 					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
 						<view class="page-box">
-							<view class="order" v-for="(res, index) in  orderList[3]" :key="res.id">
+							<view class="order" v-for="(res, index) in  orderList[4]" :key="res.id">
 								<view class="top">
 									<view class="left">
 										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
@@ -161,16 +220,18 @@
 										<text class="decimal">{{ priceDecimal(totalPrice(res.goodsList)) }}</text>
 									</text>
 								</view>
+
 								<view class="bottom">
-									<view class="more">
-										<u-icon name="more-dot-fill" color="rgb(203,203,203)"></u-icon>
+									<view class="logistics btn" @click="cancelOrder" v-if="(res.dealStat===0)">订单详情
 									</view>
-									<view class="logistics btn">查看物流</view>
-									<view class="exchange btn">卖了换钱</view>
-									<view class="evaluate btn">评价</view>
+									<view class="logistics btn" @click="cancelOrder" v-if="(res.dealStat===1||res.dealStat===2)">取消订单</view>
+									<view class="evaluate btn" @click="createOrder" v-if="(res.dealStat===1)">立即付款
+									</view>
+									<view class="evaluate btn" v-if="(res.dealStat===3)" @click="createOrder">确认收货
+									</view>
 								</view>
 							</view>
-							<u-loadmore :status="loadStatus[3]" bgColor="#f2f2f2"></u-loadmore>
+							<u-loadmore :status="loadStatus[4]" bgColor="#f2f2f2"></u-loadmore>
 						</view>
 					</scroll-view>
 				</swiper-item>
@@ -187,12 +248,14 @@
 					[],
 					[],
 					[],
+					[],
 					[]
 				],
 				dataList: [{
 						id: 1,
 						store: '夏日流星限定贩卖',
-						deal: '交易成功',
+						deal: '待付款',
+						dealStat: 1,
 						goodsList: [{
 								goodsUrl: '//img13.360buyimg.com/n7/jfs/t1/103005/7/17719/314825/5e8c19faEb7eed50d/5b81ae4b2f7f3bb7.jpg',
 								title: '【冬日限定】现货 原创jk制服女2020冬装新款小清新宽松软糯毛衣外套女开衫短款百搭日系甜美风',
@@ -214,7 +277,8 @@
 					{
 						id: 2,
 						store: '江南皮革厂',
-						deal: '交易失败',
+						deal: '待收货',
+						dealStat: 3,
 						goodsList: [{
 							goodsUrl: '//img14.360buyimg.com/n7/jfs/t1/60319/15/6105/406802/5d43f68aE9f00db8c/0affb7ac46c345e2.jpg',
 							title: '【冬日限定】现货 原创jk制服女2020冬装新款小清新宽松软糯毛衣外套女开衫短款百搭日系甜美风',
@@ -227,7 +291,8 @@
 					{
 						id: 3,
 						store: '三星旗舰店',
-						deal: '交易失败',
+						deal: '待发货',
+						dealStat: 2,
 						goodsList: [{
 								goodsUrl: '//img11.360buyimg.com/n7/jfs/t1/94448/29/2734/524808/5dd4cc16E990dfb6b/59c256f85a8c3757.jpg',
 								title: '三星（SAMSUNG）京品家电 UA65RUF70AJXXZ 65英寸4K超高清 HDR 京东微联 智能语音 教育资源液晶电视机',
@@ -250,6 +315,7 @@
 						id: 4,
 						store: '三星旗舰店',
 						deal: '交易失败',
+						dealStat: 0,
 						goodsList: [{
 								goodsUrl: '//img10.360buyimg.com/n7/jfs/t22300/31/1505958241/171936/9e201a89/5b2b12ffNe6dbb594.jpg!q90.jpg',
 								title: '法国进口红酒 拉菲（LAFITE）传奇波尔多干红葡萄酒750ml*6整箱装',
@@ -272,6 +338,7 @@
 						id: 5,
 						store: '三星旗舰店',
 						deal: '交易成功',
+						dealStat: 4,
 						goodsList: [{
 							goodsUrl: '//img12.360buyimg.com/n7/jfs/t1/52408/35/3554/78293/5d12e9cfEfd118ba1/ba5995e62cbd747f.jpg!q90.jpg',
 							title: '企业微信 中控人脸指纹识别考勤机刷脸机 无线签到异地多店打卡机WX108',
@@ -283,6 +350,8 @@
 					}
 				],
 				list: [{
+						name: '全部订单'
+					}, {
 						name: '待付款'
 					},
 					{
@@ -292,7 +361,7 @@
 						name: '待收货'
 					},
 					{
-						name: '待评价',
+						name: '已完成',
 						count: 12
 					}
 				],
@@ -300,14 +369,15 @@
 				swiperCurrent: 0,
 				tabsHeight: 0,
 				dx: 0,
-				loadStatus: ['loadmore', 'loadmore', 'loadmore', 'loadmore'],
+				loadStatus: ['loadmore', 'loadmore', 'loadmore', 'loadmore', 'loadmore'],
 			};
 		},
 		onLoad(query) {
 			console.log(query)
 			this.getOrderList(0);
 			this.getOrderList(1);
-			this.getOrderList(3);
+			this.getOrderList(2);
+			this.getOrderList(4);
 			if (query.state) {
 				this.change(query.state)
 			}
@@ -331,7 +401,7 @@
 		methods: {
 			reachBottom() {
 				// 此tab为空数据
-				if (this.current != 2) {
+				if (this.current != 3) {
 					this.loadStatus.splice(this.current, 1, "loading")
 					setTimeout(() => {
 						this.getOrderList(this.current);
@@ -384,7 +454,16 @@
 				this.$refs.tabs.setFinishCurrent(current);
 				this.swiperCurrent = current;
 				this.current = current;
-			}
+			},
+			// 取消订单
+			cancelOrder() {
+
+			},
+			// 立即付款
+			createOrder() {
+
+			},
+			// 
 		}
 	};
 </script>
@@ -492,10 +571,11 @@
 			display: flex;
 			margin-top: 40rpx;
 			padding: 0 10rpx;
-			justify-content: space-between;
+			justify-content: flex-end;
 			align-items: center;
 
 			.btn {
+				margin-left: 10rpx;
 				line-height: 52rpx;
 				width: 160rpx;
 				border-radius: 26rpx;
