@@ -1,33 +1,38 @@
 @font-face {
-  font-family: "custom-icon"; /* Project id 3768674 */
-  src: 
-       url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAAO0AAsAAAAACAgAAANmAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHFQGYACDHAqDEIJrATYCJAMQCwoABCAFhQsHSBsXB8ieBXaMnlY2M/tmoksmDB4+u3/v4Gn2y84GgFtIZXLojqr/5Vo+UStRrS6Q/EpghQrTZHOU8KZAxn2FrNE1puP7CRAg1QABZrKnv5+6SsFnH4ByTUGRRUkDm0VbnkeljXADmSBvkd0RqEW/ggAMeWpIu9nZZW12zEAytSUaI1dAHC7GjMxYrcdL0TXhAjcCJ3SlRmzAAXKlvAus9z8vvlKQGyQOhbFPh+2L2u8H++MmtaBxAdQb3BwEeLQEHIACshYmFyPqFYM0Q0cWhSmztSgBtbmRMGjDio+bGhsptimR2/zLA4FEgXBihHoBUEScCj7YNgQBH1dAkPBxkxsFPJXxbsAAC4EdhBp1k0ahPOkej9EmQrtmr3qw4OHqxwsfde82922eZYxYeMj4rDqAXnDQsvY/X/002r1g9WEhFkZsC+kirNXBwV13MqadbrZccAXe45pQAw3W8NUHawb5dN992Jq++ipYjtkLb+r7LDx+2ZrIQPT2muBuvPPiniQmNI8/9D8M+LrXZkXi/akXfGcOny30SfVp4uOwvewxuzs3tiX73ccXJOQvOBr0qs+IP/tIF9W58GjZbc/Qld1ja8UzibQjl+1bJum1h+oOuboETueX+b0lEyZMA5j3iMLwjBrHO2J4/E/8iHBf4Micdibq2peokJYZ/xnpXgP8n/3rK5nAOEvdkC8BVDf5DECVyzOv7zesq+n5p79v1f+epQF4v3vwdyrVdENuPwpGXpa4DzCrVo2gdRnPxn4AsZ2YhAQMBng7HgjwbghJIDgUBBaBMZC4iAEKi2SipuYRHdRKopPaDBgydYQHGz9HE6E9QIr1GAhCnAUSH+4ARYiXRE39SXBwcxCd1Ehg6Fb+bhYpLW8yCRmhgMeZUAy2RlpxxFMkq9f05ueYJcWCmBhZrzHEAufDVk5eifsQDYb+5sRp2TZNkSAnWQ0Hw56HSllwk2yJnNbzKeTGG7nDyt6yzsfr2q4AMQQJYJBXYCTOMqS7jXBJRCxtreZ7zqFMojChPoMS2zUUeFFBugPy5ciDEQ9FBppygfMne5LZNgWRwDAKd1OBZksehhTFAhPKh5UQR9aN6GBzxnLNbMOgovVpJfqGlwEGYw8tpFBCCwfO0VNZIYrRMTNEilqTI5XqTB/o6JFqNQAA') format('woff2');
-}
+ 	font-family: "站酷高端黑 Regular";
+ 	font-weight: 400;
+ 	src: url("//at.alicdn.com/wf/webfont/TaW0l0h5r0ci/hbWBIfBMsPB_N8hIKpta-.woff2") format("woff2"),
+ 		url("//at.alicdn.com/wf/webfont/TaW0l0h5r0ci/QQloFVHhxtUrzMygy_BUO.woff") format("woff");
+ 	font-display: swap;
+ }
 
-/* CDN 服务仅供平台体验和调试使用，平台不承诺服务的稳定性，企业客户需下载字体包自行发布使用并做好备份。 */
-@font-face {
-  font-family: "站酷高端黑 Regular";font-weight: 400;src: url("//at.alicdn.com/wf/webfont/TaW0l0h5r0ci/hbWBIfBMsPB_N8hIKpta-.woff2") format("woff2"),
-  url("//at.alicdn.com/wf/webfont/TaW0l0h5r0ci/QQloFVHhxtUrzMygy_BUO.woff") format("woff");
-  font-display: swap;
-}
+ @font-face {
+ 	font-family: "custom-icon";
+ 	/* Project id 3768674 */
+ 	src:
+ 		url('data:application/x-font-woff2;charset=utf-8;base64,d09GMgABAAAAAARAAAsAAAAACOAAAAPxAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHFQGYACDMgqEPIN3ATYCJAMUCwwABCAFhQsHVRvKBxEVnGXJfhbYDdcbFuFqmAIn69v6+kV0GBaUg/s9ePi+872zM9Fs3j6AtZ20ztb4AvHZHtFEcrvfEChdjFK3bWZV1YyIMH1l7T7/ekoTCv9B6LYQnf5e1axJAX72ASRzDwpYbJ6Pbdnd00K1grfnFfUOY5cX+RkEoClIeYyq1es2xerbaWh/4lDorQKiVNG3V49OuDk5qiJV4EbgbHqpQszFAcYM4yyY4/28eK2wcIOBQ6LfpWH3al058azq87XS998HeYfTggDuNgAHIIG8C1OKwdX6vsjAnxeJLlqvqAho3BgYgy6b/nz+87X//xOxtybUxj88MJAoBAgnerIXgIqIpw6OYUEw4Pl0CBKez4eg4Pla5rU8xQGABoKAI8AdhM741hKFRIbEhXpyeTxa6TjlGuENLBbCv8QMsheBb2ELjW+D9gY2CaEDR1C+o2Y/+7hw+I+1bLowENd8sX+zHdmsxZK1G5eOCVzwXbQv+y+1aB612MjWWvg3aSuwoUXRRtNcc92+muhI7c39H45bHNVUmHZkZLNl9G1nHWP4jjRfcUzIThqzh72xYpPVYsVmc4R9FEzb5SWI6jX+7YfNQWjRxjtBNkGHHg53LXO1tphe1rz0NvmsqtYWeEa+NrE5CTcTcmJXkTg90f+ahU1+vvzXfegVlic2SVzevvPbextPVEugYMqV9LQaqTVCa4SNP1d3evr5YQeCR/WwiljZVhXLASOq9q1Spm1VU/GxrcdNyz5ja8Sttj2vVt3SVDYpUnPqaU+3Gd2zKdaYRfFV43Nbr1mUq8KmiptcTcMfTSg5aFXxgQMfhTF+V1yR2Nzl7ci4HqnrUnvGelxH6lh7Eo69Soiqlfth7lzejqEjQsUMRgLwv+fK9gDyRN2ElObGNWMpY8//8DdUeZywpkNw2a/uowC4v3LVS2j/P+gecGNAY/rbF7Rt2FQpVCRQRdWWFoGioGrMiQHvuOJ1m8O4N4wxHCKtwOQYEBi4SAISk0y4QheEO9Bl4E50daDJQyPaYPvHIhHKA2QxBwJBFHuBgcUZIIniJlyh38McZOGAO9HxQCN7mW533Ew7D0bBuMH6By1jIDOHZS0cfacNfqCqTmShMvR8MBcN22Hqx4LQHQPm/s4oh5qZCShHD7dhn4bORUg5GpTc78xpGQYqOkovo2/OMiQwtAGrP6BJUUDOTUyqChZ5XcXveUBK5Qi5uoEC7wfKHF+jyYBJb2wGv/ND05oLPLs4KDPGCCBM62YEtyVvQ44TgVS8zUAS6+0dvMliMJpRU34/rdDf8j7Y9LfOVDojM8v++iuC3DGo1lahN33addxWMzrSzrVfYduQmwYAAAA=') format('woff2');
+ }
 
-.custom-icon {
-  font-family: "custom-icon" !important;
-  font-size: 16px;
-  font-style: normal;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+ .custom-icon {
+ 	font-family: "custom-icon" !important;
+ 	font-size: 16px;
+ 	font-style: normal;
+ 	-webkit-font-smoothing: antialiased;
+ 	-moz-osx-font-smoothing: grayscale;
+ }
 
-.custom-icon-kuaidi:before {
-  content: "\e644";
-}
+ .custom-icon-yiwancheng:before {
+ 	content: "\e7a5";
+ }
 
-.custom-icon-product-fill:before {
-  content: "\e788";
-}
+ .custom-icon-kuaidi:before {
+ 	content: "\e644";
+ }
 
-.custom-icon-wallet:before {
-  content: "\e792";
-}
+ .custom-icon-product-fill:before {
+ 	content: "\e788";
+ }
 
+ .custom-icon-wallet:before {
+ 	content: "\e792";
+ }
