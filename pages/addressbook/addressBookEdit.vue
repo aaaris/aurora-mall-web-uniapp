@@ -14,8 +14,9 @@
 						</u-form-item>
 						<u-form-item label="地区" label-width="150" :label-style="labelStyle">
 							<u-input v-model="addressForm.region" type="select"  @click="show = true" />
-							<u-select v-model="show" mode="mutil-column-auto" :list="list" @confirm="confirm">
-							</u-select>
+						<template>
+							<u-picker mode="region" v-model="show" @confirm="getRegion" ></u-picker>
+						</template>
 						</u-form-item>
 						<u-form-item label="详细地址" label-width="150"  :border-bottom="false">
 							<u-input v-model="addressForm.desc" placeholder="详细地址"></u-input>
@@ -118,11 +119,10 @@
 		},
 		methods: { 
 			// 下拉框确认回调函数
-			confirm(res){ 
+			getRegion(res){ 
+				console.log(res)
 				this.addressForm.region = ""
-				res.forEach((item,idx)=>{
-					this.addressForm.region += item.label
-				})
+				this.addressForm.region = res.province.name +  res.city.name + res.area.name
 				console.log(this.addressForm.region)
 			}
 		}
