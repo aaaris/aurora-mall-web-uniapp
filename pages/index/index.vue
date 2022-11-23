@@ -23,19 +23,20 @@
 		</view>
 		<!-- 分类轮播菜单 -->
 		<view class="categoryMenu">
-			<swiper style="width:100%;height:300rpx; margin-top:30rpx" @change="swiperChange">
+			<swiper style="width:100%;height:450rpx; margin-top:30rpx" @change="swiperChange">
 				<swiper-item>
 					<u-grid :col="5" @click="click" hover-class="hover-class" :border="false">
-						<u-grid-item v-for="(item, index) in categoryList.slice(0,10)" :index="index" :key="index">
-							<u-icon :name="item.icon" :size="46"></u-icon>
+						<u-grid-item @click="gotoCategory(index)" v-for="(item, index) in categoryList.slice(0,10)"
+							:index="index" :key="index">
+							<image :src="item.imgUrl" mode="aspectFill" style="height: 100rpx; width: 100rpx;"></image>
 							<text class="grid-text">{{ item.name }}</text>
 						</u-grid-item>
 					</u-grid>
 				</swiper-item>
 				<swiper-item>
-					<u-grid :col="5" @click="click" hover-class="hover-class">
-						<u-grid-item v-for="(item, index) in categoryList.slice(10,)" :index="index + 10" :key="index">
-							<u-icon :name="item.icon" :size="46"></u-icon>
+					<u-grid :col="5" @click="click" hover-class="hover-class" :border="false">
+						<u-grid-item @click="gotoCategory(index + 10)" v-for="(item, index) in categoryList.slice(10,)" :index="index + 10" :key="index">
+							<image :src="item.imgUrl" mode="aspectFill" style="height: 100rpx; width: 100rpx;"></image>
 							<text class="grid-text">{{ item.name }}</text>
 						</u-grid-item>
 					</u-grid>
@@ -87,46 +88,62 @@
 				],
 				current: 0,
 				categoryList: [{
-					icon: 'integral',
-					imgSrc: '',
-					name: '女装'
-				}, {
-					icon: 'kefu-ermai',
-					imgSrc: '',
-					name: '男装'
-				}, {
-					icon: 'coupon',
-					imgSrc: '',
-					name: '鞋包'
-				}, {
-					icon: 'gift',
-					imgSrc: '',
-					name: '手表配置'
-				}, {
-					icon: 'scan',
-					imgSrc: '',
-					name: '内衣'
-				}, {
-					icon: 'pause-circle',
-					imgSrc: '',
-					name: '运动户外'
-				}, {
-					icon: 'wifi',
-					imgSrc: '',
-					name: '童装童鞋'
-				}, {
-					icon: 'email',
-					imgSrc: '',
-					name: '面部护肤'
-				}, {
-					icon: 'list',
-					imgSrc: '',
-					name: '电子产品'
-				}, {
-					icon: 'integral',
-					imgSrc: '',
-					name: '医疗用品'
-				}],
+						"name": "女装",
+						"imgUrl": "https://cdn.uviewui.com/uview/common/classify/1/1.jpg"
+					},
+					{
+						"name": "美食",
+						"imgUrl": "https://cdn.uviewui.com/uview/common/classify/2/1.jpg"
+					},
+					{
+						"name": "美妆",
+						"imgUrl": "https://cdn.uviewui.com/uview/common/classify/3/1.jpg"
+					},
+					{
+						"name": "居家日用",
+						"imgUrl": "https://cdn.uviewui.com/uview/common/classify/4/1.jpg"
+					},
+					{
+						"name": "男装",
+						"imgUrl": "https://cdn.uviewui.com/uview/common/classify/5/1.jpg"
+					},
+					{
+						"name": "鞋品",
+						"imgUrl": "https://cdn.uviewui.com/uview/common/classify/6/1.jpg"
+					},
+					{
+						"name": "数码家电",
+						"imgUrl": "https://cdn.uviewui.com/uview/common/classify/7/1.jpg"
+					},
+					{
+						"name": "母婴",
+						"imgUrl": "https://cdn.uviewui.com/uview/common/classify/8/1.jpg"
+					},
+					{
+						"name": "箱包",
+						"imgUrl": "https://cdn.uviewui.com/uview/common/classify/9/1.jpg"
+					},
+					{
+						"name": "内衣",
+						"imgUrl": "https://cdn.uviewui.com/uview/common/classify/10/1.jpg"
+					},
+					{
+						"name": "文娱车品",
+						"imgUrl": "https://cdn.uviewui.com/uview/common/classify/11/1.jpg"
+					},
+					{
+						"name": "配饰",
+						"imgUrl": "https://cdn.uviewui.com/uview/common/classify/12/1.jpg"
+					},
+					{
+						"name": "家装家纺",
+						"imgUrl": "https://cdn.uviewui.com/uview/common/classify/13/1.jpg"
+					},
+					{
+						"name": "户外运动",
+						"imgUrl": "https://cdn.uviewui.com/uview/common/classify/14/1.jpg"
+					}
+				],
 				killItemlist: [{
 						image: 'https://cdn.uviewui.com/uview/swiper/1.jpg',
 						title: '昨夜星辰昨夜风，画楼西畔桂堂东'
@@ -174,17 +191,26 @@
 			click(index) {
 				console.log(`click ${index}`)
 			},
-			gotoSearch(){
+			gotoSearch() {
 				uni.navigateTo({
-					url:"/pages/search/search"
+					url: "/pages/search/search"
 				})
 			},
-			gotoSeckill(idx)
-			{
+			gotoSeckill(idx) {
 				uni.navigateTo({
-					url:"/pages/sale/seckill"
+					url: "/pages/sale/seckill"
 				})
-				
+			},
+			gotoCategory(idx) {
+				uni.switchTab({
+					url: "/pages/index/category",
+					success() {
+						console.log(idx)
+						uni.$emit('gotoCategory', {
+							index: idx
+						})
+					}
+				})
 			}
 		}
 	}
