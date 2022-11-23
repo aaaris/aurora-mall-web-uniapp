@@ -2,10 +2,21 @@
 	<view>
 		<!-- 导航栏 -->
 		<u-navbar :border-bottom="false" title="我的收藏"></u-navbar>
-			<view class="">
-				<itemResultList :list="prodList" :isKill="false"></itemResultList>
-				<u-loadmore :status="loadStatu" bgColor="#f2f2f2" @loadmore="getOrderList"></u-loadmore>
-			</view>
+		<view class="">
+			<u-swipe-action :show="item.show" :index="index" v-for="(item, index) in prodList" :key="item.title"
+				@click="deleteCollection" @open="openSwipe" :options="options">
+				<view class="u-flex u-p-30 u-row-between" @click="gotoProd(item)">
+					<image :src="item.goodsUrl" mode="aspectFill" class="product-item-image"></image>
+					<view class="title-wrap">
+						<text class="u-line-3">{{item.title}}</text>
+						<view class="u-flex">
+							<text style="color: #f11">￥&nbsp;{{item.price}}</text>
+						</view>
+					</view>
+				</view>
+			</u-swipe-action>
+			<u-loadmore :status="loadStatu" bgColor="#f2f2f2" @loadmore="getOrderList"></u-loadmore>
+		</view>
 	</view>
 </template>
 
@@ -50,7 +61,13 @@
 						date: "Thu Nov 17 2023 13:02:26 GMT+0800 (中国标准时间)",
 						progress: 33
 					}
-				]
+				],
+				options: [{
+					text: '删除',
+					style: {
+						backgroundColor: '#dd524d'
+					}
+				}]
 			}
 		},
 		onLoad() {
@@ -71,11 +88,28 @@
 					this.prodList.push(data)
 				}
 				this.loadStatu = 'loadmore'
+			},
+			gotoProd(item) { 
+				uni.navigateTo({
+					url: "/pages/product/productDetail"
+				})
+			},
+			deleteCollection(idx,opt) {
+				console.log(`${this.options[opt].text} ${this.prodList[idx].title}`)
+			},
+			openSwipe() {
+
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
-
+	.product-item-image {
+		width: 200rpx;
+		flex: 0 0 200rpx;
+		height: 200rpx;
+		margin-right: 20rpx;
+		border-radius: 12rpx;
+	}
 </style>
