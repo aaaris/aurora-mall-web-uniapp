@@ -10,8 +10,7 @@
 		<!-- tab栏 -->
 		<view>
 			<u-tabs :isScroll="false" v-model="current" :list="[{name:'正在疯抢'},{name:'抢先看'}]" active-color="#dd524d"
-				@change="changeTab"></u-tabs>
-
+				@change="changeTab"></u-tabs> 
 			<itemResultList v-if="current === 0" :list="tabList1" :isKill="true"></itemResultList>
 			<itemResultList v-if="current === 1" :list="tabList2" :isKill="true"></itemResultList>
 			<u-loadmore :status="loadStatu" bgColor="#f2f2f2" @loadmore="getOrderList"></u-loadmore>
@@ -65,16 +64,16 @@
 					type: '一打',
 					deliveryTime: '口感好',
 					price: '120',
-					date: "1668900000000",
-					progress: 33
+					date: "1768900000000",
+					progress: 0
 				}, {
 					goodsUrl: '//img14.360buyimg.com/n7/jfs/t6007/205/4099529191/294869/ae4e6d4f/595dcf19Ndce3227d.jpg!q90.jpg',
 					title: '美的(Midea)639升 对开门冰箱 19分钟急速净味 一级能效冷藏双开门杀菌智能家用双变频节能 BCD-639WKPZM(E)',
 					type: '容量大，速冻',
 					deliveryTime: '保质5年',
 					price: '2354',
-					date: "1668900000000",
-					progress: 33
+					date: "1768900000000",
+					progress: 0
 				}
 			]
 			console.log(this.prodList)
