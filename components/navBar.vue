@@ -1,3 +1,4 @@
+<!-- 该组件用于展示自定义的底部导航栏 -->
 <template>
 	<u-tabbar v-model="tabIdx" :list="tabList"></u-tabbar>
 </template>
