@@ -11,18 +11,18 @@
 		<view>
 			<u-tabs :isScroll="false" v-model="current" :list="[{name:'正在疯抢'},{name:'抢先看'}]" active-color="#dd524d"
 				@change="changeTab"></u-tabs> 
-			<itemResultList v-if="current === 0" :list="tabList1" :isKill="true"></itemResultList>
-			<itemResultList v-if="current === 1" :list="tabList2" :isKill="true"></itemResultList>
+			<prodList v-if="current === 0" :list="tabList1" :isKill="true"></prodList>
+			<prodList v-if="current === 1" :list="tabList2" :isKill="true"></prodList>
 			<u-loadmore :status="loadStatu" bgColor="#f2f2f2" @loadmore="getOrderList"></u-loadmore>
 		</view>
 	</view>
 </template>
 
 <script>
-	import itemResultList from "@/components/itemResultList.vue"
+	import prodList from "@/components/prodList.vue"
 	export default {
 		components: {
-			itemResultList
+			prodList
 		},
 		data() {
 			return {

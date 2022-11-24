@@ -20,12 +20,8 @@
 	</view>
 </template>
 
-<script>
-	import itemResultList from "@/components/itemResultList.vue"
-	export default {
-		components: {
-			itemResultList
-		},
+<script> 
+	export default { 
 		data() {
 			return {
 				loadStatu: 'loadmore',

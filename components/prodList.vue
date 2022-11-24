@@ -1,3 +1,4 @@
+<!-- 该组件用于以列表模式展现商品 -->
 <template>
 	<view class="product-items">
 		<!-- 商品条 -->

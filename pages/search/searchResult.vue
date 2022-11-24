@@ -25,7 +25,7 @@
 							</u-dropdown>
 						</view>
 						<view>
-							<itemResultList :list="prodList.concat(prodList)" :isKill="false"></itemResultList>
+							<prodList :list="prodList.concat(prodList)" :isKill="false"></prodList>
 						</view>
 						<u-loadmore :status="loadStatus[0]" bgColor="#f2f2f2"></u-loadmore>
 					</scroll-view>
@@ -36,7 +36,7 @@
 						<u-sticky>
 						</u-sticky>
 						<view>
-							<itemResultList :list="prodList.concat(prodList)" :isKill="false"></itemResultList>
+							<prodList :list="prodList.concat(prodList)" :isKill="false"></prodList>
 						</view>
 						<u-loadmore :status="loadStatus[1]" bgColor="#f2f2f2"></u-loadmore>
 
@@ -48,7 +48,7 @@
 						<u-sticky>
 						</u-sticky>
 						<view>
-							<view class="shop-item" v-for="(item,index) in shopList.concat(shopList)" :key="index">
+							<view class="shop-item" v-for="(item,index) in shopList.concat(shopList)" :key="index" @click="gotoShop(item.id)">
 								<!-- 店铺图片和名称 -->
 								<view class="shop-item-top">
 									<view class="shop-item-title">
@@ -78,10 +78,10 @@
 </template>
 
 <script>
-	import itemResultList from "@/components/itemResultList.vue"
+	import prodList from "@/components/prodList.vue"
 	export default {
 		components: {
-			itemResultList
+			prodList
 		},
 		data() {
 			return {
@@ -214,9 +214,7 @@
 							}
 						],
 					},
-					{
-						title: "Apple Store 官方旗舰店",
-						shopUrl: "https://image.geihui.com/uploadfiles/shopimgs/201607/578c9a19c93fa.jpg",
+					{ 
 						prodList: [{
 								goodsUrl: '//img13.360buyimg.com/n7/jfs/t1/103005/7/17719/314825/5e8c19faEb7eed50d/5b81ae4b2f7f3bb7.jpg',
 								title: '【冬日限定】现货 原创jk制服女2020冬装新款小清新宽松软糯毛衣外套女开衫短款百搭日系甜美风',
