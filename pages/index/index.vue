@@ -1,7 +1,7 @@
 <template>
 	<view class="content skeleton">
 		<!-- 头部导航栏 -->
-		<!-- <u-skeleton :loading="isLoading" :animation="true" bgColor="#fff"></u-skeleton> -->
+		<u-skeleton :loading="isLoading" :animation="true" elColor="#f3f4f5"></u-skeleton>
 		<u-navbar :background="{backgroundColor:'#fc141d'}" :is-back="false" :border-bottom="false">
 			<view style="padding-left: 40rpx;">
 				<u-icon name="level" color="#fff">
@@ -12,23 +12,23 @@
 		<!-- 轮播图和搜索框 -->
 		<view class="body">
 			<!-- 搜索框 -->
-			<view style="margin: 0 30rpx 50rpx;">
+			<view class="u-skeleton-fillet" style="margin: 0 30rpx 50rpx;">
 				<u-search v-model="keyword" :showAction="false" :disabled="true" @click="gotoSearch"></u-search>
 			</view>
 			<!-- 高点击商品轮播图 -->
-			<view style="margin: 0 30rpx;">
+			<view class="u-skeleton-fillet u-m-l-30 u-m-r-30">
 				<u-swiper :list="swiperImgList" indicatorMode="line" circular :loading="isLoading" click="swiperClick">
 				</u-swiper>
 			</view>
 		</view>
 		<!-- 分类轮播菜单 -->
-		<view class="categoryMenu">
+		<view class="categoryMenu u-skeleton-fillet">
 			<swiper style="width:100%;height:450rpx; margin-top:30rpx" @change="swiperChange">
 				<swiper-item>
 					<u-grid :col="5" @click="click" hover-class="hover-class" :border="false">
 						<u-grid-item @click="gotoCategory(index)" v-for="(item, index) in categoryList.slice(0,10)"
 							:index="index" :key="index">
-							<image :src="item.imgUrl" mode="aspectFill" style="height: 100rpx; width: 100rpx;"></image>
+							<image :src="item.imgUrl" mode="aspectFill" class="u-skeleton-circle" style="height: 100rpx; width: 100rpx;"></image>
 							<text class="grid-text">{{ item.name }}</text>
 						</u-grid-item>
 					</u-grid>
@@ -36,7 +36,7 @@
 				<swiper-item>
 					<u-grid :col="5" @click="click" hover-class="hover-class" :border="false">
 						<u-grid-item @click="gotoCategory(index + 10)" v-for="(item, index) in categoryList.slice(10,)" :index="index + 10" :key="index">
-							<image :src="item.imgUrl" mode="aspectFill" style="height: 100rpx; width: 100rpx;"></image>
+							<image :src="item.imgUrl" mode="aspectFill" class="u-skeleton-circle" style="height: 100rpx; width: 100rpx;"></image>
 							<text class="grid-text">{{ item.name }}</text>
 						</u-grid-item>
 					</u-grid>
@@ -51,12 +51,13 @@
 			</view>
 		</view>
 		<!-- 秒杀专区 -->
-		<view class="killBar">
+		<view class="killBar u-skeleton-fillet">
 			<text style="font-size: 16px; font-weight: bold;">秒杀专区</text>
 			<view style="height: 10rpx;margin: 20rpx; background-color: #fc141d;"></view>
 			<u-swiper :list="killItemlist" :effect3d="true" mode="round" @click="gotoSeckill"></u-swiper>
 		</view>
-		<view class="itemShowBar">
+		<!-- 最热商品 -->
+		<view class="itemShowBar u-skeleton-fillet">
 			<text style="font-size: 16px; font-weight: bold;">最热商品</text>
 			<view style="height: 10rpx;margin: 20rpx; background-color: #fc141d;"></view>
 			<itemShowList></itemShowList>
@@ -171,12 +172,11 @@
 			}
 		},
 		onLoad() {
-			// setTimeout(() => {
-			// 	this.isLoading = false;
-			// 	this.isSwiper = true;
-			// }, 2000)
-			this.isLoading = false;
-			this.isSwiper = true;
+			
+			setTimeout(() => {
+				this.isLoading = false;
+				this.isSwiper = true;
+			}, 2000) 
 		},
 
 		onPageScroll(e) {
