@@ -2,15 +2,16 @@
 	<view class="content skeleton">
 		<!-- 头部导航栏 -->
 		<u-skeleton :loading="isLoading" :animation="true" elColor="#f3f4f5"></u-skeleton>
-		<u-navbar :background="{backgroundColor:'#fc141d'}" :is-back="false" :border-bottom="false">
-			<view style="padding-left: 40rpx;">
+		<u-navbar :background="{
+		background: 'linear-gradient(to right, #00baad 0%, #7948ea 95%)'}" :is-back="false" :border-bottom="false">
+			<view style="padding-left: 40rpx; ">
 				<u-icon name="level" color="#fff">
 				</u-icon> &nbsp;&nbsp;
 				<text style="color: #fff;">极光商城</text>
 			</view>
 		</u-navbar>
 		<!-- 轮播图和搜索框 -->
-		<view class="body">
+		<view class="top">
 			<!-- 搜索框 -->
 			<view class="u-skeleton-fillet" style="margin: 0 30rpx 50rpx;">
 				<u-search v-model="keyword" :showAction="false" :disabled="true" @click="gotoSearch"></u-search>
@@ -227,13 +228,14 @@
 	}
 
 	// 轮播图和搜索框
-	.body {
+	.top {
 		/* padding-top: 30rpx; */
+		margin-top: -1px;
 		width: 100%;
 		padding: 10rpx 10rpx 30rpx;
 		display: flex;
-		flex-direction: column;
-		background-color: #fc141d;
+		flex-direction: column; 
+		background: linear-gradient(to right, #00baad 0%, #7948ea 95%);
 	}
 
 	// 分类轮播菜单 

@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<!-- 导航栏 -->
-		<u-navbar :background="{backgroundColor:'#fe5e48'}" :border-bottom="false" title="我的订单" title-color="#fff"
+		<u-navbar :background="{background: 'linear-gradient(to right, #00baad 0%, #7948ea 95%)'}" :border-bottom="false" title="我的订单" title-color="#fff"
 			back-icon-color="#fff"></u-navbar>
 		<view class="wrap">
 			<view class="u-tabs-box">

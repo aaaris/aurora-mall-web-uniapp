@@ -1,8 +1,9 @@
 <template>
 	<view>
 		<!-- 导航栏 -->
-		<u-navbar :background="{backgroundColor:'#fc141d'}" :border-bottom="false" title="个人中心" title-color="#fff"
-			back-icon-color="#fff"></u-navbar>
+		<u-navbar :background="{
+		background: 'linear-gradient(to right, #00baad 0%, #7948ea 95%)'}" :border-bottom="false" title="个人中心"
+			title-color="#fff" back-icon-color="#fff"></u-navbar>
 		<!-- 用户信息 -->
 		<view class="user-info">
 			<!-- 用户头像框 -->
@@ -111,14 +112,14 @@
 
 	/* 页面背景色设置 */
 	page {
-		background-color: #f7f7f7;
+		background-color: #f3f4f5;
 	}
 
 	/* 用户信息框 */
 	.user-info {
 		margin: -1rpx 0 50rpx;
 		padding: 75rpx 0 0 75rpx;
-		background-color: #fc141d;
+		background: linear-gradient(to right, #00baad 0%, #7948ea 95%);
 		width: 100%;
 		height: 350rpx;
 		display: flex;
@@ -126,11 +127,11 @@
 
 	/* 用户头像框 */
 	.user-avator {
-		width: 150rpx;
-		height: 150rpx;
+		width: 130rpx;
+		height: 130rpx;
 		border-radius: 50%;
 		border-color: rgba(255, 255, 255, 0.5);
-		border-width: 4px;
+		border-width: 2px;
 		border-style: solid;
 	}
 

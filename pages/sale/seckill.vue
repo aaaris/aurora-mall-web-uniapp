@@ -1,16 +1,17 @@
 <template>
 	<view>
 		<!-- 导航栏 -->
-		<u-navbar :background="{backgroundColor:'#fc141d'}" :border-bottom="false"   title-color="#fff"
+		<u-navbar :background="{
+		background: 'linear-gradient(to right, #00baad 0%, #7948ea 95%)'}" :border-bottom="false" title-color="#fff"
 			back-icon-color="#fff" title="秒杀活动"></u-navbar>
 		<!-- 搜索框 -->
-		<view class="u-p-30 bgc-red">
+		<view class="u-p-30 bgc-aurora">
 			<u-search v-model="keyword" :showAction="false" :disabled="true" @click="gotoSearch"></u-search>
 		</view>
 		<!-- tab栏 -->
 		<view>
 			<u-tabs :isScroll="false" v-model="current" :list="[{name:'正在疯抢'},{name:'抢先看'}]" active-color="#dd524d"
-				@change="changeTab"></u-tabs> 
+				@change="changeTab"></u-tabs>
 			<prodList v-if="current === 0" :list="tabList1" :isKill="true"></prodList>
 			<prodList v-if="current === 1" :list="tabList2" :isKill="true"></prodList>
 			<u-loadmore :status="loadStatu" bgColor="#f2f2f2" @loadmore="getOrderList"></u-loadmore>
@@ -29,7 +30,7 @@
 				current: 0,
 				keyword: "",
 				searchBtnStyle: {
-					backgroundColor: "#f15d07",
+					background: 'linear-gradient(to right, #00baad 0%, #7948ea 95%)',
 					color: "#fff",
 					borderRadius: "10px",
 					zIndex: "998",
@@ -109,7 +110,7 @@
 </script>
 
 <style lang="scss">
-	.bgc-red{
-		background-color:   #fc141d 
+	.bgc-aurora {
+		background: linear-gradient(to right, #00baad 0%, #7948ea 95%);
 	}
 </style>
