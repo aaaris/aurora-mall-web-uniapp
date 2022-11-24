@@ -1,3 +1,4 @@
+<!-- 该组件用于以宫格模式展现商品 -->
 <template>
 	<view class="wrap"> 
 		<u-waterfall v-model="flowList" ref="uWaterfall">

@@ -60,7 +60,7 @@
 		<view class="itemShowBar u-skeleton-fillet">
 			<text style="font-size: 16px; font-weight: bold;">最热商品</text>
 			<view style="height: 10rpx;margin: 20rpx; background-color: #fc141d;"></view>
-			<itemShowList></itemShowList>
+			<prodGrid></prodGrid>
 		</view>
 		<u-back-top :scroll-top="scrollTop" top="400"></u-back-top>
 		<navBar></navBar>
@@ -68,11 +68,11 @@
 </template>
 
 <script>
-	import itemShowList from '@/components/itemShowList.vue'
+	import prodGrid from '@/components/prodGrid.vue'
 	import navBar from '@/components/navBar.vue'
 	export default {
 		components: {
-			itemShowList,
+			prodGrid,
 			navBar
 		},
 		data() {
