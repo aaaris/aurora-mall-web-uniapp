@@ -13,12 +13,12 @@
 							<u-input v-model="addressForm.phone" placeholder="手机号"></u-input>
 						</u-form-item>
 						<u-form-item label="地区" label-width="150" :label-style="labelStyle">
-							<u-input v-model="addressForm.region" type="select"  @click="show = true" />
-						<template>
-							<u-picker mode="region" v-model="show" @confirm="getRegion" ></u-picker>
-						</template>
+							<u-input v-model="addressForm.region" type="select" @click="show = true" />
+							<template>
+								<u-picker mode="region" v-model="show" @confirm="getRegion"></u-picker>
+							</template>
 						</u-form-item>
-						<u-form-item label="详细地址" label-width="150"  :border-bottom="false">
+						<u-form-item label="详细地址" label-width="150" :border-bottom="false">
 							<u-input v-model="addressForm.desc" placeholder="详细地址"></u-input>
 						</u-form-item>
 					</u-form>
@@ -52,7 +52,7 @@
 					name: "",
 					phone: "",
 					desc: "",
-					region:"",
+					region: "",
 					inUse: false
 				},
 				labelStyle: {
@@ -63,50 +63,6 @@
 
 				],
 				show: false,
-				list: [{
-						value: 1,
-						label: '中国',
-						children: [{
-								value: 2,
-								label: '广东',
-								children: [{
-										value: 3,
-										label: '深圳'
-									},
-									{
-										value: 4,
-										label: '广州'
-									}
-								]
-							},
-							{
-								value: 5,
-								label: '广西',
-								children: [{
-										value: 6,
-										label: '南宁'
-									},
-									{
-										value: 7,
-										label: '桂林'
-									}
-								]
-							}
-						]
-					},
-					{
-						value: 8,
-						label: '美国',
-						children: [{
-							value: 9,
-							label: '纽约',
-							children: [{
-								value: 10,
-								label: '皇后街区'
-							}]
-						}]
-					}
-				]
 			}
 		},
 		// 必须要在onReady生命周期，因为onLoad生命周期组件可能尚未创建完毕
@@ -115,14 +71,15 @@
 		},
 		onLoad(query) {
 			if (query.item) {
-				this.addressForm = JSON.parse(decodeURIComponent(query.item))}
+				this.addressForm = JSON.parse(decodeURIComponent(query.item))
+			}
 		},
-		methods: { 
+		methods: {
 			// 下拉框确认回调函数
-			getRegion(res){ 
+			getRegion(res) {
 				console.log(res)
 				this.addressForm.region = ""
-				this.addressForm.region = res.province.name +  res.city.name + res.area.name
+				this.addressForm.region = res.province.name + res.city.name + res.area.name
 				console.log(this.addressForm.region)
 			}
 		}
