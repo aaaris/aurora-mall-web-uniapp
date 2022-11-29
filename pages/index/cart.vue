@@ -22,8 +22,8 @@
 				<!-- 以店铺划分的购物项区域，可滚动 -->
 				<scroll-view scroll-y style="height: 100%;">
 					<!-- 店铺购物项区域 -->
-					<view class="u-skeleton-fillet cart-body u-flex-col u-m-t-30 u-m-b-30" v-for="(item, index1) in cartItemList"
-						:key="item.id">
+					<view class="u-skeleton-fillet cart-body u-flex-col u-m-t-30 u-m-b-30"
+						v-for="(item, index1) in cartItemList" :key="item.id">
 						<!-- 购物项头部，店铺名 -->
 						<view class="u-p-30 u-skeleton-fillet">
 							<!-- 店铺选择器：全选店铺商品 -->
@@ -32,7 +32,7 @@
 							<u-icon custom-prefix="custom-icon" name="dianpu" size="34">
 							</u-icon>&nbsp;
 							<!-- 店铺名 -->
-							<text>{{item.shopName}}</text>
+							<text>{{item.store}}</text>
 						</view>
 						<!-- 购物项主体，店铺商品 -->
 						<view class="u-p-l-30 u-p-r-30 ">
@@ -83,7 +83,7 @@
 								style="font-size: 16px;">{{totalPrice}}</text></text>
 					</text>
 					&nbsp;
-					<u-button type="error" size="medium" shape="circle">结算</u-button>
+					<u-button type="error" size="medium" shape="circle" @click="gotoCreate">结算</u-button>
 				</view>
 				<!-- 删除按钮：编辑模式 -->
 				<view class="" v-if="isEdit">
@@ -98,7 +98,7 @@
 </template>
 
 <script>
-	import navBar from '@/components/navBar.vue' 
+	import navBar from '@/components/navBar.vue'
 	import prodSelect from '@/components/prodSelect.vue'
 	export default {
 		components: {
@@ -117,7 +117,7 @@
 				// 购物项列表，以店铺划分
 				cartItemList: [{
 						id: 1,
-						shopName: "Apple 官方零售店",
+						store: "Apple 官方零售店",
 						prods: [{
 							goodsUrl: '//img10.360buyimg.com/n7/jfs/t1/107598/17/3766/525060/5e143aacE9a94d43c/03573ae60b8bf0ee.jpg',
 							title: '蓝妹（BLUE GIRL）酷爽啤酒 清啤 原装进口啤酒 罐装 500ml*9听 整箱装',
@@ -139,7 +139,7 @@
 					},
 					{
 						id: 2,
-						shopName: "Apple 官方零售店",
+						store: "Apple 官方零售店",
 						prods: [{
 							goodsUrl: '//img10.360buyimg.com/n7/jfs/t1/107598/17/3766/525060/5e143aacE9a94d43c/03573ae60b8bf0ee.jpg',
 							title: '蓝妹（BLUE GIRL）酷爽啤酒 清啤 原装进口啤酒 罐装 500ml*9听 整箱装',
@@ -161,7 +161,7 @@
 					},
 					{
 						id: 3,
-						shopName: "Apple 官方零售店",
+						store: "Apple 官方零售店",
 						prods: [{
 							goodsUrl: '//img10.360buyimg.com/n7/jfs/t1/107598/17/3766/525060/5e143aacE9a94d43c/03573ae60b8bf0ee.jpg',
 							title: '蓝妹（BLUE GIRL）酷爽啤酒 清啤 原装进口啤酒 罐装 500ml*9听 整箱装',
@@ -200,7 +200,7 @@
 				isLoading: true
 			}
 		},
-		onLoad() { 
+		onLoad() {
 			this.scrollHeight = this.$u.sys().windowHeight - 100 - 115 + "px"
 			setTimeout(() => {
 				this.isLoading = false;
@@ -261,6 +261,35 @@
 			// 步进器回调函数
 			valChange(e) {
 				console.log('当前值为: ' + e.value)
+			},
+			// 结算购物车，创建订单
+			gotoCreate() {
+				let that = this.cartItemList;
+				uni.navigateTo({
+					url: "/pages/order/createOrder",
+					success() {
+						setTimeout(() => {
+							let order = []
+							that.forEach((store) => {
+								let ss = JSON.parse(JSON.stringify(store))
+								if (store.isTik !== true) {
+									ss.prods = []
+									console.log(store.prods.length)
+									store.prods.forEach((item) => {
+										if (item.isTik === true) {
+											ss.prods.push(item)
+										}
+									})
+								}
+								if (ss.prods.length > 0) {
+									order.push(ss)
+								}
+							})
+							console.log(JSON.parse(JSON.stringify(order)))
+							uni.$emit('gotoCreate', JSON.parse(JSON.stringify(order)))
+						}, 1000)
+					}
+				})
 			},
 			// 删除购物项函数
 			deleteCartItem() {

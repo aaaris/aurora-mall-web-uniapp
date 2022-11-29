@@ -102,80 +102,23 @@
 					inUse: true
 				},
 				// 购物项列表，以店铺划分
-				cartItemList: [{
-						id: 1,
-						store: "Apple 官方零售店",
-						prods: [{
-							goodsUrl: '//img10.360buyimg.com/n7/jfs/t1/107598/17/3766/525060/5e143aacE9a94d43c/03573ae60b8bf0ee.jpg',
-							title: '蓝妹（BLUE GIRL）酷爽啤酒 清啤 原装进口啤酒 罐装 500ml*9听 整箱装',
-							type: '一打',
-							deliveryTime: '口感好',
-							price: '120',
-							isTik: false,
-							count: 1
-						}, {
-							goodsUrl: '//img10.360buyimg.com/n7/jfs/t22300/31/1505958241/171936/9e201a89/5b2b12ffNe6dbb594.jpg!q90.jpg',
-							title: '法国进口红酒 拉菲（LAFITE）传奇波尔多干红葡萄酒750ml*6整箱装',
-							type: '4K，广色域',
-							deliveryTime: '珍藏10年好酒',
-							price: '1543',
-							isTik: false,
-							count: 1
-						}],
-						isTik: false
-					},
-					{
-						id: 2,
-						store: "Apple 官方零售店",
-						prods: [{
-							goodsUrl: '//img10.360buyimg.com/n7/jfs/t1/107598/17/3766/525060/5e143aacE9a94d43c/03573ae60b8bf0ee.jpg',
-							title: '蓝妹（BLUE GIRL）酷爽啤酒 清啤 原装进口啤酒 罐装 500ml*9听 整箱装',
-							type: '一打',
-							deliveryTime: '口感好',
-							price: '120',
-							isTik: false,
-							count: 1
-						}, {
-							goodsUrl: '//img10.360buyimg.com/n7/jfs/t22300/31/1505958241/171936/9e201a89/5b2b12ffNe6dbb594.jpg!q90.jpg',
-							title: '法国进口红酒 拉菲（LAFITE）传奇波尔多干红葡萄酒750ml*6整箱装',
-							type: '4K，广色域',
-							deliveryTime: '珍藏10年好酒',
-							price: '1543',
-							isTik: false,
-							count: 1
-						}],
-						isTik: false
-					},
-					{
-						id: 3,
-						store: "Apple 官方零售店",
-						prods: [{
-							goodsUrl: '//img10.360buyimg.com/n7/jfs/t1/107598/17/3766/525060/5e143aacE9a94d43c/03573ae60b8bf0ee.jpg',
-							title: '蓝妹（BLUE GIRL）酷爽啤酒 清啤 原装进口啤酒 罐装 500ml*9听 整箱装',
-							type: '一打',
-							deliveryTime: '口感好',
-							price: '120',
-							isTik: false,
-							count: 1
-						}, {
-							goodsUrl: '//img10.360buyimg.com/n7/jfs/t22300/31/1505958241/171936/9e201a89/5b2b12ffNe6dbb594.jpg!q90.jpg',
-							title: '法国进口红酒 拉菲（LAFITE）传奇波尔多干红葡萄酒750ml*6整箱装',
-							type: '4K，广色域',
-							deliveryTime: '珍藏10年好酒',
-							price: '1543',
-							isTik: false,
-							count: 1
-						}],
-						isTik: false
-					}
-				],
+				cartItemList: [],
 				loading: true
 			};
 		},
 		onLoad() {
+			uni.$on('gotoCreate',(obj)=>{
+				if (obj) {
+					this.cartItemList = obj;
+				}
+			})
 			setTimeout(() => {
 				this.loading = false
 			}, 2000)
+		},
+		onUnload() {
+			uni.$off('gotoCreate')
+			this.cartItemList = []
 		},
 		computed: {
 			totalPrice() {
