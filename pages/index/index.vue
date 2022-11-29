@@ -205,8 +205,7 @@
 			gotoCategory(idx) {
 				uni.switchTab({
 					url: "/pages/index/category",
-					success() {
-						console.log(idx)
+					success() { 
 						uni.$emit('gotoCategory', {
 							index: idx
 						})

@@ -1136,6 +1136,9 @@
 				}
 			})
 		},
+		onUnload() {
+			uni.$off('gotoCategory')
+		},
 		onReady() {
 			this.getMenuItemTop()
 		},
