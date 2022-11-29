@@ -7,7 +7,7 @@
 		background: 'linear-gradient(to right, #00baad 0%, #7948ea 95%)'}" :border-bottom="false" title="订单详情"
 			title-color="#fff" back-icon-color="#fff"></u-navbar>
 		<!-- 订单状态栏 -->
-		<view style="flex: 1; overflow: scroll; background-color: #f3f4f5;">
+		<view v-if="loading===false" style="flex: 1; overflow: scroll; background-color: #f3f4f5;">
 			<view class="order-stat-bar">
 				<view class="u-flex u-m-b-15">
 					<u-icon customPrefix="custom-icon" :name="iconStyle[order.dealStat]" size="50" color="#fff">待收货
@@ -95,7 +95,7 @@
 				</view>
 			</view>
 		</view>
-		<view class="page-foot  u-border-top">
+		<view v-if="loading===false" class="page-foot  u-border-top">
 			<view class="">
 				<u-button v-if="(order.dealStat===1||order.dealStat===2)"  size="medium" shape="circle"
 					@click="changeOrderStat(0)">取消订单</u-button>
