@@ -1,8 +1,8 @@
 <template>
 	<view>
 		<!-- 导航栏 -->
-		<u-navbar :background="{background: 'linear-gradient(to right, #00baad 0%, #7948ea 95%)'}" :border-bottom="false" title="我的订单" title-color="#fff"
-			back-icon-color="#fff"></u-navbar>
+		<u-navbar :background="{background: 'linear-gradient(to right, #00baad 0%, #7948ea 95%)'}"
+			:border-bottom="false" title="我的订单" title-color="#fff" back-icon-color="#fff"></u-navbar>
 		<view class="wrap">
 			<view class="u-tabs-box">
 				<u-tabs-swiper activeColor="#f29100" ref="tabs" :list="list" :current="current" @change="change"
@@ -14,7 +14,8 @@
 				<swiper-item class="swiper-item">
 					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
 						<view class="page-box">
-							<view class="order" v-for="(res, index) in orderList[0]" :key="res.id">
+							<view class="order" v-for="(res, index) in orderList[0]" :key="res.id"
+								@click="gotoOrderDetail(res)">
 								<view class="top">
 									<view class="left">
 										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
@@ -23,7 +24,7 @@
 									</view>
 									<view class="right">{{ res.deal }}</view>
 								</view>
-								<view class="item" v-for="(item, index) in res.goodsList" :key="index">
+								<view class="item" v-for="(item, index) in res.prods" :key="index">
 									<view class="left">
 										<image :src="item.goodsUrl" mode="aspectFill"></image>
 									</view>
@@ -37,20 +38,21 @@
 											￥{{ priceInt(item.price) }}
 											<text class="decimal">.{{ priceDecimal(item.price) }}</text>
 										</view>
-										<view class="number">x{{ item.number }}</view>
+										<view class="number">x{{ item.count }}</view>
 									</view>
 								</view>
 								<view class="total">
-									共{{ totalNum(res.goodsList) }}件商品 合计:
+									共{{ totalNum(res.prods) }}件商品 合计:
 									<text class="total-price">
-										￥{{ priceInt(totalPrice(res.goodsList)) }}.
-										<text class="decimal">{{ priceDecimal(totalPrice(res.goodsList)) }}</text>
+										￥{{ priceInt(totalPrice(res.prods)) }}.
+										<text class="decimal">{{ priceDecimal(totalPrice(res.prods)) }}</text>
 									</text>
 								</view>
 								<view class="bottom">
 									<view class="logistics btn" @click="cancelOrder" v-if="(res.dealStat===0)">订单详情
 									</view>
-									<view class="logistics btn" @click="cancelOrder" v-if="(res.dealStat===1||res.dealStat===2)">取消订单</view>
+									<view class="logistics btn" @click="cancelOrder"
+										v-if="(res.dealStat===1||res.dealStat===2)">取消订单</view>
 									<view class="evaluate btn" @click="createOrder" v-if="(res.dealStat===1)">立即付款
 									</view>
 									<view class="evaluate btn" v-if="(res.dealStat===3)" @click="createOrder">确认收货
@@ -65,7 +67,8 @@
 				<swiper-item class="swiper-item">
 					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
 						<view class="page-box">
-							<view class="order" v-for="(res, index) in orderList[1]" :key="res.id">
+							<view class="order" v-for="(res, index) in orderList[1]" :key="res.id"
+								@click="gotoOrderDetail(res)">
 								<view class="top">
 									<view class="left">
 										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
@@ -74,7 +77,7 @@
 									</view>
 									<view class="right">{{ res.deal }}</view>
 								</view>
-								<view class="item" v-for="(item, index) in res.goodsList" :key="index">
+								<view class="item" v-for="(item, index) in res.prods" :key="index">
 									<view class="left">
 										<image :src="item.goodsUrl" mode="aspectFill"></image>
 									</view>
@@ -88,21 +91,22 @@
 											￥{{ priceInt(item.price) }}
 											<text class="decimal">.{{ priceDecimal(item.price) }}</text>
 										</view>
-										<view class="number">x{{ item.number }}</view>
+										<view class="number">x{{ item.count }}</view>
 									</view>
 								</view>
 								<view class="total">
-									共{{ totalNum(res.goodsList) }}件商品 合计:
+									共{{ totalNum(res.prods) }}件商品 合计:
 									<text class="total-price">
-										￥{{ priceInt(totalPrice(res.goodsList)) }}.
-										<text class="decimal">{{ priceDecimal(totalPrice(res.goodsList)) }}</text>
+										￥{{ priceInt(totalPrice(res.prods)) }}.
+										<text class="decimal">{{ priceDecimal(totalPrice(res.prods)) }}</text>
 									</text>
 								</view>
 
 								<view class="bottom">
 									<view class="logistics btn" @click="cancelOrder" v-if="(res.dealStat===0)">订单详情
 									</view>
-									<view class="logistics btn" @click="cancelOrder" v-if="(res.dealStat===1||res.dealStat===2)">取消订单</view>
+									<view class="logistics btn" @click="cancelOrder"
+										v-if="(res.dealStat===1||res.dealStat===2)">取消订单</view>
 									<view class="evaluate btn" @click="createOrder" v-if="(res.dealStat===1)">立即付款
 									</view>
 									<view class="evaluate btn" v-if="(res.dealStat===3)" @click="createOrder">确认收货
@@ -117,7 +121,8 @@
 				<swiper-item class="swiper-item">
 					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
 						<view class="page-box">
-							<view class="order" v-for="(res, index) in  orderList[2]" :key="res.id">
+							<view class="order" v-for="(res, index) in  orderList[2]" :key="res.id"
+								@click="gotoOrderDetail(res)">
 								<view class="top">
 									<view class="left">
 										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
@@ -126,7 +131,7 @@
 									</view>
 									<view class="right">{{ res.deal }}</view>
 								</view>
-								<view class="item" v-for="(item, index) in res.goodsList" :key="index">
+								<view class="item" v-for="(item, index) in res.prods" :key="index">
 									<view class="left">
 										<image :src="item.goodsUrl" mode="aspectFill"></image>
 									</view>
@@ -140,21 +145,22 @@
 											￥{{ priceInt(item.price) }}
 											<text class="decimal">.{{ priceDecimal(item.price) }}</text>
 										</view>
-										<view class="number">x{{ item.number }}</view>
+										<view class="number">x{{ item.count }}</view>
 									</view>
 								</view>
 								<view class="total">
-									共{{ totalNum(res.goodsList) }}件商品 合计:
+									共{{ totalNum(res.prods) }}件商品 合计:
 									<text class="total-price">
-										￥{{ priceInt(totalPrice(res.goodsList)) }}.
-										<text class="decimal">{{ priceDecimal(totalPrice(res.goodsList)) }}</text>
+										￥{{ priceInt(totalPrice(res.prods)) }}.
+										<text class="decimal">{{ priceDecimal(totalPrice(res.prods)) }}</text>
 									</text>
 								</view>
 
 								<view class="bottom">
 									<view class="logistics btn" @click="cancelOrder" v-if="(res.dealStat===0)">订单详情
 									</view>
-									<view class="logistics btn" @click="cancelOrder" v-if="(res.dealStat===1||res.dealStat===2)">取消订单</view>
+									<view class="logistics btn" @click="cancelOrder"
+										v-if="(res.dealStat===1||res.dealStat===2)">取消订单</view>
 									<view class="evaluate btn" @click="createOrder" v-if="(res.dealStat===1)">立即付款
 									</view>
 									<view class="evaluate btn" v-if="(res.dealStat===3)" @click="createOrder">确认收货
@@ -187,7 +193,8 @@
 				<swiper-item class="swiper-item">
 					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
 						<view class="page-box">
-							<view class="order" v-for="(res, index) in  orderList[4]" :key="res.id">
+							<view class="order" v-for="(res, index) in  orderList[4]" :key="res.id"
+								@click="gotoOrderDetail(res)">
 								<view class="top">
 									<view class="left">
 										<u-icon name="home" :size="30" color="rgb(94,94,94)"></u-icon>
@@ -196,7 +203,7 @@
 									</view>
 									<view class="right">{{ res.deal }}</view>
 								</view>
-								<view class="item" v-for="(item, index) in res.goodsList" :key="index">
+								<view class="item" v-for="(item, index) in res.prods" :key="index">
 									<view class="left">
 										<image :src="item.goodsUrl" mode="aspectFill"></image>
 									</view>
@@ -210,21 +217,22 @@
 											￥{{ priceInt(item.price) }}
 											<text class="decimal">.{{ priceDecimal(item.price) }}</text>
 										</view>
-										<view class="number">x{{ item.number }}</view>
+										<view class="number">x{{ item.count }}</view>
 									</view>
 								</view>
 								<view class="total">
-									共{{ totalNum(res.goodsList) }}件商品 合计:
+									共{{ totalNum(res.prods) }}件商品 合计:
 									<text class="total-price">
-										￥{{ priceInt(totalPrice(res.goodsList)) }}.
-										<text class="decimal">{{ priceDecimal(totalPrice(res.goodsList)) }}</text>
+										￥{{ priceInt(totalPrice(res.prods)) }}.
+										<text class="decimal">{{ priceDecimal(totalPrice(res.prods)) }}</text>
 									</text>
 								</view>
 
 								<view class="bottom">
 									<view class="logistics btn" @click="cancelOrder" v-if="(res.dealStat===0)">订单详情
 									</view>
-									<view class="logistics btn" @click="cancelOrder" v-if="(res.dealStat===1||res.dealStat===2)">取消订单</view>
+									<view class="logistics btn" @click="cancelOrder"
+										v-if="(res.dealStat===1||res.dealStat===2)">取消订单</view>
 									<view class="evaluate btn" @click="createOrder" v-if="(res.dealStat===1)">立即付款
 									</view>
 									<view class="evaluate btn" v-if="(res.dealStat===3)" @click="createOrder">确认收货
@@ -241,6 +249,9 @@
 </template>
 
 <script>
+	import {
+		toRaw
+	} from "vue";
 	export default {
 		data() {
 			return {
@@ -256,13 +267,15 @@
 						store: '夏日流星限定贩卖',
 						deal: '待付款',
 						dealStat: 1,
-						goodsList: [{
+						payMode: "微信支付",
+						createTime: 0,
+						prods: [{
 								goodsUrl: '//img13.360buyimg.com/n7/jfs/t1/103005/7/17719/314825/5e8c19faEb7eed50d/5b81ae4b2f7f3bb7.jpg',
 								title: '【冬日限定】现货 原创jk制服女2020冬装新款小清新宽松软糯毛衣外套女开衫短款百搭日系甜美风',
 								type: '灰色;M',
 								deliveryTime: '付款后30天内发货',
 								price: '348.58',
-								number: 2
+								count: 2
 							},
 							{
 								goodsUrl: '//img12.360buyimg.com/n7/jfs/t1/102191/19/9072/330688/5e0af7cfE17698872/c91c00d713bf729a.jpg',
@@ -270,7 +283,7 @@
 								type: '45cm;S',
 								deliveryTime: '付款后30天内发货',
 								price: '135.00',
-								number: 1
+								count: 1
 							}
 						]
 					},
@@ -279,13 +292,15 @@
 						store: '江南皮革厂',
 						deal: '待收货',
 						dealStat: 3,
-						goodsList: [{
+						payMode: "微信支付",
+						createTime: 0,
+						prods: [{
 							goodsUrl: '//img14.360buyimg.com/n7/jfs/t1/60319/15/6105/406802/5d43f68aE9f00db8c/0affb7ac46c345e2.jpg',
 							title: '【冬日限定】现货 原创jk制服女2020冬装新款小清新宽松软糯毛衣外套女开衫短款百搭日系甜美风',
 							type: '粉色;M',
 							deliveryTime: '付款后7天内发货',
 							price: '128.05',
-							number: 1
+							count: 1
 						}]
 					},
 					{
@@ -293,13 +308,15 @@
 						store: '三星旗舰店',
 						deal: '待发货',
 						dealStat: 2,
-						goodsList: [{
+						payMode: "微信支付",
+						createTime: 0,
+						prods: [{
 								goodsUrl: '//img11.360buyimg.com/n7/jfs/t1/94448/29/2734/524808/5dd4cc16E990dfb6b/59c256f85a8c3757.jpg',
 								title: '三星（SAMSUNG）京品家电 UA65RUF70AJXXZ 65英寸4K超高清 HDR 京东微联 智能语音 教育资源液晶电视机',
 								type: '4K，广色域',
 								deliveryTime: '保质5年',
 								price: '1998',
-								number: 3
+								count: 3
 							},
 							{
 								goodsUrl: '//img14.360buyimg.com/n7/jfs/t6007/205/4099529191/294869/ae4e6d4f/595dcf19Ndce3227d.jpg!q90.jpg',
@@ -307,7 +324,7 @@
 								type: '容量大，速冻',
 								deliveryTime: '保质5年',
 								price: '2354',
-								number: 1
+								count: 1
 							}
 						]
 					},
@@ -316,13 +333,15 @@
 						store: '三星旗舰店',
 						deal: '交易失败',
 						dealStat: 0,
-						goodsList: [{
+						payMode: "微信支付",
+						createTime: 0,
+						prods: [{
 								goodsUrl: '//img10.360buyimg.com/n7/jfs/t22300/31/1505958241/171936/9e201a89/5b2b12ffNe6dbb594.jpg!q90.jpg',
 								title: '法国进口红酒 拉菲（LAFITE）传奇波尔多干红葡萄酒750ml*6整箱装',
 								type: '4K，广色域',
 								deliveryTime: '珍藏10年好酒',
 								price: '1543',
-								number: 3
+								count: 3
 							},
 							{
 								goodsUrl: '//img10.360buyimg.com/n7/jfs/t1/107598/17/3766/525060/5e143aacE9a94d43c/03573ae60b8bf0ee.jpg',
@@ -330,7 +349,7 @@
 								type: '一打',
 								deliveryTime: '口感好',
 								price: '120',
-								number: 1
+								count: 1
 							}
 						]
 					},
@@ -339,13 +358,15 @@
 						store: '三星旗舰店',
 						deal: '交易成功',
 						dealStat: 4,
-						goodsList: [{
+						payMode: "微信支付",
+						createTime: 0,
+						prods: [{
 							goodsUrl: '//img12.360buyimg.com/n7/jfs/t1/52408/35/3554/78293/5d12e9cfEfd118ba1/ba5995e62cbd747f.jpg!q90.jpg',
 							title: '企业微信 中控人脸指纹识别考勤机刷脸机 无线签到异地多店打卡机WX108',
 							type: '识别效率高',
 							deliveryTime: '使用方便',
 							price: '451',
-							number: 9
+							count: 9
 						}]
 					}
 				],
@@ -370,10 +391,9 @@
 				tabsHeight: 0,
 				dx: 0,
 				loadStatus: ['loadmore', 'loadmore', 'loadmore', 'loadmore', 'loadmore'],
-			};
+			}
 		},
 		onLoad(query) {
-			console.log(query)
 			this.getOrderList(0);
 			this.getOrderList(1);
 			this.getOrderList(2);
@@ -396,7 +416,7 @@
 					if (val !== parseInt(val)) return val.split('.')[0];
 					else return val;
 				};
-			}
+			},
 		},
 		methods: {
 			reachBottom() {
@@ -413,7 +433,19 @@
 				for (let i = 0; i < 5; i++) {
 					let index = this.$u.random(0, this.dataList.length - 1);
 					let data = JSON.parse(JSON.stringify(this.dataList[index]));
-					data.id = this.$u.guid();
+					data.id = this.$u.guid(16, false, 10);
+					let dealLabels= ["已取消","待付款","待发货","待收货","已完成"]
+					if (idx) {
+						data.dealStat = idx;
+						data.deal = dealLabels[idx]
+					}
+					let limit = 0
+					if (data.dealStat === 3) {
+						limit = 24 * 60 * 60 * 1000 * 4
+					} else {
+						limit = 15 * 60 * 1000
+					}
+					data.createTime = Date.now() - this.$u.random(1, 100) / 100 * limit
 					this.orderList[idx].push(data);
 				}
 				this.loadStatus.splice(this.current, 1, "loadmore")
@@ -430,7 +462,7 @@
 			totalNum(item) {
 				let num = 0;
 				item.map(val => {
-					num += val.number;
+					num += val.count;
 				});
 				return num;
 			},
@@ -463,7 +495,18 @@
 			createOrder() {
 
 			},
-			// 
+			// 跳转订单详情页
+			gotoOrderDetail(obj) {
+				uni.navigateTo({
+					url: "/pages/order/orderDetail",
+					success() {
+						setTimeout(() => {
+							// 使用JSON正反序列化传输非响应式数据
+							uni.$emit('gotoDetail', JSON.parse(JSON.stringify(obj)))
+						}, 1000)
+					}
+				})
+			}
 		}
 	};
 </script>
