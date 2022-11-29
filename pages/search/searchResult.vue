@@ -18,6 +18,7 @@
 				<!-- 所有商品 -->
 				<swiper-item class="swiper-item">
 					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="onreachBottom">
+
 						<view>
 							<u-dropdown>
 								<u-dropdown-item v-model="value1" title="综合" :options="options1"></u-dropdown-item>
@@ -32,45 +33,36 @@
 				</swiper-item>
 				<!-- 最新商品 -->
 				<swiper-item class="swiper-item">
-					<scroll-view style="height: 100%;width: 100%;" scroll-y @scrolltolower="onreachBottom">
-						<u-sticky>
-						</u-sticky>
-						<view>
-							<prodList :list="prodList.concat(prodList)" :isKill="false"></prodList>
-						</view>
-						<u-loadmore :status="loadStatus[1]" bgColor="#f2f2f2"></u-loadmore>
-
-					</scroll-view>
+					<view style="height: 100%;">
+						<prodList :list="prodList.concat(prodList)" :isKill="false"></prodList>
+					</view>
+					<u-loadmore :status="loadStatus[1]" bgColor="#f2f2f2"></u-loadmore>
 				</swiper-item>
 				<!-- 店铺 -->
 				<swiper-item class="swiper-item">
-					<scroll-view style="height: 100%;width: 100%;" scroll-y @scrolltolower="onreachBottom">
-						<u-sticky>
-						</u-sticky>
-						<view>
-							<view class="shop-item" v-for="(item,index) in shopList.concat(shopList)" :key="index" @click="gotoShop(item.id)">
-								<!-- 店铺图片和名称 -->
-								<view class="shop-item-top">
-									<view class="shop-item-title">
-										<image :src="item.shopUrl"
-											style="height: 60rpx; width:60rpx;border-radius: 50%;" mode="aspectFill">
-										</image>&nbsp;
-										<text class="shop-item-text">{{item.title}}</text>
-									</view>
-									<u-button type="error" shape="circle" size="mini" @click="gotoShop(item.id)">进店
-									</u-button>
+					<view style="height: 100%;">
+						<view class="shop-item" v-for="(item,index) in shopList.concat(shopList)" :key="index"
+							@click="gotoShop(item.id)">
+							<!-- 店铺图片和名称 -->
+							<view class="shop-item-top">
+								<view class="shop-item-title">
+									<image :src="item.shopUrl" style="height: 60rpx; width:60rpx;border-radius: 50%;"
+										mode="aspectFill">
+									</image>&nbsp;
+									<text class="shop-item-text">{{item.title}}</text>
 								</view>
-								<!-- 店铺点击量最高前三个商品 -->
-								<view class="shop-item-bottom">
-									<image :src="item.prodList[0].goodsUrl" mode="aspectFill"></image>
-									<image :src="item.prodList[1].goodsUrl" mode="aspectFill"></image>
-									<image :src="item.prodList[2].goodsUrl" mode="aspectFill"></image>
-								</view>
+								<u-button type="error" shape="circle" size="mini" @click="gotoShop(item.id)">进店
+								</u-button>
+							</view>
+							<!-- 店铺点击量最高前三个商品 -->
+							<view class="shop-item-bottom">
+								<image :src="item.prodList[0].goodsUrl" mode="aspectFill"></image>
+								<image :src="item.prodList[1].goodsUrl" mode="aspectFill"></image>
+								<image :src="item.prodList[2].goodsUrl" mode="aspectFill"></image>
 							</view>
 						</view>
-						<u-loadmore :status="loadStatus[2]" bgColor="#f2f2f2"></u-loadmore>
-
-					</scroll-view>
+					</view>
+					<u-loadmore :status="loadStatus[2]" bgColor="#f2f2f2"></u-loadmore>
 				</swiper-item>
 			</swiper>
 		</view>
@@ -214,7 +206,7 @@
 							}
 						],
 					},
-					{ 
+					{
 						prodList: [{
 								goodsUrl: '//img13.360buyimg.com/n7/jfs/t1/103005/7/17719/314825/5e8c19faEb7eed50d/5b81ae4b2f7f3bb7.jpg',
 								title: '【冬日限定】现货 原创jk制服女2020冬装新款小清新宽松软糯毛衣外套女开衫短款百搭日系甜美风',
@@ -249,7 +241,7 @@
 							}
 						],
 					}
-				], 
+				],
 				value1: 1,
 				value2: 1,
 				options1: [{
@@ -281,6 +273,13 @@
 			if (query.keyword)
 				this.keyword = query.keyword
 		},
+		// 到底部加载更多 
+		onReachBottom() {
+			this.loadStatus[this.current] = 'loading'
+			setTimeout(() => {
+				this.loadStatus[this.current] = 'loadmore'
+			}, 1200);
+		},
 		methods: {
 			searchSubmit(word) {
 				console.log(word)
@@ -302,23 +301,14 @@
 				this.swiperCurrent = current;
 				this.current = current;
 			},
-			// scroll-view到底部加载更多
-			onreachBottom() {
-				// 此tab为空数据
-				if (this.current != 2) {
-					this.loadStatus.splice(this.current, 1, "loading")
-					setTimeout(() => {
-						// this.getOrderList(this.current);
-					}, 1200);
-				}
-			},
+
 			gotoShop(id) {
 				uni.navigateTo({
 					url: "/pages/shop/shopDetail?id=" + id
 				})
-			},  
-			getOrderList(idx){
-				
+			},
+			getOrderList(idx) {
+
 			}
 		}
 	}
