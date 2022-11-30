@@ -61,7 +61,7 @@
 		<view class="itemShowBar u-skeleton-fillet">
 			<text style="font-size: 16px; font-weight: bold;">最热商品</text>
 			<view style="height: 10rpx;margin: 20rpx; background-color: #fc141d;"></view>
-			<prodGrid></prodGrid>
+			<prodGrid :list="prodList"></prodGrid>
 		</view>
 		<u-back-top :scroll-top="scrollTop" top="400"></u-back-top>
 		<navBar></navBar>
@@ -159,17 +159,39 @@
 						title: '谁念西风独自凉，萧萧黄叶闭疏窗，沉思往事立残阳'
 					}
 				],
-				itemList: [{
-						imgSrc: "",
-						desc: "",
-						price: "",
+				prodList: [{
+						goodsUrl: '//img13.360buyimg.com/n7/jfs/t1/103005/7/17719/314825/5e8c19faEb7eed50d/5b81ae4b2f7f3bb7.jpg',
+						title: '【冬日限定】现货 原创jk制服女2020冬装新款小清新宽松软糯毛衣外套女开衫短款百搭日系甜美风',
+						price: '348.58',
+						date: "1668300000000",
+						progress: 33, 
+					}, {
+						goodsUrl: '//img10.360buyimg.com/n7/jfs/t22300/31/1505958241/171936/9e201a89/5b2b12ffNe6dbb594.jpg!q90.jpg',
+						title: '法国进口红酒 拉菲（LAFITE）传奇波尔多干红葡萄酒750ml*6整箱装',
+						type: '4K，广色域',
+						deliveryTime: '珍藏10年好酒',
+						price: '1543',
+						date: "1668300000000",
+						progress: 33
 					},
 					{
-						imgSrc: "xxx",
-						desc: "",
-						price: "",
+						goodsUrl: '//img10.360buyimg.com/n7/jfs/t1/107598/17/3766/525060/5e143aacE9a94d43c/03573ae60b8bf0ee.jpg',
+						title: '蓝妹（BLUE GIRL）酷爽啤酒 清啤 原装进口啤酒 罐装 500ml*9听 整箱装',
+						type: '一打',
+						deliveryTime: '口感好',
+						price: '120',
+						date: "1768900000000",
+						progress: 0
+					}, {
+						goodsUrl: '//img14.360buyimg.com/n7/jfs/t6007/205/4099529191/294869/ae4e6d4f/595dcf19Ndce3227d.jpg!q90.jpg',
+						title: '美的(Midea)639升 对开门冰箱 19分钟急速净味 一级能效冷藏双开门杀菌智能家用双变频节能 BCD-639WKPZM(E)',
+						type: '容量大，速冻',
+						deliveryTime: '保质5年',
+						price: '2354',
+						date: "1768900000000",
+						progress: 0
 					}
-				]
+				],
 			}
 		},
 		onLoad() {
