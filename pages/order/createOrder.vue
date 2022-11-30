@@ -1,5 +1,5 @@
 <template>
-	<view style="position: absolute; top: 50%; left: 50%; z-index: 999;">
+	<view class="loading">
 		<u-loading :show="loading" size="70" color="#fa3534"></u-loading>
 	</view>
 	<view style="display: flex; flex-direction: column; height: 100%;">
@@ -160,6 +160,13 @@
 </style>
 
 <style lang="scss" scoped>
+	// 加载中
+	.loading {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+        transform: translate(-50%, -50%);
+	}
 	.addr-info-bar {
 		background-color: #fff;
 		border-radius: 16px;
