@@ -32,6 +32,12 @@
 	        }
 	    },
 	    {
+	        "path" : "pages/product/cart",
+	        "style" : {
+	            "navigationStyle" : "custom"
+	        }
+	    },
+	    {
 	        "path" : "pages/order/createOrder",
 	        "style" : {
 	            "navigationStyle" : "custom"
