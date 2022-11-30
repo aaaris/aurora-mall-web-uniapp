@@ -18,29 +18,27 @@
 				<!-- 所有商品 -->
 				<swiper-item class="swiper-item">
 					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="onreachBottom">
-
+						<!-- 条件筛选tab -->
 						<view>
 							<u-dropdown>
 								<u-dropdown-item v-model="value1" title="综合" :options="options1"></u-dropdown-item>
 								<u-dropdown-item v-model="value2" title="销量" :options="options2"></u-dropdown-item>
 							</u-dropdown>
 						</view>
-						<view>
-							<prodList :list="prodList.concat(prodList)" :isKill="false"></prodList>
-						</view>
+						<prodList :list="prodList.concat(prodList)" :isKill="false"></prodList>
 						<u-loadmore :status="loadStatus[0]" bgColor="#f2f2f2"></u-loadmore>
 					</scroll-view>
 				</swiper-item>
 				<!-- 最新商品 -->
 				<swiper-item class="swiper-item">
-					<view style="height: 100%;">
+					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="onreachBottom">
 						<prodList :list="prodList.concat(prodList)" :isKill="false"></prodList>
-					</view>
-					<u-loadmore :status="loadStatus[1]" bgColor="#f2f2f2"></u-loadmore>
+						<u-loadmore :status="loadStatus[1]" bgColor="#f2f2f2"></u-loadmore>
+					</scroll-view>
 				</swiper-item>
 				<!-- 店铺 -->
 				<swiper-item class="swiper-item">
-					<view style="height: 100%;">
+					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="onreachBottom">
 						<view class="shop-item" v-for="(item,index) in shopList.concat(shopList)" :key="index"
 							@click="gotoShop(item.id)">
 							<!-- 店铺图片和名称 -->
@@ -61,8 +59,8 @@
 								<image :src="item.prodList[2].goodsUrl" mode="aspectFill"></image>
 							</view>
 						</view>
-					</view>
-					<u-loadmore :status="loadStatus[2]" bgColor="#f2f2f2"></u-loadmore>
+						<u-loadmore :status="loadStatus[2]" bgColor="#f2f2f2"></u-loadmore>
+					</scroll-view>
 				</swiper-item>
 			</swiper>
 		</view>

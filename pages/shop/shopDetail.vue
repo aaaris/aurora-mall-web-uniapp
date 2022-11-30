@@ -44,7 +44,7 @@
 							仅看有货</text>
 					</view>
 				</view>
-				<prodGrid></prodGrid>
+				<prodGrid :list="prodList"></prodGrid>
 			</view>
 			<prodList v-if="current==1" :list="prodList" :isKill="true"></prodList>
 			<prodList v-if="current==2" :list="prodList" :isKill="false"></prodList>
@@ -93,7 +93,7 @@
 						title: '【冬日限定】现货 原创jk制服女2020冬装新款小清新宽松软糯毛衣外套女开衫短款百搭日系甜美风',
 						price: '348.58',
 						date: "1668300000000",
-						progress: 33
+						progress: 33, 
 					}, {
 						goodsUrl: '//img10.360buyimg.com/n7/jfs/t22300/31/1505958241/171936/9e201a89/5b2b12ffNe6dbb594.jpg!q90.jpg',
 						title: '法国进口红酒 拉菲（LAFITE）传奇波尔多干红葡萄酒750ml*6整箱装',
@@ -126,7 +126,7 @@
 						title: '【冬日限定】现货 原创jk制服女2020冬装新款小清新宽松软糯毛衣外套女开衫短款百搭日系甜美风',
 						price: '348.58',
 						date: "1668300000000",
-						progress: 33
+						progress: 33, 
 					}, {
 						goodsUrl: '//img10.360buyimg.com/n7/jfs/t22300/31/1505958241/171936/9e201a89/5b2b12ffNe6dbb594.jpg!q90.jpg',
 						title: '法国进口红酒 拉菲（LAFITE）传奇波尔多干红葡萄酒750ml*6整箱装',
