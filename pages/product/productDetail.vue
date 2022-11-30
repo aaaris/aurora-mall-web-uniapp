@@ -1,13 +1,14 @@
 <template>
-	<view style="position: absolute; left: 50%; top: 50%;">
-		<u-loading :show="loading" size="50" color="#fa3534"></u-loading>
+	<view class="loading">
+		<u-loading :show="loading" size="70" color="#fa3534"></u-loading>
 	</view>
 	<view style="display: flex; flex-direction: column; height: 100%;">
 		<!-- 头部导航栏 -->
 		<u-navbar :border-bottom="false" title="商品详情"> </u-navbar>
 		<view v-if="loading !== true" style="flex: 1; overflow: scroll;  background-color: #f3f4f5;">
 			<!-- 商品轮播图 -->
-			<u-swiper :list="list" height="500" mode="number"></u-swiper>
+			<u-swiper :list="list" height="500" mode="number" indicator-pos="bottomRight" img-mode="aspectFit">
+			</u-swiper>
 			<!-- 商品秒杀倒计时 -->
 			<view v-if="prod.isKill" class="seckill">
 				<view class="left">
@@ -16,7 +17,7 @@
 						<view>秒杀</view>
 					</view>
 					&nbsp;
-					<text style="font-size: 15px;">￥<text style="font-size: 22px;">379.00</text></text>
+					<text style="font-size: 15px;">￥<text style="font-size: 22px;">{{prod.price}}</text></text>
 				</view>
 				<view class="right">
 					<text>距结束还剩</text>
@@ -40,7 +41,8 @@
 			<view class="prod">
 				<view class="left">
 					<view>{{prod.title}}</view>
-					<text style="font-size: 15px; color: #fa3534;">￥<text style="font-size: 22px;">379.00</text></text>
+					<text style="font-size: 15px; color: #fa3534;">￥<text
+							style="font-size: 22px;">{{prod.price}}</text></text>
 				</view>
 				<view class="right" @click="addCollect">
 					<u-icon :name="(prod.isCollect ?  'heart-fill' : 'heart')" size="34"></u-icon>
@@ -73,7 +75,7 @@
 				<view class="text">
 					<text>商品详情</text>
 				</view>
-				<image v-for="(item, index) in list" :src="item.image" mode="aspectFill"></image>
+				<image v-for="(item, index) in list" :src="item.image" mode="aspectFit"></image>
 			</view>
 		</view>
 		<!-- 底部菜单栏 -->
@@ -121,10 +123,11 @@
 					type: '45cm;S',
 					deliveryTime: '付款后30天内发货',
 					price: '135.00',
-					count: 1,
 					isCollect: false,
 					timestamp: 888888,
-					isKill: true
+					isKill: true,
+					date: "",
+					progress: 0
 				},
 				// 是否弹出选择层
 				show: false,
@@ -133,15 +136,24 @@
 			};
 		},
 		onLoad() {
-			this.prod.timestamp = Date.now() + this.$u.random(1, 100) / 100 * (2 * 24 * 60 * 60 * 1000)
-			this.list = []
-			this.list.push({
-				image: this.prod.goodsUrl,
-				title: this.prod.title
+			uni.$on('gotoProdDetail', (obj) => {
+				if (obj) {
+					this.prod = obj
+					console.log(this.prod)
+					this.prod.timestamp = Date.now() + this.$u.random(1, 100) / 100 * (2 * 24 * 60 * 60 * 1000)
+					this.list = []
+					this.list.push({
+						image: this.prod.goodsUrl,
+						title: this.prod.title
+					})
+				}
 			})
 			setTimeout(() => {
 				this.loading = false;
 			}, 2000)
+		},
+		onUnload() {
+			uni.$off('gotoProdDetail')
 		},
 		mounted() {
 			// 定时更新商品剩余时间
@@ -163,15 +175,15 @@
 					uni.showModal({
 						title: '提示',
 						content: '确定要取消收藏该商品吗?',
-						success: (res)=> {
-							if (res.confirm) { 
-								uni.showLoading({ 
-									success: () => { 
-										setTimeout(() => { 
+						success: (res) => {
+							if (res.confirm) {
+								uni.showLoading({
+									success: () => {
+										setTimeout(() => {
 											uni.showToast({
 												icon: "success",
 												title: "已取消收藏!"
-											})  
+											})
 										}, 1000)
 									}
 								})
@@ -200,8 +212,8 @@
 			},
 			// 前往购物车
 			gotoCart() {
-				uni.switchTab({
-					url: "/pages/index/cart"
+				uni.navigateTo({
+					url: "/pages/product/cart"
 				})
 			},
 			// 加入购物车
@@ -222,13 +234,22 @@
 </script>
 
 <style>
-	@import "@/static/iconfont.css"; 
+	@import "@/static/iconfont.css";
+
 	page {
 		height: 100%;
 	}
 </style>
 
 <style lang="scss" scoped>
+	// 加载中
+	.loading {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+        transform: translate(-50%, -50%);
+	}
+
 	// 秒杀倒计时条
 	.seckill {
 		height: 120rpx;
