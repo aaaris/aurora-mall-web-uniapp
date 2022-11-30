@@ -2,7 +2,7 @@
 <template>
 	<view class="product-items">
 		<!-- 商品条 -->
-		<view class="product-item" v-for="(item,index) in list" :key="index" @click="gotoProduct">
+		<view class="product-item" v-for="(item,index) in list" :key="index" @click="gotoProduct(item)">
 			<!-- 商品图片 -->
 			<view class="product-item-left">
 				<image :src="item.goodsUrl" style="height:200rpx; width:200rpx; border-radius: 10rpx;"
@@ -16,8 +16,8 @@
 				</view>
 				<!-- 秒杀进度条 -->
 				<view class="product-item-progress" v-if="(isKill &&  Date.now() > item.date)">
-					<u-line-progress round :striped="true" :striped-active="true" 
-					active-color="#ff9900" :percent="item.progress">
+					<u-line-progress round :striped="true" :striped-active="true" active-color="#ff9900"
+						:percent="item.progress">
 					</u-line-progress>
 				</view>
 				<!-- 秒杀时间 -->
@@ -29,8 +29,8 @@
 					<text style="color: #ff1d1d;"><text style="font-size: 10px;">￥</text>{{item.price}}</text>
 					<!-- 秒杀按钮 -->
 					<view class="product-item-btn" v-if="isKill">
-						<u-button :type="(item.date< Date.now() ? 'error' : 'success')" shape="circle"
-							size="mini" @click="gotoProduct">{{(item.date< Date.now() ? '抢！' : '抢先看')}}
+						<u-button :type="(item.date< Date.now() ? 'error' : 'success')" shape="circle" size="mini"
+							@click="gotoProduct">{{(item.date< Date.now() ? '抢！' : '抢先看')}}
 						</u-button>
 					</view>
 				</view>
@@ -49,9 +49,18 @@
 			};
 		},
 		methods: {
-			gotoProduct(id) {
+			gotoProduct(obj) {
 				uni.navigateTo({
-					url: "/pages/product/productDetail?id=" + id
+					url: "/pages/product/productDetail",
+					success: () => {
+						setTimeout(() => {
+							obj.timestamp = 888888
+							obj.isCollect = false
+							obj.isKill = true
+							uni.$emit('gotoProdDetail', JSON.parse(JSON.stringify(obj)))
+						}, 500)
+						console.log(JSON.parse(JSON.stringify(obj)))
+					}
 				})
 			}
 		}
@@ -71,9 +80,11 @@
 	.product-item {
 		display: flex;
 		margin: 30rpx;
+
 		// 商品图片
 		.product-item-left {
-			margin-right: 20rpx; 
+			margin-right: 20rpx;
+
 			image {
 				width: 200rpx;
 				height: 200rpx;
@@ -86,18 +97,20 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
+
 			.product-item-text {
-				width: 400rpx;  
-			} 
+				width: 400rpx;
+			}
 
 			// 商品描述尾部 包含价格和抢购按钮
 			.product-item-bottom {
-				display: flex; 
+				display: flex;
 				justify-content: space-between;
 				margin-bottom: 50rpx;
-				.product-item-btn{
+
+				.product-item-btn {
 					font-family: "站酷高端黑 Regular";
-					font-style: italic; 
+					font-style: italic;
 				}
 			}
 		}
