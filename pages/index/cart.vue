@@ -1,95 +1,87 @@
 <template>
-	<view>
+	<!-- 加载中显示 -->
+	<view class="loading">
+		<u-loading :show="isLoading" color="#fa3534" size="70"></u-loading>
+	</view>
+	<view class="wrap">
 		<u-navbar :is-back="false" :border-bottom="false" title="购物车">
 		</u-navbar>
-		<!--引用组件-->
-		<u-skeleton :loading="isLoading" :animation="true" elColor="#f3f4f5"></u-skeleton>
-		<view class="wrap">
-			<!-- 加载中显示 -->
-			<view style="position: absolute; top: 50%; left:50%; z-index: 999;">
-				<u-loading :show="isLoading" color="#fa3534" size="70"></u-loading>
+		<!-- 购物车头部 -->
+		<view class="head">
+			<text style="color: #fa3534;">全部({{totalCount}})</text>
+			<!-- 编辑按钮 -->
+			<view class="btn">
+				<text @click="isEdit = !isEdit">{{isEdit ? '完成' :'编辑'}}</text>
 			</view>
-			<!-- 购物车头部 -->
-			<view class="cart-head u-flex u-row-between u-p-30 u-skeleton-fillet">
-				<text style="color: #fa3534;">全部({{totalCount}})</text>
-				<!-- 编辑按钮 -->
-				<view class="btn">
-					<text @click="isEdit = !isEdit">{{isEdit ? '完成' :'编辑'}}</text>
+		</view>
+		<!-- 以店铺划分的购物项区域，可滚动 -->
+		<view v-if="isLoading===false" class="scroll">
+			<!-- 店铺购物项区域 -->
+			<view class="cart" v-for="(item, index1) in cartItemList" :key="item.id">
+				<!-- 购物项头部，店铺名 -->
+				<view class="u-p-30">
+					<!-- 店铺选择器：全选店铺商品 -->
+					<u-checkbox shape="circle" size="50" :name="index1" activeColor="#fa3534" v-model="item.isTik"
+						@change="checkChange($event,-1)"></u-checkbox>
+					<u-icon custom-prefix="custom-icon" name="dianpu" size="34">
+					</u-icon>&nbsp;
+					<!-- 店铺名 -->
+					<text>{{item.store}}</text>
 				</view>
-			</view>
-			<!-- 购物车商品 -->
-			<view style="height:calc(100% - 50px - env(safe-area-inset-bottom));background-color: #f3f4f6;">
-				<!-- 以店铺划分的购物项区域，可滚动 -->
-				<scroll-view scroll-y style="height: 100%;">
-					<!-- 店铺购物项区域 -->
-					<view class="u-skeleton-fillet cart-body u-flex-col u-m-t-30 u-m-b-30"
-						v-for="(item, index1) in cartItemList" :key="item.id">
-						<!-- 购物项头部，店铺名 -->
-						<view class="u-p-30 u-skeleton-fillet">
-							<!-- 店铺选择器：全选店铺商品 -->
-							<u-checkbox shape="circle" size="50" :name="index1" activeColor="#fa3534"
-								v-model="item.isTik" @change="checkChange($event,-1)"></u-checkbox>
-							<u-icon custom-prefix="custom-icon" name="dianpu" size="34">
-							</u-icon>&nbsp;
-							<!-- 店铺名 -->
-							<text>{{item.store}}</text>
+				<!-- 购物项主体，店铺商品 -->
+				<view class="u-p-l-30 u-p-r-30 ">
+					<view class="item" v-for="(prod, index2) in item.prods" :key="prod.title">
+						<!-- 选择器 -->
+						<view class="u-flex u-col-center">
+							<u-checkbox shape="circle" size="50" :name="index2" activeColor="#fa3534"
+								v-model="prod.isTik" @change="checkChange($event,index1)"></u-checkbox>
 						</view>
-						<!-- 购物项主体，店铺商品 -->
-						<view class="u-p-l-30 u-p-r-30 ">
-							<view class="item u-skeleton-fillet" v-for="(prod,index2) in item.prods" :key="prod.title">
-								<!-- 选择器 -->
-								<view class="u-flex u-col-center">
-									<u-checkbox shape="circle" size="50" :name="index2" activeColor="#fa3534"
-										v-model="prod.isTik" @change="checkChange($event,index1)"></u-checkbox>
-								</view>
-								<!-- 商品图片 -->
-								<image mode="aspectFill" :src="prod.goodsUrl" />
-								<!-- 商品描述 -->
-								<view class="title-wrap u-skeleton-fillet">
-									<!-- 文字描述 -->
-									<text class="title u-line-2">{{ prod.title }}</text>
-									<!-- 弹出选择框按钮 -->
-									<view class="select-btn" @click="showSelect(index1, index2)">
-										<text class="u-line-1">{{prod.type}}</text>
-										<u-icon name="arrow-down" size="14"></u-icon>
-									</view>
-									<view class="u-flex u-row-between">
-										<!-- 价格 -->
-										<text style="color: #fa3534; font-size:11px">￥<text
-												style="font-size: 16px;">{{prod.price}}</text></text>
-										<!-- 数量选择 -->
-										<u-number-box :min="1" :max="100" v-model="prod.count" @change="valChange">
-										</u-number-box>
-									</view>
-								</view>
+						<!-- 商品图片 -->
+						<image class="image" mode="aspectFill" :src="prod.goodsUrl" />
+						<!-- 商品描述 -->
+						<view>
+							<!-- 文字描述 -->
+							<text class="title u-line-2">{{ prod.title }}</text>
+							<!-- 弹出选择框按钮 -->
+							<view class="select-btn" @click="showSelect(index1, index2)">
+								<text class="text u-line-1">{{prod.type}}</text>
+								<u-icon name="arrow-down" size="14"></u-icon>
+							</view>
+							<view class="u-flex u-row-between">
+								<!-- 价格 -->
+								<text style="color: #fa3534; font-size:11px">￥<text
+										style="font-size: 16px;">{{prod.price}}</text></text>
+								<!-- 数量选择 -->
+								<u-number-box :min="1" :max="100" v-model="prod.count" @change="valChange">
+								</u-number-box>
 							</view>
 						</view>
 					</view>
-				</scroll-view>
+				</view>
 			</view>
-			<!-- 规格弹出层 -->
-			<prodSelect v-model:showPop="showPop" v-model:cartItem="cartItem"></prodSelect>
-			<!-- 购物车底部 -->
-			<view class="u-skeleton-fillet cart-foot u-p-30 u-border-top">
-				<view>
-					<!-- 全选器 -->
-					<u-checkbox shape="circle" size="50" :name="index" activeColor="#fa3534" v-model="allTik"
-						@change="checkChange($event,-2)"></u-checkbox>
-					<text>全选</text>
-				</view>
-				<!-- 总计与结算按钮：非编辑模式 -->
-				<view class="" v-if="!isEdit">
-					<text style="font-size: 15px;">总计：<text style="color: #fa3534; font-size:11px">￥<text
-								style="font-size: 16px;">{{totalPrice}}</text></text>
-					</text>
-					&nbsp;
-					<u-button type="error" size="medium" shape="circle" @click="gotoCreate">结算</u-button>
-				</view>
-				<!-- 删除按钮：编辑模式 -->
-				<view class="" v-if="isEdit">
-					<u-button size="medium" shape="circle" ripple @click="deleteCartItem"
-						:customStyle="{color:'#fa3534'}">删除</u-button>
-				</view>
+		</view>
+		<!-- 规格弹出层 -->
+		<prodSelect v-model:show="showPop" v-model:item="cartItem"></prodSelect>
+		<!-- 购物车底部 -->
+		<view v-if="isLoading===false" class=" bottom u-p-30 u-border-top">
+			<view>
+				<!-- 全选器 -->
+				<u-checkbox shape="circle" size="50" :name="index" activeColor="#fa3534" v-model="allTik"
+					@change="checkChange($event,-2)"></u-checkbox>
+				<text>全选</text>
+			</view>
+			<!-- 总计与结算按钮：非编辑模式 -->
+			<view class="" v-if="!isEdit">
+				<text style="font-size: 15px;">总计：<text style="color: #fa3534; font-size:11px">￥<text
+							style="font-size: 16px;">{{totalPrice}}</text></text>
+				</text>
+				&nbsp;
+				<u-button type="error" size="medium" shape="circle" @click="gotoCreate">结算</u-button>
+			</view>
+			<!-- 删除按钮：编辑模式 -->
+			<view class="" v-if="isEdit">
+				<u-button size="medium" shape="circle" ripple @click="deleteCartItem" :customStyle="{color:'#fa3534'}">
+					删除</u-button>
 			</view>
 		</view>
 		<!-- 底部导航栏 -->
@@ -109,10 +101,6 @@
 			return {
 				// 是否全选
 				allTik: false,
-				// 购物项总数（非商品总数）
-				totalCount: 12,
-				// 总价
-				totalPrice: 368.00,
 				isEdit: false,
 				// 购物项列表，以店铺划分
 				cartItemList: [{
@@ -201,7 +189,6 @@
 			}
 		},
 		onLoad() {
-			this.scrollHeight = this.$u.sys().windowHeight - 100 - 115 + "px"
 			setTimeout(() => {
 				this.isLoading = false;
 			}, 2000)
@@ -285,7 +272,6 @@
 									order.push(ss)
 								}
 							})
-							console.log(JSON.parse(JSON.stringify(order)))
 							uni.$emit('gotoCreate', JSON.parse(JSON.stringify(order)))
 						}, 1000)
 					}
@@ -314,66 +300,80 @@
 </script>
 <style>
 	@import "@/static/iconfont.css";
-</style>
-<style lang="scss" scoped>
-	/* 页面样式 */
-	.wrap {
-		height: 75vh;
-	}
 
-	/* 店铺内购物项区 */
-	.item {
-		margin: 0 0 30rpx;
-		display: flex;
-		padding: 30rpx 0;
-		border-bottom: 1px solid #f3f4f6;
-	}
-
-	/* 最后一个购物项 */
-	.item:last-child {
-		border-bottom: 0;
-	}
-
-	/* 购物车头部 */
-	.cart-head {
-		background-color: #fff;
-	}
-
-	/* 购物车主体 */
-	.cart-body {
-		background-color: #fff;
-		border-radius: 16px;
-	}
-
-	/* 商品图片 */
-	image {
-		width: 200rpx;
-		flex: 0 0 200rpx;
-		height: 200rpx;
-		margin-right: 20rpx;
-		border-radius: 12rpx;
-	}
-
-	.title-wrap {
+	page {
 		height: 100%;
 	}
+</style>
+<style lang="scss" scoped>
+	.loading {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+	}
 
-	/*  */
+	/* 页面样式 */
+	.wrap {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+
+		/* 购物车头部 */
+		.head {
+			background-color: #fff;
+			display: flex;
+			justify-content: space-between;
+			padding: 30rpx;
+		}
+
+		// 可滚动栏
+		.scroll {
+			flex: 1;
+			overflow: scroll;
+			background-color: #f3f4f6;
+
+			/* 购物车主体 */
+			.cart {
+				background-color: #fff;
+				border-radius: 16px;
+				display: flex;
+				flex-direction: column;
+				margin: 30rpx 0;
+
+				/* 店铺内购物项区 */
+				.item {
+					margin: 0 0 30rpx;
+					display: flex;
+					padding: 30rpx 0;
+					border-bottom: 1px solid #f3f4f6;
+
+					/* 商品图片 */
+					.image {
+						width: 200rpx;
+						flex: 0 0 200rpx;
+						height: 200rpx;
+						margin-right: 20rpx;
+						border-radius: 12rpx;
+					}
+				}
+			} 
+		}
+
+		/* 购物车底部 */
+		.bottom {
+			background-color: #fff;
+			width: 100%;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+		}
+	}
+
 	.title {
 		text-align: left;
 		font-size: 28rpx;
 		color: $u-content-color;
-	}
-
-	/* 购物车底部 */
-	.cart-foot {
-		background-color: #fff;
-		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-	}
-
+	} 
 	.select-btn {
 		margin: 15rpx 0;
 		width: 250rpx;
@@ -383,37 +383,10 @@
 		align-items: center;
 		border-radius: 16px;
 		padding: 0 15rpx;
-		background-color: #f3f4f6;
-
-		text {
+		background-color: #f3f4f6; 
+		.text {
 			font-size: 11px;
 			color: #909399;
 		}
-	}
-
-	.select-lables {
-		display: flex;
-		align-items: center;
-		flex-wrap: wrap;
-		margin: 30rpx 0;
-	}
-
-	.select-lable {
-		background-color: #f3f4f6;
-		border-radius: 16px;
-		margin: 0 20rpx 15rpx 0;
-		padding: 0 30rpx;
-		border: 1px solid #fff;
-		height: 70rpx;
-		display: flex;
-		align-items: center;
-	}
-
-	.select-lable:hover {
-		border: 1px solid $u-type-error;
-		background-color: rgba(250, 182, 182, 0.2);
-		color: $u-type-error;
-	}
-
-	.select-bottom {}
+	} 
 </style>
