@@ -19,7 +19,7 @@
 				<text v-if="order.dealStat === 3" style="color: #fff;">距离自动确认收货还有{{restTime}}</text>
 			</view>
 			<!-- 分割线 -->
-			<image style="height: 3px; display: block; width: 100%;" src="../../static/gap.png" mode="aspectFill">
+			<image style="height: 3px; display: block; width: 100%;" src="../../static/image/gap.png" mode="aspectFill">
 			</image>
 			<!-- 地址信息 -->
 			<view class="addr-info-bar">
@@ -219,7 +219,7 @@
 	}
 </script>
 <style>
-	@import "@/static/iconfont.css";
+	@import "@/static/font/iconfont.css";
 	page {
 		height: 100%;
 	}

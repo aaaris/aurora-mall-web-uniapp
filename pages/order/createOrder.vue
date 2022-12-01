@@ -16,7 +16,7 @@
 			</view>
 		</view>
 		<!-- 分割线 -->
-		<image style="height: 3px; display: block; width: 100%;" src="../../static/gap.png" mode="aspectFill">
+		<image style="height: 3px; display: block; width: 100%;" src="../../static/image/gap.png" mode="aspectFill">
 		</image>
 		<!-- 购物车商品 -->
 		<!-- 以店铺划分的购物项区域，可滚动 -->
@@ -152,7 +152,7 @@
 	}
 </script>
 <style>
-	@import "@/static/iconfont.css";
+	@import "@/static/font/iconfont.css";
 
 	page {
 		height: 100%;

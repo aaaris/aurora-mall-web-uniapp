@@ -3,7 +3,7 @@
 	<view>
 		<u-navbar :border-bottom="false" title="关于我们"></u-navbar>
 		<view class="body">
-			<image src="../../static/logo.png" style="height: 200rpx; width: 200rpx;"></image>
+			<image src="../../static/image/logo.png" style="height: 200rpx; width: 200rpx;"></image>
 			<view class="about-desc">
 				<text>开发团队: Aurora Team</text>
 				<text>联系我们: </text>

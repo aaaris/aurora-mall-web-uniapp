@@ -108,7 +108,7 @@
 	}
 </script>
 <style>
-	@import "@/static/iconfont.css";
+	@import "@/static/font/iconfont.css";
 
 	/* 页面背景色设置 */
 	page {
