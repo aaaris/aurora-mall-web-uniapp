@@ -37,7 +37,7 @@
 								v-model="prod.isTik" @change="checkChange($event,index1)"></u-checkbox>
 						</view>
 						<!-- 商品图片 -->
-						<image class="image" mode="aspectFill" :src="prod.goodsUrl" />
+						<image class="image" mode="aspectFill" :src="prod.goodsUrl" @click="gotoProdDetail(prod)"/>
 						<!-- 商品描述 -->
 						<view>
 							<!-- 文字描述 -->
@@ -61,7 +61,7 @@
 			</view>
 		</view>
 		<!-- 规格弹出层 -->
-		<prodSelect v-model:show="showPop" v-model:item="cartItem"></prodSelect>
+		<prodSelect v-model:show="showPop" v-model:prod="cartItem"></prodSelect>
 		<!-- 购物车底部 -->
 		<view v-if="isLoading===false" class=" bottom u-p-30 u-border-top">
 			<view>
@@ -76,7 +76,7 @@
 							style="font-size: 16px;">{{totalPrice}}</text></text>
 				</text>
 				&nbsp;
-				<u-button type="error" size="medium" shape="circle" @click="gotoCreate">结算</u-button>
+				<u-button type="error" size="medium" shape="circle" @click="gotoCreate">结算({{totalOrderCount}})</u-button>
 			</view>
 			<!-- 删除按钮：编辑模式 -->
 			<view class="" v-if="isEdit">
@@ -206,11 +206,28 @@
 				})
 				return price
 			},
-			// 计算属性计算勾选购物项总数
+			// 计算属性计算购物项总数
 			totalCount() {
 				let count = 0
 				this.cartItemList.forEach((shop) => {
 					count += shop.prods.length
+				})
+				return count
+			},
+			// 计算属性计算勾选购物想总数
+			totalOrderCount() {
+				let count = 0
+				this.cartItemList.forEach((shop)=>{
+					if(shop.isTik) {
+					count += shop.prods.length
+					}
+					else  {
+						shop.prods.forEach((prod)=>{
+							if (prod.isTik){
+								count += 1
+							}
+						})
+					}
 				})
 				return count
 			}
@@ -251,6 +268,13 @@
 			},
 			// 结算购物车，创建订单
 			gotoCreate() {
+				if (this.totalOrderCount === 0) {
+					uni.showToast({
+						title:"请选择商品",
+						icon:"error"
+					})
+					return 
+				}
 				let that = this.cartItemList;
 				uni.navigateTo({
 					url: "/pages/order/createOrder",
@@ -294,12 +318,22 @@
 						}
 					}
 				})
+			},
+			gotoProdDetail(obj) { 
+				uni.navigateTo({
+					url:"/pages/product/productDetail",
+					success: () => {
+						setTimeout(()=>{
+							uni.$emit('gotoProdDetail',JSON.parse(JSON.stringify(obj)))
+						},500)
+					}
+				})
 			}
 		}
 	}
 </script>
 <style>
-	@import "@/static/iconfont.css";
+	@import "@/static/font/iconfont.css";
 
 	page {
 		height: 100%;
