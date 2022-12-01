@@ -61,7 +61,7 @@
 			</view>
 		</view>
 		<!-- 规格弹出层 -->
-		<prodSelect v-model:show="showPop" v-model:prod="cartItem"></prodSelect>
+		<prodSelect v-model:show="showPop" v-model:prod="cartItem" :isConfirm="true"></prodSelect>
 		<!-- 购物车底部 -->
 		<view v-if="isLoading===false" class=" bottom u-p-30 u-border-top">
 			<view>
