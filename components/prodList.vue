@@ -30,7 +30,7 @@
 					<!-- 秒杀按钮 -->
 					<view class="product-item-btn" v-if="isKill">
 						<u-button :type="(item.date< Date.now() ? 'error' : 'success')" shape="circle" size="mini"
-							@click="gotoProduct">{{(item.date< Date.now() ? '抢！' : '抢先看')}}
+							@click="gotoProduct(item)">{{(item.date< Date.now() ? '抢！' : '抢先看')}}
 						</u-button>
 					</view>
 				</view>
