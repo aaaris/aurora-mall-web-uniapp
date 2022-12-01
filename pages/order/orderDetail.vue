@@ -1,5 +1,5 @@
 <template>
-	<view style="position: absolute; top: 50%; left: 50%; z-index: 999;">
+	<view class="loading">
 		<u-loading :show="loading" size="70" color="#fa3534"></u-loading>
 	</view>
 	<view style="display: flex; flex-direction: column; height: 100%;">
@@ -97,7 +97,7 @@
 		</view>
 		<view v-if="loading===false" class="page-foot  u-border-top">
 			<view class="">
-				<u-button v-if="(order.dealStat===1||order.dealStat===2)"  size="medium" shape="circle"
+				<u-button v-if="(order.dealStat===1||order.dealStat===2)" size="medium" shape="circle"
 					@click="changeOrderStat(0)">取消订单</u-button>
 				&nbsp;
 				<u-button v-if="(order.dealStat===1)" type="warning" size="medium" shape="circle"
@@ -220,12 +220,21 @@
 </script>
 <style>
 	@import "@/static/font/iconfont.css";
+
 	page {
 		height: 100%;
 	}
 </style>
 
 <style lang="scss" scoped>
+	// 加载中
+	.loading {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+	}
+
 	// 订单状态栏
 	.order-stat-bar {
 		background: linear-gradient(to right, #00baad 0%, #7948ea 95%);
