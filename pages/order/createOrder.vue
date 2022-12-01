@@ -107,7 +107,7 @@
 			};
 		},
 		onLoad() {
-			uni.$on('gotoCreate',(obj)=>{
+			uni.$on('createOrder',(obj)=>{
 				if (obj) {
 					this.cartItemList = obj;
 				}
@@ -117,7 +117,7 @@
 			}, 2000)
 		},
 		onUnload() {
-			uni.$off('gotoCreate')
+			uni.$off('createOrder')
 			this.cartItemList = []
 		},
 		computed: {

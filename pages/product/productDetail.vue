@@ -55,12 +55,12 @@
 					<text class="label">发货</text>
 					<text>免运费</text>
 				</view>
-				<view class="item" @click="show = true">
+				<view class="item" @click="showPop = true">
 					<text class="label">选择</text>
-					<text style="flex: 1">{{ prod.type==='' ? prod.type : '请选择'}}</text>
+					<text style="flex: 1">{{ prod.type==='' ?  '请选择' : `已选择：${prod.type}`}}</text>
 					<u-icon name="more-dot-fill" size="30"></u-icon>
-					<prodSelect v-model:show="show" v-model:item="prod"></prodSelect>
 				</view>
+				<prodSelect v-model:show="showPop" v-model:prod="prod" :isConfirm="isConfirm"></prodSelect>
 				<view class="item">
 					<text class="label">服务</text>
 					<text>急速退款·包邮·48小时发货</text>
@@ -130,7 +130,9 @@
 					progress: 0
 				},
 				// 是否弹出选择层
-				show: false,
+				showPop: false,
+				// 是否用于确认
+				isConfirm: false,
 				// 加载中动画
 				loading: true
 			};
@@ -138,8 +140,7 @@
 		onLoad() {
 			uni.$on('gotoProdDetail', (obj) => {
 				if (obj) {
-					this.prod = obj
-					console.log(this.prod)
+					this.prod = obj 
 					this.prod.timestamp = Date.now() + this.$u.random(1, 100) / 100 * (2 * 24 * 60 * 60 * 1000)
 					this.list = []
 					this.list.push({
@@ -218,23 +219,50 @@
 			},
 			// 加入购物车
 			addCart() {
-				if (this.prod.type === "") {
-					this.show = true;
-				}
+				this.isConfirm = true;
+				this.showPop = true;
+				uni.$on('selectCofirm', (obj) => { 
+					this.isConfirm = false;
+					if (obj) {
+						uni.showToast({
+							icon: 'success',
+							title: '加入成功！'
+						})
+					}
+					uni.$off('selectCofirm')
+				})
 			},
 			// 创建订单
 			createOrder() {
-				if (this.prod.type === "") {
-					this.show = true;
-
-				}
+				this.isConfirm = true;
+				this.showPop = true;
+				let order = [{
+					id: 1,
+					store: "Apple 官方零售店",
+					prods: [this.prod]
+				}]
+				uni.$on('selectCofirm', (obj) => {
+					this.showPop = false;
+					this.isConfirm = false;
+					if (obj) {
+						uni.navigateTo({
+							url: '/pages/order/createOrder',
+							success: () => {
+								setTimeout(() => {
+									uni.$emit('createOrder', JSON.parse(JSON.stringify(order)))
+								}, 500)
+							}
+						})
+					}
+					uni.$off('selectCofirm')
+				})
 			}
 		}
 	}
 </script>
 
 <style>
-	@import "@/static/iconfont.css";
+	@import "@/static/font/iconfont.css";
 
 	page {
 		height: 100%;
@@ -247,7 +275,7 @@
 		position: absolute;
 		left: 50%;
 		top: 50%;
-        transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%);
 	}
 
 	// 秒杀倒计时条

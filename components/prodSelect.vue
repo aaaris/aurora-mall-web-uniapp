@@ -2,7 +2,7 @@
 <template>
 	<view>
 		<!-- 规格弹出层 -->
-		<u-popup v-model="show" mode="bottom" border-radius="14" :closeable="true">
+		<u-popup v-model="show" mode="bottom" border-radius="14" :closeable="true" @close="skuConfirm(undefine)">
 			<view class="select">
 				<!-- 选择框头部 -->
 				<view class="top">
@@ -17,7 +17,7 @@
 					</view>
 				</view>
 				<!-- 商品选择栏，可滚动 -->
-				<scroll-view scroll-y style="height: 700rpx;">
+				<scroll-view scroll-y style="max-height: 400px;">
 					<!-- 选择区域：版本 -->
 					<view v-for="(sku, idx1) in labelList" :key="sku.title">
 						<view style="font-weight: bold;">{{sku.title}}</view>
@@ -38,7 +38,15 @@
 				</scroll-view>
 				<!-- 选择栏底部：确定按钮区 -->
 				<view class="bottom">
-					<u-button @click="show = false;" type="error" shape="circle">确定</u-button>
+					<view v-if="!isConfirm" style="display: flex; justify-content: space-around;">
+						<u-button @click="addCart" type="warning" shape="circle" size="medium">加入购物车
+						</u-button>
+						<u-button @click="createOrder" type="error" shape="circle" size="medium">立即购买
+						</u-button>
+					</view>
+					<view v-if="isConfirm">
+						<u-button @click="skuConfirm(true)" type="error" shape="circle">确定</u-button>
+					</view>
 				</view>
 			</view>
 		</u-popup>
@@ -52,7 +60,9 @@
 			// 传递是否显示
 			show: Boolean,
 			// 传递购物项信息
-			prod: Object
+			prod: Object,
+			// 是否是用于确认的
+			isConfirm: Boolean,
 		},
 		// 用于实现父子组件双向绑定
 		emits: ['update:show', 'update:prod'],
@@ -62,11 +72,13 @@
 				if (newValue) {
 					this.getLabelList()
 					this.parseType()
+					this.updateType()
 				}
 			},
 			prod(newValue) {
-				this.$emit('update:prod', newValue) 
-			}
+				this.$emit('update:prod', newValue)
+				this.updateType()
+			},
 		},
 		data() {
 			return {
@@ -77,6 +89,9 @@
 			};
 		},
 		onLoad() {},
+		mounted() {
+			this.getLabelList()
+		},
 		methods: {
 			// 获取标签
 			getLabelList() {
@@ -135,12 +150,12 @@
 				let labels = Array(this.labelList.length)
 				if (this.prod.type.includes(',')) {
 					let type = this.prod.type
-					console.log(type)
 					labels = type.split(',')
 				}
 				this.labelList.forEach((sku, idx) => {
-					let tmp =  labels[idx] === undefined ? '' : labels[idx]
-					sku.labels.forEach((i)=>{
+					sku.select = ''
+					let tmp = labels[idx] === undefined ? '' : labels[idx]
+					sku.labels.forEach((i) => {
 						if (i.name === tmp) {
 							sku.select = tmp
 						}
@@ -150,20 +165,47 @@
 			// 更新type
 			updateType() {
 				let type = ""
-				let flag = false
 				this.labelList.forEach((sku) => {
-					if (sku.select !== '') {
-						type += sku.select + ','
-						flag = true
-					}
+					type += sku.select === '' ? sku.labels[0].name : sku.select
+					type += ','
 				})
 				type += this.prod.count + "个"
-				if (flag)
-					this.prod.type = type
+				this.prod.type = type
 			},
 			// 修改商品的数量
-			valChange(e) { 
+			valChange(e) {
 				this.updateType()
+			},
+			// 加入购物车
+			addCart() {
+				this.updateType()
+				uni.showToast({
+					title: '加入购物车成功',
+					icon: 'success'
+				})
+			},
+			// 立即下单
+			createOrder() {
+				this.updateType()
+				let order = [{
+					id: 1,
+					store: "Apple 官方零售店",
+					prods: [this.prod]
+				}]
+				uni.navigateTo({
+					url: '/pages/order/createOrder',
+					success: () => {
+						setTimeout(() => {
+							uni.$emit('createOrder', JSON.parse(JSON.stringify(order)))
+						}, 500)
+					}
+				})
+			},
+			// 确认sku
+			skuConfirm(stat) {
+				this.updateType()
+				uni.$emit('selectCofirm', stat === undefined ? stat : JSON.parse(JSON.stringify(this.prod))) 
+				this.$emit('update:show', false)
 			}
 		},
 	}
