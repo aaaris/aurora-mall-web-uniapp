@@ -3,14 +3,24 @@
 		<!-- 导航栏 -->
 		<u-navbar :border-bottom="false" title="我的收藏"></u-navbar>
 		<view class="">
-			<u-swipe-action :show="item.show" :index="index" v-for="(item, index) in prodList" :key="item.title"
-				@click="deleteCollection" @open="openSwipe" :options="options">
-				<view class="u-flex u-p-30 u-row-between" @click="gotoProd(item)">
-					<image :src="item.goodsUrl" mode="aspectFill" class="product-item-image"></image>
-					<view class="title-wrap">
-						<text class="u-line-3">{{item.title}}</text>
-						<view class="u-flex">
-							<text style="color: #f11">￥&nbsp;{{item.price}}</text>
+			<u-swipe-action :index="index" v-for="(item, index) in prodList" :key="item.title" @click="deleteCollection"
+				@open="openSwipe" :options="options">
+				<!-- 商品条 -->
+				<view class="product" @click="gotoProd(item)">
+					<!-- 商品图片 -->
+					<view class="left">
+						<image :src="item.goodsUrl" style="height:200rpx; width:200rpx; border-radius: 10rpx;"
+							mode="aspectFill"></image>
+					</view>
+					<!-- 商品描述区 -->
+					<view class="right">
+						<!-- 商品名 -->
+						<view class='u-line-3'>
+							<text>{{item.title}}</text>
+						</view>
+						<!-- 商品售价 -->
+						<view class="bottom">
+							<text style="color: #ff1d1d;"><text style="font-size: 10px;">￥</text>{{item.price}}</text>
 						</view>
 					</view>
 				</view>
@@ -20,8 +30,8 @@
 	</view>
 </template>
 
-<script> 
-	export default { 
+<script>
+	export default {
 		data() {
 			return {
 				loadStatu: 'loadmore',
@@ -85,13 +95,37 @@
 				}
 				this.loadStatu = 'loadmore'
 			},
-			gotoProd(item) { 
+			gotoProd(item) {
+				let obj = JSON.parse(JSON.stringify(item))
 				uni.navigateTo({
-					url: "/pages/product/productDetail"
+					url: "/pages/product/productDetail",
+					success: () => {
+						obj.timestamp = 888888
+						obj.isCollect = false
+						obj.isKill = true
+						obj.count = 1
+						setTimeout(() => {
+							uni.$emit('gotoProdDetail', obj)
+						}, 500)
+					}
 				})
 			},
-			deleteCollection(idx,opt) {
+			deleteCollection(idx, opt) {
 				console.log(`${this.options[opt].text} ${this.prodList[idx].title}`)
+				uni.showModal({
+					title: '温馨提示', //提示标题
+					content: '确定删除选中商品吗？', //提示内容 
+					success: function(res) {
+						if (res.confirm) { //confirm为ture，代表用户点击确定
+							console.log('点击了确定按钮');
+							uni.showToast({
+								title: "删除成功！",
+							})
+						} else if (res.cancel) { //cancel为ture，代表用户点击取消
+							console.log('点击了取消按钮');
+						}
+					}
+				})
 			},
 			openSwipe() {
 
@@ -101,11 +135,28 @@
 </script>
 
 <style lang="scss">
-	.product-item-image {
-		width: 200rpx;
-		flex: 0 0 200rpx;
-		height: 200rpx;
-		margin-right: 20rpx;
-		border-radius: 12rpx;
+	// 商品条
+	.product {
+		display: flex;
+		padding: 30rpx;
+
+		// 商品图片
+		.left {
+			margin-right: 20rpx;
+			flex-basis: 200rpx;
+			border-radius: 10rpx;
+		}
+
+		// 商品描述区
+		.right {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+
+			// 商品描述底部 包含价格和抢购按钮
+			.bottom {
+				margin-bottom: 35rpx;
+			}
+		}
 	}
 </style>
