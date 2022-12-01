@@ -5,7 +5,7 @@
 	<view style="display: flex; flex-direction: column; height: 100%;">
 		<u-navbar :border-bottom="false" title="提交订单">
 		</u-navbar>
-		<view class="addr-info-bar">
+		<view v-if="loading===false" class="addr-info-bar">
 			<text style="font-size: 16px;">收货人信息</text>
 			<view class="addr-info-item">
 				<u-icon custom-prefix="custom-icon" name="zuobiaofill" size="60" color="#fe770f"></u-icon>
@@ -16,12 +16,11 @@
 			</view>
 		</view>
 		<!-- 分割线 -->
-		<image style="height: 3px; display: block; width: 100%;" src="../../static/image/gap.png" mode="aspectFill">
+		<image v-if="loading===false" style="height: 3px; display: block; width: 100%;" src="../../static/image/gap.png" mode="aspectFill">
 		</image>
 		<!-- 购物车商品 -->
 		<!-- 以店铺划分的购物项区域，可滚动 -->
-		<view style="flex: 1;overflow: scroll;">
-			<scroll-view scroll-y style="background-color: #f3f4f5; ">
+		<view v-if="loading===false" style="flex: 1;overflow: scroll; background-color: #f3f4f5; "> 
 				<!-- 店铺购物项区域 -->
 				<view class="u-skeleton-fillet order-body" v-for="(item, index1) in cartItemList" :key="item.id">
 					<!-- 购物项头部，店铺名 -->
@@ -73,10 +72,9 @@
 				<view class="pay-info">
 					<text>支付方式</text>
 					<text>微信支付</text>
-				</view>
-			</scroll-view>
+				</view> 
 		</view>
-		<view class="page-foot  u-border-top">
+		<view v-if="loading===false" class="page-foot  u-border-top">
 			<!-- 总价展示 -->
 			<view>
 				<text style="color: #fa3534; font-size:12px">￥<text
