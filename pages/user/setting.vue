@@ -12,7 +12,11 @@
 				<text style="flex: 1;">昵称</text>
 				<input type="nickname" :value="userinfo.nickname" @blur="onInput" />
 			</view>
-			<u-button type="success" shape="circle" @click="submit">保存</u-button>
+			<view class="u-m-30"> 
+				<u-button type="success" shape="circle" @click="submit">保存</u-button>
+				&nbsp;
+				<u-button type="error" shape="circle" @click="cancel">退出登录</u-button>
+			</view>
 		</view>
 	</view>
 </template>
@@ -26,11 +30,11 @@
 					nickname: ''
 				}
 			};
-		}, 
+		},
 		onShow() {
 			uni.getStorage({
 				key: 'userinfo',
-				success: (res) => { 
+				success: (res) => {
 					this.userinfo = JSON.parse(res.data)
 				},
 				fail: (err) => {
@@ -38,7 +42,7 @@
 					this.userinfo = JSON.parse(JSON.stringify({
 						avatarUrl: 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0',
 						nickname: '微信用户'
-					})) 
+					}))
 				}
 			})
 		},
@@ -72,8 +76,34 @@
 						})
 					}
 				})
+			},
+			cancel() {
+				uni.showModal({
+					title: '温馨提示',
+					content: '确定要退出登录吗?',
+					success: (res) => {
+						if (res.confirm) {
+							uni.removeStorage({
+								key: 'userinfo',
+								success: () => {
+									uni.showToast({
+										icon: 'success',
+										title: '你已退出登录!',
+										complete: () => {
+											setTimeout(() => {
+												uni.switchTab({
+													url: '/pages/index/index',
+												})
+											}, 1000)
+										}
+									})
+								}
+							})
+						}
+					}
+				})
 			}
-		}
+		},
 	}
 </script>
 
