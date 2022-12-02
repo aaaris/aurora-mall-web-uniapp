@@ -74,7 +74,7 @@
 					<text>运费</text>
 					<text>￥0.00</text>
 				</view>
-				<view class="price-info-bottom">
+				<view class="price-info-item last">
 					<text>合计：<text style="color: #fa3534; font-size:12px">￥<text
 								style="font-size: 18px;">{{totalPrice}}</text></text>
 					</text>
@@ -315,24 +315,20 @@
 		display: flex;
 		flex-direction: column;
 		background-color: #fff;
-		padding: 30rpx;
 		border-radius: 16px;
 		margin-bottom: 30rpx;
 
 		.price-info-item {
+			padding: 30rpx;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			height: 70rpx;
+			height: 90rpx;
 		}
 
-		.price-info-bottom {
-			display: flex;
-			align-items: center;
+		.last {
 			border-top: 2px solid #f3f4f6;
-			height: 70rpx;
 			justify-content: flex-end;
-			text-align: right;
 		}
 	}
 
