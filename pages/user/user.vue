@@ -7,12 +7,11 @@
 		<!-- 用户信息 -->
 		<view class="user-info">
 			<!-- 用户头像框 -->
-			<image class="user-avator" lazy-load
-				src="https://bjetxgzv.cdn.bspapp.com/VKCEYUGU-uni-app-doc/6acec660-4f31-11eb-a16f-5b3e54966275.jpg"
-				alt=""></image>
+			<image class="user-avator" lazy-load @click="$u.route('/pages/user/setting')" :src="userinfo.avatarUrl" mode="aspectFit">
+			</image>
 			<!-- 用户文本信息 -->
 			<view class="user-info-text">
-				<text>uu</text>
+				<text>{{userinfo.nickname}}</text>
 			</view>
 		</view>
 		<!-- 订单栏 -->
@@ -52,6 +51,10 @@
 		},
 		data() {
 			return {
+				userinfo: {
+					avatarUrl: '',
+					nickname: ''
+				},
 				orderStatusList: [{
 					iconName: "custom-icon-wallet",
 					desc: "待付款"
@@ -77,7 +80,22 @@
 			}
 		},
 		onLoad() {
-
+			
+		},
+		onShow() {
+			uni.getStorage({
+				key: 'userinfo',
+				success: (res) => { 
+					this.userinfo = JSON.parse(res.data)
+				},
+				fail: (err) => {
+					console.log(err, 'getStorage fail!')
+					this.userinfo = JSON.parse(JSON.stringify({
+						avatarUrl: 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0',
+						nickname: '微信用户'
+					})) 
+				}
+			})
 		},
 		methods: {
 			// 跳转订单页对应状态tab
@@ -87,12 +105,12 @@
 					url: "/pages/order/order?state=" + idx
 				})
 			},
-			// 跳转设置页
+			// 跳转选项页
 			goToSetting(idx) {
 				console.log(`go to setting page ${idx}`)
 				if (idx === 0) {
 					uni.navigateTo({
-						url: "/pages/index/collect"
+						url: "/pages/user/collect"
 					})
 				} else if (idx === 1) {
 					uni.navigateTo({
@@ -129,10 +147,8 @@
 	.user-avator {
 		width: 130rpx;
 		height: 130rpx;
-		border-radius: 50%;
-		border-color: rgba(255, 255, 255, 0.5);
-		border-width: 2px;
-		border-style: solid;
+		border-radius: 50%; 
+		border: 3px solid rgba(255, 255, 255, 0.65)
 	}
 
 	/* 用户信息文本 */
