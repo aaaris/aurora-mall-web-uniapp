@@ -23,7 +23,7 @@
 							<text>{{item.name}}</text>
 						</view>
 						<view class="item-container">
-							<view class="thumb-box" v-for="(item1, index1) in item.subCategorys" :key="index1">
+							<view class="thumb-box" v-for="(item1, index1) in item.subCategorys" :key="index1" @click="goSearch(item1)">
 								<image class="item-menu-image" :src="item1.icon" mode=""></image>
 								<view class="item-menu-name">{{item1.name}}</view>
 							</view>
@@ -1143,6 +1143,12 @@
 			this.getMenuItemTop()
 		},
 		methods: {
+			// 跳转搜索页
+			goSearch(subCategory) {
+				uni.navigateTo({
+					url:`/pages/search/searchResult?keyword=${subCategory.name}`
+				})
+			},
 			// 点击左边的栏目切换
 			async swichMenu(index) {
 				if (this.arr.length == 0) {

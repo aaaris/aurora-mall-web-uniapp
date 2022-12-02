@@ -5,7 +5,7 @@
 	<view style="display: flex; flex-direction: column; height: 100%;">
 		<u-navbar :border-bottom="false" title="提交订单">
 		</u-navbar>
-		<view class="addr-info-bar">
+		<view v-if="loading===false" class="addr-info-bar">
 			<text style="font-size: 16px;">收货人信息</text>
 			<view class="addr-info-item">
 				<u-icon custom-prefix="custom-icon" name="zuobiaofill" size="60" color="#fe770f"></u-icon>
@@ -16,67 +16,66 @@
 			</view>
 		</view>
 		<!-- 分割线 -->
-		<image style="height: 3px; display: block; width: 100%;" src="../../static/image/gap.png" mode="aspectFill">
+		<image v-if="loading===false" style="height: 3px; display: block; width: 100%;" src="../../static/image/gap.png"
+			mode="aspectFill">
 		</image>
 		<!-- 购物车商品 -->
 		<!-- 以店铺划分的购物项区域，可滚动 -->
-		<view style="flex: 1;overflow: scroll;">
-			<scroll-view scroll-y style="background-color: #f3f4f5; ">
-				<!-- 店铺购物项区域 -->
-				<view class="u-skeleton-fillet order-body" v-for="(item, index1) in cartItemList" :key="item.id">
-					<!-- 购物项头部，店铺名 -->
-					<view class="u-p-30 u-skeleton-fillet">
-						<u-icon custom-prefix="custom-icon" name="dianpu" size="34">
-						</u-icon>&nbsp;
-						<!-- 店铺名 -->
-						<text>{{item.store}}</text>
-					</view>
-					<!-- 购物项主体，店铺商品 -->
-					<view class="u-p-l-30 u-p-r-30 ">
-						<view class="item u-skeleton-fillet" v-for="(prod,index2) in item.prods" :key="prod.title">
-							<!-- 商品图片 -->
-							<image mode="aspectFill" :src="prod.goodsUrl" />
-							<!-- 商品描述 -->
-							<view class="title-wrap u-skeleton-fillet">
-								<!-- 文字描述 -->
-								<text class="title u-line-2">{{ prod.title }}</text>
-								<text style="margin-top:15rpx; display: block;">{{prod.type}}</text>
-								<view class="u-flex u-m-t-15 u-row-between">
-									<!-- 价格 -->
-									<text style="color: #fa3534; font-size:11px">￥<text
-											style="font-size: 16px;">{{prod.price}}</text></text>
-									<text>×{{prod.count}}</text>
-								</view>
+		<view v-if="loading===false" style="flex: 1;overflow: scroll; background-color: #f3f4f5; ">
+			<!-- 店铺购物项区域 -->
+			<view class="u-skeleton-fillet order-body" v-for="(item, index1) in cartItemList" :key="item.id">
+				<!-- 购物项头部，店铺名 -->
+				<view class="u-p-30 u-skeleton-fillet">
+					<u-icon custom-prefix="custom-icon" name="dianpu" size="34">
+					</u-icon>&nbsp;
+					<!-- 店铺名 -->
+					<text>{{item.store}}</text>
+				</view>
+				<!-- 购物项主体，店铺商品 -->
+				<view class="u-p-l-30 u-p-r-30 ">
+					<view class="item u-skeleton-fillet" v-for="(prod,index2) in item.prods" :key="prod.title">
+						<!-- 商品图片 -->
+						<image mode="aspectFill" :src="prod.goodsUrl" />
+						<!-- 商品描述 -->
+						<view class="title-wrap u-skeleton-fillet">
+							<!-- 文字描述 -->
+							<text class="title u-line-2">{{ prod.title }}</text>
+							<text style="margin-top:15rpx; display: block;">{{prod.type}}</text>
+							<view class="u-flex u-m-t-15 u-row-between">
+								<!-- 价格 -->
+								<text style="color: #fa3534; font-size:11px">￥<text
+										style="font-size: 16px;">{{prod.price}}</text></text>
+								<text>×{{prod.count}}</text>
 							</view>
 						</view>
 					</view>
 				</view>
-				<view class="price-info">
-					<view class="price-info-item">
-						<text>商品金额</text>
-						<text>￥{{totalPrice}}</text>
-					</view>
-					<view class="price-info-item">
-						<text>退还无忧</text>
-						<text>￥0.00</text>
-					</view>
-					<view class="price-info-item">
-						<text>运费</text>
-						<text>￥0.00</text>
-					</view>
-					<view class="price-info-bottom">
-						<text>合计：<text style="color: #fa3534; font-size:12px">￥<text
-									style="font-size: 18px;">{{totalPrice}}</text></text>
-						</text>
-					</view>
+			</view>
+			<view class="price-info">
+				<view class="price-info-item">
+					<text>商品金额</text>
+					<text>￥{{totalPrice}}</text>
 				</view>
-				<view class="pay-info">
-					<text>支付方式</text>
-					<text>微信支付</text>
+				<view class="price-info-item">
+					<text>退还无忧</text>
+					<text>￥0.00</text>
 				</view>
-			</scroll-view>
+				<view class="price-info-item">
+					<text>运费</text>
+					<text>￥0.00</text>
+				</view>
+				<view class="price-info-item">
+					<text>合计：<text style="color: #fa3534; font-size:12px">￥<text
+								style="font-size: 18px;">{{totalPrice}}</text></text>
+					</text>
+				</view>
+			</view>
+			<view class="pay-info">
+				<text>支付方式</text>
+				<text>微信支付</text>
+			</view>
 		</view>
-		<view class="page-foot  u-border-top">
+		<view v-if="loading===false" class="page-foot  u-border-top">
 			<!-- 总价展示 -->
 			<view>
 				<text style="color: #fa3534; font-size:12px">￥<text
@@ -107,7 +106,7 @@
 			};
 		},
 		onLoad() {
-			uni.$on('createOrder',(obj)=>{
+			uni.$on('createOrder', (obj) => {
 				if (obj) {
 					this.cartItemList = obj;
 				}
@@ -136,18 +135,18 @@
 				uni.showLoading({
 					title: '正在支付',
 					mask: true
-				}); 
+				});
 				setTimeout(function() {
 					uni.hideLoading();
 					uni.switchTab({
 						url: "/pages/index/cart"
-					}) 
+					})
 					uni.showToast({
-						title:"下单成功！",
-						mask:true
+						title: "下单成功！",
+						mask: true
 					})
 				}, 2000);
-			}, 
+			},
 		}
 	}
 </script>
@@ -165,8 +164,9 @@
 		position: absolute;
 		left: 50%;
 		top: 50%;
-        transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%);
 	}
+
 	.addr-info-bar {
 		background-color: #fff;
 		border-radius: 16px;
@@ -235,24 +235,20 @@
 		display: flex;
 		flex-direction: column;
 		background-color: #fff;
-		padding: 30rpx;
 		border-radius: 16px;
 		margin-bottom: 30rpx;
 
 		.price-info-item {
+			padding: 30rpx;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			height: 70rpx;
-		}
+			height: 90rpx;
 
-		.price-info-bottom {
-			display: flex;
-			align-items: center;
-			border-top: 2px solid #f3f4f6;
-			height: 70rpx;
-			justify-content: flex-end;
-			text-align: right;
+			&:last-child {
+				border-top: 2px solid #f3f4f6;
+				justify-content: flex-end;
+			}
 		}
 	}
 

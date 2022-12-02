@@ -39,7 +39,7 @@
 						text: '我的', 
 						isDot: false,
 						customIcon: false,
-						pagePath: '/pages/index/user'
+						pagePath: '/pages/user/user'
 					}
 				]
 			}

@@ -1,5 +1,5 @@
 <template>
-	<view style="position: absolute; top: 50%; left: 50%; z-index: 999;">
+	<view class="loading">
 		<u-loading :show="loading" size="70" color="#fa3534"></u-loading>
 	</view>
 	<view style="display: flex; flex-direction: column; height: 100%;">
@@ -74,7 +74,7 @@
 					<text>运费</text>
 					<text>￥0.00</text>
 				</view>
-				<view class="price-info-bottom">
+				<view class="price-info-item last">
 					<text>合计：<text style="color: #fa3534; font-size:12px">￥<text
 								style="font-size: 18px;">{{totalPrice}}</text></text>
 					</text>
@@ -97,7 +97,7 @@
 		</view>
 		<view v-if="loading===false" class="page-foot  u-border-top">
 			<view class="">
-				<u-button v-if="(order.dealStat===1||order.dealStat===2)"  size="medium" shape="circle"
+				<u-button v-if="(order.dealStat===1||order.dealStat===2)" size="medium" shape="circle"
 					@click="changeOrderStat(0)">取消订单</u-button>
 				&nbsp;
 				<u-button v-if="(order.dealStat===1)" type="warning" size="medium" shape="circle"
@@ -220,12 +220,21 @@
 </script>
 <style>
 	@import "@/static/font/iconfont.css";
+
 	page {
 		height: 100%;
 	}
 </style>
 
 <style lang="scss" scoped>
+	// 加载中
+	.loading {
+		position: absolute;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -50%);
+	}
+
 	// 订单状态栏
 	.order-stat-bar {
 		background: linear-gradient(to right, #00baad 0%, #7948ea 95%);
@@ -306,24 +315,20 @@
 		display: flex;
 		flex-direction: column;
 		background-color: #fff;
-		padding: 30rpx;
 		border-radius: 16px;
 		margin-bottom: 30rpx;
 
 		.price-info-item {
+			padding: 30rpx;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
-			height: 70rpx;
+			height: 90rpx;
 		}
 
-		.price-info-bottom {
-			display: flex;
-			align-items: center;
+		.last {
 			border-top: 2px solid #f3f4f6;
-			height: 70rpx;
 			justify-content: flex-end;
-			text-align: right;
 		}
 	}
 
