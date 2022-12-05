@@ -16,7 +16,7 @@
 	</view>
 </template>
 
-<script> 
+<script>
 	export default {
 		data() {
 			return {
@@ -30,26 +30,48 @@
 			wxLogin() {
 				if (!this.checked) {
 					uni.showToast({
-						icon:'error',
-						title:'请先同意声明!', 
+						icon: 'error',
+						title: '请先同意声明!',
 					})
-					return 
+					return
 				}
-				// uni.login({
-				// 	success: (res) => {
-				// 		this.code = res.code
-				// 		console.log(this.code)
-				// 		uni.request({
-				// 			url:`https://api.weixin.qq.com/sns/jscode2session?appid=${this.appid}&secret=${this.appSec}&js_code=${this.code}&grant_type=authorization_code`,
-				// 			success: (res) => {
-				// 				console.log(res)
-				// 			},
-				// 			fail: (err) => {
-				// 				console.log(err)
-				// 			} 
-				// 		})
-				// 	}
-				// }) 
+				// 使用wx.login()获取code
+				uni.login({
+					success: ({
+						code
+					}) => {
+						console.log(code)
+						// 调用后台登录
+						this.$u.api.login({
+							code: code
+						}).then(({
+							token,
+							refreshToken,
+							userId
+						}) => {
+							// 存储token信息
+							uni.setStorageSync('tokenInfo', JSON.stringify({
+								token,
+								refreshToken
+							}))
+							uni.setStorageSync('userId', userId)
+							uni.showToast({
+								title: '登录成功！',
+								icon: 'success'
+							})
+							// 返回上一个页面，如果返回失败则跳转到主页
+							setTimeout(() => {
+								uni.navigateBack({
+									fail: () => {
+										uni.switchTab({
+											url: '/pages/index/index'
+										})
+									}
+								})
+							}, 1500)
+						})
+					}
+				})
 			}
 		}
 	}
@@ -69,8 +91,9 @@
 
 	.btn-wrapper {
 		padding: 30rpx;
+
 		.checked {
-			margin-top: 30rpx; 
+			margin-top: 30rpx;
 		}
 	}
 </style>
