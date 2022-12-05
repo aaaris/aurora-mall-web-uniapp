@@ -6,8 +6,16 @@
 	<view class="wrap">
 		<u-navbar :is-back="false" :border-bottom="false" title="购物车">
 		</u-navbar>
+		<view style="height: 100%;" v-if="userStore.isLogin==false">
+			<u-empty mode="car" text="亲~请先登录哦~">
+				<view slot="bottom">
+					<u-button shape="circle" type="success" size="medium" @click="$u.route('/pages/user/login')">去登录
+					</u-button>
+				</view>
+			</u-empty>
+		</view>
 		<!-- 购物车头部 -->
-		<view class="head">
+		<view class="head" v-if="userStore.isLogin==true">
 			<text style="color: #fa3534;">全部({{totalCount}})</text>
 			<!-- 编辑按钮 -->
 			<view class="btn">
@@ -15,7 +23,7 @@
 			</view>
 		</view>
 		<!-- 以店铺划分的购物项区域，可滚动 -->
-		<view v-if="isLoading===false" class="scroll">
+		<view v-if="isLoading===false && userStore.isLogin==true" class="scroll">
 			<!-- 店铺购物项区域 -->
 			<view class="cart" v-for="(item, index1) in cartItemList" :key="item.id">
 				<!-- 购物项头部，店铺名 -->
@@ -63,7 +71,7 @@
 		<!-- 规格弹出层 -->
 		<prodSelect v-model:show="showPop" v-model:prod="cartItem" :isConfirm="true"></prodSelect>
 		<!-- 购物车底部 -->
-		<view v-if="isLoading===false" class=" bottom u-p-30 u-border-top">
+		<view v-if="isLoading===false&& userStore.isLogin==true" class=" bottom u-p-30 u-border-top">
 			<view>
 				<!-- 全选器 -->
 				<u-checkbox shape="circle" size="50" :name="index" activeColor="#fa3534" v-model="allTik"
@@ -93,6 +101,12 @@
 <script>
 	import navBar from '@/components/navBar.vue'
 	import prodSelect from '@/components/prodSelect.vue'
+	import {
+		mapStores
+	} from 'pinia'
+	import {
+		useUserStore
+	} from '@/stores/store'
 	export default {
 		components: {
 			navBar,
@@ -189,10 +203,25 @@
 				isLoading: true
 			}
 		},
-		onLoad() {
-			setTimeout(() => {
-				this.isLoading = false;
-			}, 2000)
+		async onLoad() {
+			let userId = this.userStore.userInfo.id
+			if (userId == "") {
+				console.log("userId is not in storage")
+				uni.showToast({
+					title: '请先登录',
+					icon: 'error'
+				})
+				setTimeout(() => {
+					this.$u.route('/pages/user/login')
+				}, 1500)
+			} else {
+				await this.$u.api.cart.getCartItems({
+					userId: userId
+				}).then((res) => {
+					console.log(res, "getCartItems")
+				})
+			}
+			this.isLoading = false;
 		},
 		computed: {
 			// 计算属性计算勾选购物项总价
@@ -230,7 +259,9 @@
 					}
 				})
 				return count
-			}
+			},
+			// 允许访问 this.counterStore 和 this.userStore
+			...mapStores(useUserStore),
 		},
 
 		methods: {
