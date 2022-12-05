@@ -23,7 +23,7 @@ import httpInterceptor from './config/http.interceptor.js'
 // http接口API集中管理引入部分
 import httpApi from './api/http.api.js'
 import * as Pinia from 'pinia';
-export function createApp() {
+export function createApp() { 
 	const app = createSSRApp(App)
 	// 使用Pinia
 	app.use(Pinia.createPinia());
@@ -36,6 +36,6 @@ export function createApp() {
 	return {
 		app,
 		Pinia
-	}
+	} 
 }
 // #endif

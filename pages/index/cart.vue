@@ -101,7 +101,6 @@
 <script>
 	import navBar from '@/components/navBar.vue'
 	import prodSelect from '@/components/prodSelect.vue'
-
 	import {
 		mapStores
 	} from 'pinia'
