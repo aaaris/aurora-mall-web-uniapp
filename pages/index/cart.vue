@@ -101,6 +101,7 @@
 <script>
 	import navBar from '@/components/navBar.vue'
 	import prodSelect from '@/components/prodSelect.vue'
+
 	import {
 		mapStores
 	} from 'pinia'
@@ -379,11 +380,6 @@
 		left: 50%;
 		top: 50%;
 		transform: translate(-50%, -50%);
-	}
-
-	.empty {
-		height: 100%;
-		width: 100%;
 	}
 
 	/* 页面样式 */
