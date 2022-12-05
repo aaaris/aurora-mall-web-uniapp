@@ -91,7 +91,6 @@
 
 	.btn-wrapper {
 		padding: 30rpx;
-
 		.checked {
 			margin-top: 30rpx;
 		}
