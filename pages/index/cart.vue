@@ -60,7 +60,7 @@
 								<text style="color: #fa3534; font-size:11px">￥<text
 										style="font-size: 16px;">{{prod.price}}</text></text>
 								<!-- 数量选择 -->
-								<u-number-box :min="1" :max="100" v-model="prod.count" @change="valChange">
+								<u-number-box :min="1" :max="100" v-model="prod.count" @change="valChange(prod)">
 								</u-number-box>
 							</view>
 						</view>
@@ -290,8 +290,13 @@
 				this.showPop = true;
 			},
 			// 步进器回调函数
-			valChange(e) {
-				console.log('当前值为: ' + e.value)
+			valChange(obj) {
+				this.$u.api.cart.updateItemCount({
+					UpdateCartItemCountReq: {
+						id: obj.id,
+						count: obj.count
+					}
+				})
 			},
 			async getAllCartItems() {
 				const {

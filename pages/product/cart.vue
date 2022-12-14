@@ -102,7 +102,6 @@
 	import prodSelect from '@/components/prodSelect.vue'
 	export default {
 		components: {
-			navBar,
 			prodSelect
 		},
 		data() {
