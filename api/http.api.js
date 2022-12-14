@@ -22,7 +22,7 @@ const install = (Vue) => {
 		},
 		prod: {
 			// 搜索商品
-			search: (params = {}) => vm.$u.get('/product/getProdList', params),
+			search: (params = {}) => vm.$u.post('/product/search', params),
 			// 获取商品详情
 			getDetail: (params = {}) => vm.$u.get('/product/details', params),
 		},

@@ -25,14 +25,14 @@
 								<u-dropdown-item v-model="value2" title="销量" :options="options2"></u-dropdown-item>
 							</u-dropdown>
 						</view>
-						<prodList :list="prodList.concat(prodList)" :isKill="false"></prodList>
+						<prodList :list="tabProdList[0]" :isKill="false"></prodList>
 						<u-loadmore :status="loadStatus[0]" bgColor="#f2f2f2"></u-loadmore>
 					</scroll-view>
 				</swiper-item>
 				<!-- 最新商品 -->
 				<swiper-item class="swiper-item">
 					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="onreachBottom">
-						<prodList :list="prodList.concat(prodList)" :isKill="false"></prodList>
+						<prodList :list="tabProdList[1]" :isKill="false"></prodList>
 						<u-loadmore :status="loadStatus[1]" bgColor="#f2f2f2"></u-loadmore>
 					</scroll-view>
 				</swiper-item>
@@ -127,6 +127,7 @@
 						progress: 33
 					}
 				],
+				latestProdList: [],
 				// 因为内部的滑动机制限制，请将tabs组件和swiper组件的current用不同变量赋值
 				current: 0, // tabs组件的current值，表示当前活动的tab选项
 				swiperCurrent: 0, // swiper组件的current值，表示当前那个swiper-item是活动的
@@ -264,27 +265,69 @@
 						label: '销量升序',
 						value: 2
 					},
-				]
+				],
+				pageNum: 0,
+				sortSetting: {
+					saleSort: 0,
+					timeSort: 0,
+					priceSort: 0
+				},
+				tabProdList: [
+					[],
+					[]
+				],
 			};
 		},
 		onLoad(query) {
 			if (query.keyword)
 				this.keyword = query.keyword
+			this.getSearchProdList()
 		},
 		// 到底部加载更多 
 		onReachBottom() {
 			this.loadStatus[this.current] = 'loading'
-			setTimeout(() => {
-				this.loadStatus[this.current] = 'loadmore'
-			}, 1200);
+			this.getSearchProdList()
+			this.loadStatus[this.current] = 'loadmore'
 		},
 		methods: {
+			// 获取搜索商品列表
+			async getSearchProdList() {
+				const {
+					GetProdListRsp,
+					QuerySummaryRsp
+				} = await this.$u.api.prod.search({
+					SearchProdListReq: {
+						keyword: this.keyword,
+						saleSort: this.sortSetting.timeSort ? 0 : this.sortSetting.saleSort,
+						timeSort: this.sortSetting.timeSort,
+						priceSort: this.sortSetting.timeSort ? 0 : this.sortSetting.priceSort
+					},
+					QueryPagingParamsReq: {
+						offset: this.pagenum,
+						queryCount: 8
+					}
+				})
+				if (QuerySummaryRsp.dataAmount === 0) {
+					// 到底了 
+					this.pageNum = this.pageNum - 1
+				} else {
+					this.tabProdList[this.swiperCurrent] = GetProdListRsp.prodList
+				}
+				this.pageNum = this.pageNum + 1
+			},
+			// 提交搜索
 			searchSubmit(word) {
 				console.log(word)
+				this.getSearchProdList()
 			},
 			// tabs通知swiper切换
 			tabsChange(index) {
 				this.swiperCurrent = index;
+				if (index !== 3) {
+					this.sortSetting.timeSort = index
+					if (this.tabProdList[index].length === 0)
+						this.getSearchProdList()
+				}
 			},
 			// swiper-item左右移动，通知tabs的滑块跟随移动
 			transition(e) {
@@ -296,18 +339,14 @@
 			animationfinish(e) {
 				let current = e.detail.current;
 				this.$refs.uTabs.setFinishCurrent(current);
-				this.swiperCurrent = current;
 				this.current = current;
+				this.tabsChange(current)
 			},
-
 			gotoShop(id) {
 				uni.navigateTo({
 					url: "/pages/shop/shopDetail?id=" + id
 				})
 			},
-			getOrderList(idx) {
-
-			}
 		}
 	}
 </script>
