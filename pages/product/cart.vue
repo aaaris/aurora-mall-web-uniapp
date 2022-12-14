@@ -15,6 +15,7 @@
 				</view>
 			</view>
 		</u-navbar>
+		<!-- 以下部分与index/cart相同，结尾不包含navBar -->
 		<!-- 购物车头部 -->
 		<view class="head">
 			<text style="color: #fa3534;">全部({{totalCount}})</text>
@@ -46,11 +47,11 @@
 								v-model="prod.isTik" @change="checkChange($event,index1)"></u-checkbox>
 						</view>
 						<!-- 商品图片 -->
-						<image class="image" mode="aspectFill" :src="prod.goodsUrl" @click="gotoProdDetail(prod)"/>
+						<image class="image" mode="aspectFill" :src="prod.goodsUrl" @click="gotoProdDetail(prod)" />
 						<!-- 商品描述 -->
 						<view>
 							<!-- 文字描述 -->
-							<text class="title u-line-2" >{{ prod.title }}</text>
+							<text class="title u-line-2">{{ prod.title }}</text>
 							<!-- 弹出选择框按钮 -->
 							<view class="select-btn" @click="showSelect(index1, index2)">
 								<text class="text u-line-1">{{prod.type}}</text>
@@ -85,19 +86,19 @@
 							style="font-size: 16px;">{{totalPrice}}</text></text>
 				</text>
 				&nbsp;
-				<u-button type="error" size="medium" shape="circle" @click="gotoCreate">结算({{totalOrderCount}})</u-button>
+				<u-button type="error" size="medium" shape="circle" @click="gotoCreate">结算({{totalOrderCount}})
+				</u-button>
 			</view>
 			<!-- 删除按钮：编辑模式 -->
 			<view class="" v-if="isEdit">
 				<u-button size="medium" shape="circle" ripple @click="deleteCartItem" :customStyle="{color:'#fa3534'}">
 					删除</u-button>
 			</view>
-		</view> 
+		</view>
 	</view>
 </template>
 
 <script>
-	import navBar from '@/components/navBar.vue'
 	import prodSelect from '@/components/prodSelect.vue'
 	export default {
 		components: {
@@ -224,13 +225,12 @@
 			// 计算属性计算勾选购物想总数
 			totalOrderCount() {
 				let count = 0
-				this.cartItemList.forEach((shop)=>{
-					if(shop.isTik) {
-					count += shop.prods.length
-					}
-					else  {
-						shop.prods.forEach((prod)=>{
-							if (prod.isTik){
+				this.cartItemList.forEach((shop) => {
+					if (shop.isTik) {
+						count += shop.prods.length
+					} else {
+						shop.prods.forEach((prod) => {
+							if (prod.isTik) {
 								count += 1
 							}
 						})
@@ -277,10 +277,10 @@
 			gotoCreate() {
 				if (this.totalOrderCount === 0) {
 					uni.showToast({
-						title:"请选择商品",
-						icon:"error"
+						title: "请选择商品",
+						icon: "error"
 					})
-					return 
+					return
 				}
 				let that = this.cartItemList;
 				uni.navigateTo({
@@ -326,13 +326,14 @@
 					}
 				})
 			},
-			gotoProdDetail(obj) { 
+			// 前往商品详情页
+			gotoProdDetail(obj) {
 				uni.navigateTo({
-					url:"/pages/product/productDetail",
+					url: "/pages/product/productDetail",
 					success: () => {
-						setTimeout(()=>{
-							uni.$emit('gotoProdDetail',JSON.parse(JSON.stringify(obj)))
-						},500)
+						setTimeout(() => {
+							uni.$emit('gotoProdDetail', JSON.parse(JSON.stringify(obj)))
+						}, 500)
 					}
 				})
 			}
@@ -352,7 +353,7 @@
 		position: absolute;
 		left: 50%;
 		top: 50%;
-        transform: translate(-50%, -50%);
+		transform: translate(-50%, -50%);
 	}
 
 	/* 页面样式 */
@@ -433,12 +434,14 @@
 		}
 	}
 
+	// 标题
 	.title {
 		text-align: left;
 		font-size: 28rpx;
 		color: $u-content-color;
 	}
 
+	// 选择按钮
 	.select-btn {
 		margin: 15rpx 0;
 		width: 250rpx;
@@ -450,6 +453,7 @@
 		padding: 0 15rpx;
 		background-color: #f3f4f6;
 
+		// 文本
 		.text {
 			font-size: 11px;
 			color: #909399;
