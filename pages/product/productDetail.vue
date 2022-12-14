@@ -83,17 +83,17 @@
 			<view class="left">
 				<view class="item" @click="gotoStore">
 					<u-icon name="home" :size="40" :color="$u.color['contentColor']"></u-icon>
-					<view class="text u-line-1">店铺</view>
+					<view class="text">店铺</view>
 				</view>
 				<view class="item car" @click="gotoCart">
 					<u-badge class="car-num" :count="9" type="error" :offset="[-3, -6]"></u-badge>
 					<u-icon name="shopping-cart" :size="40" :color="$u.color['contentColor']"></u-icon>
-					<view class="text u-line-1">购物车</view>
+					<view class="text">购物车</view>
 				</view>
 			</view>
 			<view class="right">
-				<view class="cart btn u-line-1" @click="addCart">加入购物车</view>
-				<view class="buy btn u-line-1" @click="createOrder">立即购买</view>
+				<view class="cart btn" @click="addCart">加入购物车</view>
+				<view class="buy btn" @click="createOrder">立即购买</view>
 			</view>
 		</view>
 	</view>
@@ -121,13 +121,13 @@
 					id: 1,
 					goodsUrl: '//img12.360buyimg.com/n7/jfs/t1/102191/19/9072/330688/5e0af7cfE17698872/c91c00d713bf729a.jpg',
 					title: '【葡萄藤】现货 小清新学院风制服格裙百褶裙女短款百搭日系甜美风原创jk制服女2020新款',
-					type: '45cm;S',
-					deliveryTime: '付款后30天内发货',
+					type: '',
 					price: '135.00',
 					stock: 100,
 					isCollect: false,
 					endTime: 888888,
 					isKill: true,
+					count: 0,
 				},
 				// 是否弹出选择层
 				showPop: false,
@@ -137,24 +137,39 @@
 				loading: true
 			};
 		},
-		onLoad() {
-			uni.$on('gotoProdDetail', (obj) => {
-				if (obj) {
-					this.prod = obj
-					this.prod.endTime = Date.now() + this.$u.random(1, 100) / 100 * (2 * 24 * 60 * 60 * 1000)
-					this.list = []
-					this.list.push({
-						image: this.prod.goodsUrl,
-						title: this.prod.title
-					})
-				}
-			})
-			setTimeout(() => {
-				this.loading = false;
-			}, 2000)
+		async onLoad(query) {
+			// uni.$on('gotoProdDetail', (obj) => {
+			// 	if (obj) {
+			// 		this.prod = obj
+			// 		this.prod.endTime = Date.now() + this.$u.random(1, 100) / 100 * (2 * 24 * 60 * 60 * 1000)
+			// 		this.list = []
+			// 		this.list.push({
+			// 			image: this.prod.goodsUrl,
+			// 			title: this.prod.title
+			// 		})
+			// 	}
+			// })
+			// setTimeout(() => {
+			// 	this.loading = false;
+			// }, 2000)
+			if (query.id) {
+				// 查询商品详情
+				const {
+					GetProdDetailsRsp
+				} = await this.$u.api.prod.getDetail({
+					id: query.id
+				})
+				this.prod = GetProdDetailsRsp.prod
+				this.prod.count = 1
+				this.list.push({
+					image: this.prod.goodsUrl,
+					title: this.prod.title
+				})
+				this.loading = false
+			}
 		},
 		onUnload() {
-			uni.$off('gotoProdDetail')
+			// uni.$off('gotoProdDetail')
 		},
 		mounted() {
 			// 定时更新商品剩余时间
@@ -345,16 +360,17 @@
 	.prod {
 		display: flex;
 		padding: 30rpx 50rpx;
-		height: 250rpx;
+		min-height: 250rpx;
 		background-color: #fff;
 
 		.left {
+			flex: 5;
 			font-size: 17px;
 			font-weight: bold;
 		}
 
 		.right {
-			width: 200rpx;
+			flex: 1;
 			display: flex;
 			flex-direction: column;
 			align-items: center;

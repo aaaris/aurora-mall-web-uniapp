@@ -51,16 +51,16 @@
 		methods: {
 			gotoProduct(obj) {
 				uni.navigateTo({
-					url: "/pages/product/productDetail",
-					success: () => {
-						setTimeout(() => {
-							obj.timestamp = 888888
-							obj.isCollect = false
-							obj.isKill = true
-							uni.$emit('gotoProdDetail', JSON.parse(JSON.stringify(obj)))
-						}, 500)
-						console.log(JSON.parse(JSON.stringify(obj)))
-					}
+					url: `/pages/product/productDetail?id=${obj.id}`,
+					// success: () => {
+					// 	setTimeout(() => {
+					// 		obj.timestamp = 888888
+					// 		obj.isCollect = false
+					// 		obj.isKill = true
+					// 		uni.$emit('gotoProdDetail', JSON.parse(JSON.stringify(obj)))
+					// 	}, 500)
+					// 	console.log(JSON.parse(JSON.stringify(obj)))
+					// }
 				})
 			}
 		}
