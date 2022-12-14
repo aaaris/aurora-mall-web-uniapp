@@ -10,7 +10,7 @@ const install = (Vue) => {
 		login: (params = {}) => vm.$u.post('/user/login', params),
 		cart: {
 			// 获取购物车购物项
-			getCartItems: (params = {}) => vm.$u.get('/cart/cartItem', params),
+			list: (params = {}) => vm.$u.get('/cart/cartItem', params),
 			// 获取购物车中商品项总数
 			getCount: (params = {}) => vm.$u.get('/cart/count', params),
 			// 商品加入购物车

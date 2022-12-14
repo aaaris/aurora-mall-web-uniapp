@@ -84,7 +84,7 @@
 							style="font-size: 16px;">{{totalPrice}}</text></text>
 				</text>
 				&nbsp;
-				<u-button type="error" size="medium" shape="circle" @click="gotoCreate">结算({{totalOrderCount}})
+				<u-button type="error" size="medium" shape="circle" @click="gotoCreateOrder">结算({{totalOrderCount}})
 				</u-button>
 			</view>
 			<!-- 删除按钮：编辑模式 -->
@@ -203,7 +203,7 @@
 				isLoading: true
 			}
 		},
-		async onShow() {
+		onShow() {
 			let isLogin = this.userStore.isLogin
 			if (!isLogin) {
 				console.log("userId is not in storage")
@@ -214,13 +214,8 @@
 				setTimeout(() => {
 					this.$u.route('/pages/user/login')
 				}, 1500)
-			} else {
-				const {
-					GetCartItemRsp
-				} = await this.$u.api.cart.getCartItems()
-				console.log(GetCartItemRsp)
-				this.cartItemList = GetCartItemRsp.cartItemList
 			}
+			this.getAllCartItems()
 			this.isLoading = false;
 		},
 		computed: {
@@ -298,8 +293,15 @@
 			valChange(e) {
 				console.log('当前值为: ' + e.value)
 			},
+			async getAllCartItems() {
+				const {
+					GetCartItemRsp
+				} = await this.$u.api.cart.list()
+				console.log(GetCartItemRsp)
+				this.cartItemList = GetCartItemRsp.cartItemList
+			},
 			// 结算购物车，创建订单
-			gotoCreate() {
+			gotoCreateOrder() {
 				// 如果未勾选任何商品
 				if (this.totalOrderCount === 0) {
 					uni.showToast({
@@ -337,15 +339,32 @@
 			},
 			// 删除购物项函数
 			deleteCartItem() {
+				let idList = []
+				this.cartItemList.forEach((store) => {
+					store.prodList.forEach((prod) => {
+						if (prod.isTik) {
+							idList.push(prod.id)
+						}
+					})
+				})
 				uni.showModal({
 					title: '温馨提示', //提示标题
 					content: '确定删除选中商品吗？', //提示内容
 					showCancel: true, //是否显示取消按钮
-					success: function(res) {
+					success: (res) => {
 						if (res.confirm) { //confirm为ture，代表用户点击确定
 							console.log('点击了确定按钮');
-							uni.showToast({
-								title: "删除成功！",
+							this.$u.api.cart.deleteItem(idList).then(() => {
+								uni.showToast({
+									title: "删除成功！",
+								})
+								// 前端获取所有购物项
+								this.getAllCartItems()
+							}).catch(() => {
+								uni.showToast({
+									icon: "error",
+									title: "删除失败！",
+								})
 							})
 						} else if (res.cancel) { //cancel为ture，代表用户点击取消
 							console.log('点击了取消按钮');
@@ -353,6 +372,7 @@
 					}
 				})
 			},
+			// 前往商品详情页
 			gotoProdDetail(obj) {
 				uni.navigateTo({
 					url: "/pages/product/productDetail",
