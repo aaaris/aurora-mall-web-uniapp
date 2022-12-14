@@ -33,6 +33,9 @@ const install = (Vue) => {
 			updateStat: (params = {}) => vm.$u.post('/order/updateStat', params),
 			// 创建订单
 			createOrder: (params = {}) => vm.$u.post('/order/add', params),
+		},
+		seckill: {
+			getProdList: (params = {}) => vm.$u.post('/seckill/getSeckillProdList', params),
 		}
 	};
 }

@@ -15,22 +15,22 @@
 					<text>{{item.title}}</text>
 				</view>
 				<!-- 秒杀进度条 -->
-				<view class="product-item-progress" v-if="(isKill &&  Date.now() > item.date)">
+				<view class="product-item-progress" v-if="(isKill &&  Date.now() > item.startTime)">
 					<u-line-progress round :striped="true" :striped-active="true" active-color="#ff9900"
-						:percent="item.progress">
+						:percent="parseInt((item.totalStock - item.stock)* 100/item.totalStock)">
 					</u-line-progress>
 				</view>
 				<!-- 秒杀时间 -->
-				<view class="" v-if="(isKill && item.date > Date.now())">
-					<text style="color: #b3ff6c;">{{$u.timeFormat("item.date".substr(0,-3), 'hh:MM')}}</text>
+				<view class="" v-if="(isKill && item.startTime > Date.now())">
+					<text style="color: #b3ff6c;">{{$u.timeFormat("item.startTime".substr(0,-3), 'hh:MM')}}</text>
 				</view>
 				<view class="product-item-bottom">
 					<!-- 商品售价 -->
 					<text style="color: #ff1d1d;"><text style="font-size: 10px;">￥</text>{{item.price}}</text>
 					<!-- 秒杀按钮 -->
 					<view class="product-item-btn" v-if="isKill">
-						<u-button :type="(item.date< Date.now() ? 'error' : 'success')" shape="circle" size="mini"
-							@click="gotoProduct(item)">{{(item.date< Date.now() ? '抢！' : '抢先看')}}
+						<u-button :type="(item.startTime< Date.now() ? 'error' : 'success')" shape="circle" size="mini"
+							@click="gotoProduct(item)">{{(item.startTime< Date.now() ? '抢！' : '抢先看')}}
 						</u-button>
 					</view>
 				</view>
