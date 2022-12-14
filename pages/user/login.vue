@@ -17,6 +17,12 @@
 </template>
 
 <script>
+	import {
+		mapStores
+	} from 'pinia'
+	import {
+		useUserStore
+	} from '@/stores/store'
 	export default {
 		data() {
 			return {
@@ -25,6 +31,10 @@
 				appSec: '',
 				checked: false
 			};
+		},
+		computed: {
+			// 允许访问 this.userStore
+			...mapStores(useUserStore),
 		},
 		methods: {
 			wxLogin() {
@@ -46,6 +56,9 @@
 							code: code
 						}).then((token) => {
 							// 存储token信息
+							this.$u.api.cart.getCount().then((count) => {
+								this.userStore.totalCount = count
+							})
 							uni.setStorageSync('token', token)
 							uni.showToast({
 								title: '登录成功！',

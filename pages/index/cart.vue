@@ -38,7 +38,7 @@
 				</view>
 				<!-- 购物项主体，店铺商品 -->
 				<view class="u-p-l-30 u-p-r-30 ">
-					<view class="item" v-for="(prod, index2) in item.prods" :key="prod.title">
+					<view class="item" v-for="(prod, index2) in item.prodList" :key="prod.title">
 						<!-- 选择器 -->
 						<view class="u-flex u-col-center">
 							<u-checkbox shape="circle" size="50" :name="index2" activeColor="#fa3534"
@@ -121,7 +121,7 @@
 				cartItemList: [{
 						id: 1,
 						store: "Apple 官方零售店",
-						prods: [{
+						prodList: [{
 							goodsUrl: '//img10.360buyimg.com/n7/jfs/t1/107598/17/3766/525060/5e143aacE9a94d43c/03573ae60b8bf0ee.jpg',
 							title: '蓝妹（BLUE GIRL）酷爽啤酒 清啤 原装进口啤酒 罐装 500ml*9听 整箱装',
 							type: '一打',
@@ -143,7 +143,7 @@
 					{
 						id: 2,
 						store: "Apple 官方零售店",
-						prods: [{
+						prodList: [{
 							goodsUrl: '//img10.360buyimg.com/n7/jfs/t1/107598/17/3766/525060/5e143aacE9a94d43c/03573ae60b8bf0ee.jpg',
 							title: '蓝妹（BLUE GIRL）酷爽啤酒 清啤 原装进口啤酒 罐装 500ml*9听 整箱装',
 							type: '一打',
@@ -165,7 +165,7 @@
 					{
 						id: 3,
 						store: "Apple 官方零售店",
-						prods: [{
+						prodList: [{
 							goodsUrl: '//img10.360buyimg.com/n7/jfs/t1/107598/17/3766/525060/5e143aacE9a94d43c/03573ae60b8bf0ee.jpg',
 							title: '蓝妹（BLUE GIRL）酷爽啤酒 清啤 原装进口啤酒 罐装 500ml*9听 整箱装',
 							type: '一打',
@@ -203,9 +203,9 @@
 				isLoading: true
 			}
 		},
-		async onLoad() {
-			let userId = this.userStore.userInfo.id
-			if (userId == "") {
+		async onShow() {
+			let isLogin = this.userStore.isLogin
+			if (!isLogin) {
 				console.log("userId is not in storage")
 				uni.showToast({
 					title: '请先登录',
@@ -215,11 +215,11 @@
 					this.$u.route('/pages/user/login')
 				}, 1500)
 			} else {
-				await this.$u.api.cart.getCartItems({
-					userId: userId
-				}).then((res) => {
-					console.log(res, "getCartItems")
-				})
+				const {
+					GetCartItemRsp
+				} = await this.$u.api.cart.getCartItems()
+				console.log(GetCartItemRsp)
+				this.cartItemList = GetCartItemRsp.cartItemList
 			}
 			this.isLoading = false;
 		},
@@ -228,7 +228,7 @@
 			totalPrice() {
 				let price = 0.00
 				this.cartItemList.forEach((shop) => {
-					shop.prods.forEach(item => {
+					shop.prodList.forEach(item => {
 						if (item.isTik) {
 							price += item.count * Number.parseFloat(item.price)
 						}
@@ -240,8 +240,9 @@
 			totalCount() {
 				let count = 0
 				this.cartItemList.forEach((shop) => {
-					count += shop.prods.length
+					count += shop.prodList.length
 				})
+				this.userStore.totalCount = count
 				return count
 			},
 			// 计算属性计算勾选购物想总数
@@ -249,9 +250,9 @@
 				let count = 0
 				this.cartItemList.forEach((shop) => {
 					if (shop.isTik) {
-						count += shop.prods.length
+						count += shop.prodList.length
 					} else {
-						shop.prods.forEach((prod) => {
+						shop.prodList.forEach((prod) => {
 							if (prod.isTik) {
 								count += 1
 							}
@@ -260,7 +261,7 @@
 				})
 				return count
 			},
-			// 允许访问 this.counterStore 和 this.userStore
+			// 允许访问 this.userStore
 			...mapStores(useUserStore),
 		},
 
@@ -271,13 +272,13 @@
 				if (shopIdx == -1) {
 					// 店铺购物项全选
 					shopIdx = obj.name
-					this.cartItemList[shopIdx].prods.forEach((item) => {
+					this.cartItemList[shopIdx].prodList.forEach((item) => {
 						item.isTik = isTik
 					})
 				} else if (shopIdx == -2) {
 					// 购物项全选
 					this.cartItemList.forEach(shop => {
-						shop.prods.forEach((item) => {
+						shop.prodList.forEach((item) => {
 							item.isTik = isTik
 						})
 						shop.isTik = isTik
@@ -285,12 +286,12 @@
 				} else {
 					// 单选购物项
 					let prodIdx = obj.name
-					this.cartItemList[shopIdx].prods[prodIdx].isTik = isTik
+					this.cartItemList[shopIdx].prodList[prodIdx].isTik = isTik
 				}
 			},
 			// 弹出商品类型选择
 			showSelect(idx1, idx2) {
-				this.cartItem = this.cartItemList[idx1].prods[idx2]
+				this.cartItem = this.cartItemList[idx1].prodList[idx2]
 				this.showPop = true;
 			},
 			// 步进器回调函数
@@ -312,15 +313,15 @@
 				this.cartItemList.forEach((store) => {
 					let ss = JSON.parse(JSON.stringify(store))
 					if (store.isTik !== true) {
-						ss.prods = []
-						console.log(store.prods.length)
-						store.prods.forEach((item) => {
+						ss.prodList = []
+						console.log(store.prodList.length)
+						store.prodList.forEach((item) => {
 							if (item.isTik === true) {
-								ss.prods.push(item)
+								ss.prodList.push(item)
 							}
 						})
 					}
-					if (ss.prods.length > 0) {
+					if (ss.prodList.length > 0) {
 						order.push(ss)
 					}
 				})
