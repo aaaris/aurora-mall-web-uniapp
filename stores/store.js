@@ -5,14 +5,12 @@ import {
 export const useUserStore = defineStore('user', {
 	state: () => {
 		return {
-			isLogin: uni.getStorageSync('tokenInfo') === '' ? false : true,
+			isLogin: uni.getStorageSync('token') === "" ? false : true,
 			userInfo: {
-				id: uni.getStorageSync('userId'),
 				nicename: '',
 				avatarUrl: ''
 			},
-			tokenInfo: uni.getStorageSync('tokenInfo') === '' ? undefined : JSON.parse(
-				uni.getStorageSync('tokenInfo')),
+			token: uni.getStorageSync('token')
 		}
 	},
 	// 也可以这样定义

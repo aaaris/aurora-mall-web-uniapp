@@ -44,17 +44,9 @@
 						// 调用后台登录
 						this.$u.api.login({
 							code: code
-						}).then(({
-							token,
-							refreshToken,
-							userId
-						}) => {
+						}).then((token) => {
 							// 存储token信息
-							uni.setStorageSync('tokenInfo', JSON.stringify({
-								token,
-								refreshToken
-							}))
-							uni.setStorageSync('userId', userId)
+							uni.setStorageSync('token', token)
 							uni.showToast({
 								title: '登录成功！',
 								icon: 'success'
@@ -91,6 +83,7 @@
 
 	.btn-wrapper {
 		padding: 30rpx;
+
 		.checked {
 			margin-top: 30rpx;
 		}
