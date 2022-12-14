@@ -118,16 +118,16 @@
 				},
 				// 商品
 				prod: {
+					id: 1,
 					goodsUrl: '//img12.360buyimg.com/n7/jfs/t1/102191/19/9072/330688/5e0af7cfE17698872/c91c00d713bf729a.jpg',
 					title: '【葡萄藤】现货 小清新学院风制服格裙百褶裙女短款百搭日系甜美风原创jk制服女2020新款',
 					type: '45cm;S',
 					deliveryTime: '付款后30天内发货',
 					price: '135.00',
+					stock: 100,
 					isCollect: false,
-					timestamp: 888888,
+					endTime: 888888,
 					isKill: true,
-					date: "",
-					progress: 0
 				},
 				// 是否弹出选择层
 				showPop: false,
@@ -140,8 +140,8 @@
 		onLoad() {
 			uni.$on('gotoProdDetail', (obj) => {
 				if (obj) {
-					this.prod = obj 
-					this.prod.timestamp = Date.now() + this.$u.random(1, 100) / 100 * (2 * 24 * 60 * 60 * 1000)
+					this.prod = obj
+					this.prod.endTime = Date.now() + this.$u.random(1, 100) / 100 * (2 * 24 * 60 * 60 * 1000)
 					this.list = []
 					this.list.push({
 						image: this.prod.goodsUrl,
@@ -197,7 +197,7 @@
 			// 更新商品秒杀剩余时间
 			updateRestTime() {
 				let time = 0
-				time = this.prod.timestamp - Date.now()
+				time = this.prod.endTime - Date.now()
 				this.restTime.day = parseInt(time / (24 * 60 * 60 * 1000))
 				time -= this.restTime.day * (24 * 60 * 60 * 1000)
 				this.restTime.hour = parseInt(time / (60 * 60 * 1000))
@@ -221,12 +221,22 @@
 			addCart() {
 				this.isConfirm = true;
 				this.showPop = true;
-				uni.$on('selectCofirm', (obj) => { 
+				uni.$on('selectCofirm', (obj) => {
 					this.isConfirm = false;
 					if (obj) {
-						uni.showToast({
-							icon: 'success',
-							title: '加入成功！'
+						this.$u.api.cart.addItem({
+							id: this.prod.id,
+							count: obj.count
+						}).then((res) => {
+							uni.showToast({
+								icon: 'success',
+								title: '加入成功！'
+							})
+						}).catch((err) => {
+							uni.showToast({
+								icon: 'error',
+								title: '加入失败！'
+							})
 						})
 					}
 					uni.$off('selectCofirm')
