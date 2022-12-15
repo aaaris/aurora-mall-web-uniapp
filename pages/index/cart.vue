@@ -38,7 +38,7 @@
 				</view>
 				<!-- 购物项主体，店铺商品 -->
 				<view class="u-p-l-30 u-p-r-30 ">
-					<view class="item" v-for="(prod, index2) in item.prods" :key="prod.title">
+					<view class="item" v-for="(prod, index2) in item.prodList" :key="prod.title">
 						<!-- 选择器 -->
 						<view class="u-flex u-col-center">
 							<u-checkbox shape="circle" size="50" :name="index2" activeColor="#fa3534"
@@ -60,7 +60,7 @@
 								<text style="color: #fa3534; font-size:11px">￥<text
 										style="font-size: 16px;">{{prod.price}}</text></text>
 								<!-- 数量选择 -->
-								<u-number-box :min="1" :max="100" v-model="prod.count" @change="valChange">
+								<u-number-box :min="1" :max="100" v-model="prod.count" @change="valChange(prod)">
 								</u-number-box>
 							</view>
 						</view>
@@ -84,7 +84,7 @@
 							style="font-size: 16px;">{{totalPrice}}</text></text>
 				</text>
 				&nbsp;
-				<u-button type="error" size="medium" shape="circle" @click="gotoCreate">结算({{totalOrderCount}})
+				<u-button type="error" size="medium" shape="circle" @click="gotoCreateOrder">结算({{totalOrderCount}})
 				</u-button>
 			</view>
 			<!-- 删除按钮：编辑模式 -->
@@ -121,7 +121,7 @@
 				cartItemList: [{
 						id: 1,
 						store: "Apple 官方零售店",
-						prods: [{
+						prodList: [{
 							goodsUrl: '//img10.360buyimg.com/n7/jfs/t1/107598/17/3766/525060/5e143aacE9a94d43c/03573ae60b8bf0ee.jpg',
 							title: '蓝妹（BLUE GIRL）酷爽啤酒 清啤 原装进口啤酒 罐装 500ml*9听 整箱装',
 							type: '一打',
@@ -143,7 +143,7 @@
 					{
 						id: 2,
 						store: "Apple 官方零售店",
-						prods: [{
+						prodList: [{
 							goodsUrl: '//img10.360buyimg.com/n7/jfs/t1/107598/17/3766/525060/5e143aacE9a94d43c/03573ae60b8bf0ee.jpg',
 							title: '蓝妹（BLUE GIRL）酷爽啤酒 清啤 原装进口啤酒 罐装 500ml*9听 整箱装',
 							type: '一打',
@@ -165,7 +165,7 @@
 					{
 						id: 3,
 						store: "Apple 官方零售店",
-						prods: [{
+						prodList: [{
 							goodsUrl: '//img10.360buyimg.com/n7/jfs/t1/107598/17/3766/525060/5e143aacE9a94d43c/03573ae60b8bf0ee.jpg',
 							title: '蓝妹（BLUE GIRL）酷爽啤酒 清啤 原装进口啤酒 罐装 500ml*9听 整箱装',
 							type: '一打',
@@ -203,9 +203,9 @@
 				isLoading: true
 			}
 		},
-		async onLoad() {
-			let userId = this.userStore.userInfo.id
-			if (userId == "") {
+		onShow() {
+			let isLogin = this.userStore.isLogin
+			if (!isLogin) {
 				console.log("userId is not in storage")
 				uni.showToast({
 					title: '请先登录',
@@ -214,13 +214,8 @@
 				setTimeout(() => {
 					this.$u.route('/pages/user/login')
 				}, 1500)
-			} else {
-				await this.$u.api.cart.getCartItems({
-					userId: userId
-				}).then((res) => {
-					console.log(res, "getCartItems")
-				})
 			}
+			this.getAllCartItems()
 			this.isLoading = false;
 		},
 		computed: {
@@ -228,7 +223,7 @@
 			totalPrice() {
 				let price = 0.00
 				this.cartItemList.forEach((shop) => {
-					shop.prods.forEach(item => {
+					shop.prodList.forEach(item => {
 						if (item.isTik) {
 							price += item.count * Number.parseFloat(item.price)
 						}
@@ -240,8 +235,9 @@
 			totalCount() {
 				let count = 0
 				this.cartItemList.forEach((shop) => {
-					count += shop.prods.length
+					count += shop.prodList.length
 				})
+				this.userStore.totalCount = count
 				return count
 			},
 			// 计算属性计算勾选购物想总数
@@ -249,9 +245,9 @@
 				let count = 0
 				this.cartItemList.forEach((shop) => {
 					if (shop.isTik) {
-						count += shop.prods.length
+						count += shop.prodList.length
 					} else {
-						shop.prods.forEach((prod) => {
+						shop.prodList.forEach((prod) => {
 							if (prod.isTik) {
 								count += 1
 							}
@@ -260,7 +256,7 @@
 				})
 				return count
 			},
-			// 允许访问 this.counterStore 和 this.userStore
+			// 允许访问 this.userStore
 			...mapStores(useUserStore),
 		},
 
@@ -271,13 +267,13 @@
 				if (shopIdx == -1) {
 					// 店铺购物项全选
 					shopIdx = obj.name
-					this.cartItemList[shopIdx].prods.forEach((item) => {
+					this.cartItemList[shopIdx].prodList.forEach((item) => {
 						item.isTik = isTik
 					})
 				} else if (shopIdx == -2) {
 					// 购物项全选
 					this.cartItemList.forEach(shop => {
-						shop.prods.forEach((item) => {
+						shop.prodList.forEach((item) => {
 							item.isTik = isTik
 						})
 						shop.isTik = isTik
@@ -285,20 +281,32 @@
 				} else {
 					// 单选购物项
 					let prodIdx = obj.name
-					this.cartItemList[shopIdx].prods[prodIdx].isTik = isTik
+					this.cartItemList[shopIdx].prodList[prodIdx].isTik = isTik
 				}
 			},
 			// 弹出商品类型选择
 			showSelect(idx1, idx2) {
-				this.cartItem = this.cartItemList[idx1].prods[idx2]
+				this.cartItem = this.cartItemList[idx1].prodList[idx2]
 				this.showPop = true;
 			},
 			// 步进器回调函数
-			valChange(e) {
-				console.log('当前值为: ' + e.value)
+			valChange(obj) {
+				this.$u.api.cart.updateItemCount({
+					UpdateCartItemCountReq: {
+						id: obj.id,
+						count: obj.count
+					}
+				})
+			},
+			async getAllCartItems() {
+				const {
+					GetCartItemRsp
+				} = await this.$u.api.cart.list()
+				console.log(GetCartItemRsp)
+				this.cartItemList = GetCartItemRsp.cartItemList
 			},
 			// 结算购物车，创建订单
-			gotoCreate() {
+			gotoCreateOrder() {
 				// 如果未勾选任何商品
 				if (this.totalOrderCount === 0) {
 					uni.showToast({
@@ -312,15 +320,15 @@
 				this.cartItemList.forEach((store) => {
 					let ss = JSON.parse(JSON.stringify(store))
 					if (store.isTik !== true) {
-						ss.prods = []
-						console.log(store.prods.length)
-						store.prods.forEach((item) => {
+						ss.prodList = []
+						console.log(store.prodList.length)
+						store.prodList.forEach((item) => {
 							if (item.isTik === true) {
-								ss.prods.push(item)
+								ss.prodList.push(item)
 							}
 						})
 					}
-					if (ss.prods.length > 0) {
+					if (ss.prodList.length > 0) {
 						order.push(ss)
 					}
 				})
@@ -336,15 +344,32 @@
 			},
 			// 删除购物项函数
 			deleteCartItem() {
+				let idList = []
+				this.cartItemList.forEach((store) => {
+					store.prodList.forEach((prod) => {
+						if (prod.isTik) {
+							idList.push(prod.id)
+						}
+					})
+				})
 				uni.showModal({
 					title: '温馨提示', //提示标题
 					content: '确定删除选中商品吗？', //提示内容
 					showCancel: true, //是否显示取消按钮
-					success: function(res) {
+					success: (res) => {
 						if (res.confirm) { //confirm为ture，代表用户点击确定
 							console.log('点击了确定按钮');
-							uni.showToast({
-								title: "删除成功！",
+							this.$u.api.cart.deleteItem(idList).then(() => {
+								uni.showToast({
+									title: "删除成功！",
+								})
+								// 前端获取所有购物项
+								this.getAllCartItems()
+							}).catch(() => {
+								uni.showToast({
+									icon: "error",
+									title: "删除失败！",
+								})
 							})
 						} else if (res.cancel) { //cancel为ture，代表用户点击取消
 							console.log('点击了取消按钮');
@@ -352,6 +377,7 @@
 					}
 				})
 			},
+			// 前往商品详情页
 			gotoProdDetail(obj) {
 				uni.navigateTo({
 					url: "/pages/product/productDetail",

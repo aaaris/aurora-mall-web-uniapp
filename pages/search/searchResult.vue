@@ -21,19 +21,21 @@
 						<!-- 条件筛选tab -->
 						<view>
 							<u-dropdown>
-								<u-dropdown-item v-model="value1" title="综合" :options="options1"></u-dropdown-item>
-								<u-dropdown-item v-model="value2" title="销量" :options="options2"></u-dropdown-item>
+								<u-dropdown-item v-model="sortSetting.priceSort" title="综合" :options="options1">
+								</u-dropdown-item>
+								<u-dropdown-item v-model="sortSetting.saleSort" title="销量" :options="options2">
+								</u-dropdown-item>
 							</u-dropdown>
 						</view>
-						<prodList :list="prodList.concat(prodList)" :isKill="false"></prodList>
-						<u-loadmore :status="loadStatus[0]" bgColor="#f2f2f2"></u-loadmore>
+						<prodList :list="tabProdList[0]" :isKill="false"></prodList>
+						<u-loadmore :status="loadStatus[0]" bgColor="#f2f2f2" @loadmore="loadMore"></u-loadmore>
 					</scroll-view>
 				</swiper-item>
 				<!-- 最新商品 -->
 				<swiper-item class="swiper-item">
 					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="onreachBottom">
-						<prodList :list="prodList.concat(prodList)" :isKill="false"></prodList>
-						<u-loadmore :status="loadStatus[1]" bgColor="#f2f2f2"></u-loadmore>
+						<prodList :list="tabProdList[1]" :isKill="false"></prodList>
+						<u-loadmore :status="loadStatus[1]" bgColor="#f2f2f2" @loadmore="loadMore"></u-loadmore>
 					</scroll-view>
 				</swiper-item>
 				<!-- 店铺 -->
@@ -59,7 +61,7 @@
 								<image :src="item.prodList[2].goodsUrl" mode="aspectFill"></image>
 							</view>
 						</view>
-						<u-loadmore :status="loadStatus[2]" bgColor="#f2f2f2"></u-loadmore>
+						<u-loadmore :status="loadStatus[2]" bgColor="#f2f2f2" @loadmore="loadMore"></u-loadmore>
 					</scroll-view>
 				</swiper-item>
 			</swiper>
@@ -93,39 +95,6 @@
 					{
 						name: '店铺'
 					},
-				],
-				prodList: [{
-						goodsUrl: '//img13.360buyimg.com/n7/jfs/t1/103005/7/17719/314825/5e8c19faEb7eed50d/5b81ae4b2f7f3bb7.jpg',
-						title: '【冬日限定】现货 原创jk制服女2020冬装新款小清新宽松软糯毛衣外套女开衫短款百搭日系甜美风',
-						price: '348.58',
-						date: "Thu Nov 17 2022 13:02:26 GMT+0800 (中国标准时间)",
-						progress: 33
-					}, {
-						goodsUrl: '//img10.360buyimg.com/n7/jfs/t22300/31/1505958241/171936/9e201a89/5b2b12ffNe6dbb594.jpg!q90.jpg',
-						title: '法国进口红酒 拉菲（LAFITE）传奇波尔多干红葡萄酒750ml*6整箱装',
-						type: '4K，广色域',
-						deliveryTime: '珍藏10年好酒',
-						price: '1543',
-						date: "Thu Nov 17 2022 13:02:26 GMT+0800 (中国标准时间)",
-						progress: 33
-					},
-					{
-						goodsUrl: '//img10.360buyimg.com/n7/jfs/t1/107598/17/3766/525060/5e143aacE9a94d43c/03573ae60b8bf0ee.jpg',
-						title: '蓝妹（BLUE GIRL）酷爽啤酒 清啤 原装进口啤酒 罐装 500ml*9听 整箱装',
-						type: '一打',
-						deliveryTime: '口感好',
-						price: '120',
-						date: "Thu Nov 17 2023 13:02:26 GMT+0800 (中国标准时间)",
-						progress: 33
-					}, {
-						goodsUrl: '//img14.360buyimg.com/n7/jfs/t6007/205/4099529191/294869/ae4e6d4f/595dcf19Ndce3227d.jpg!q90.jpg',
-						title: '美的(Midea)639升 对开门冰箱 19分钟急速净味 一级能效冷藏双开门杀菌智能家用双变频节能 BCD-639WKPZM(E)',
-						type: '容量大，速冻',
-						deliveryTime: '保质5年',
-						price: '2354',
-						date: "Thu Nov 17 2023 13:02:26 GMT+0800 (中国标准时间)",
-						progress: 33
-					}
 				],
 				// 因为内部的滑动机制限制，请将tabs组件和swiper组件的current用不同变量赋值
 				current: 0, // tabs组件的current值，表示当前活动的tab选项
@@ -204,87 +173,108 @@
 							}
 						],
 					},
-					{
-						prodList: [{
-								goodsUrl: '//img13.360buyimg.com/n7/jfs/t1/103005/7/17719/314825/5e8c19faEb7eed50d/5b81ae4b2f7f3bb7.jpg',
-								title: '【冬日限定】现货 原创jk制服女2020冬装新款小清新宽松软糯毛衣外套女开衫短款百搭日系甜美风',
-								price: '348.58',
-								date: "Thu Nov 17 2022 13:02:26 GMT+0800 (中国标准时间)",
-								progress: 33
-							}, {
-								goodsUrl: '//img10.360buyimg.com/n7/jfs/t22300/31/1505958241/171936/9e201a89/5b2b12ffNe6dbb594.jpg!q90.jpg',
-								title: '法国进口红酒 拉菲（LAFITE）传奇波尔多干红葡萄酒750ml*6整箱装',
-								type: '4K，广色域',
-								deliveryTime: '珍藏10年好酒',
-								price: '1543',
-								date: "Thu Nov 17 2022 13:02:26 GMT+0800 (中国标准时间)",
-								progress: 33
-							},
-							{
-								goodsUrl: '//img10.360buyimg.com/n7/jfs/t1/107598/17/3766/525060/5e143aacE9a94d43c/03573ae60b8bf0ee.jpg',
-								title: '蓝妹（BLUE GIRL）酷爽啤酒 清啤 原装进口啤酒 罐装 500ml*9听 整箱装',
-								type: '一打',
-								deliveryTime: '口感好',
-								price: '120',
-								date: "Thu Nov 17 2023 13:02:26 GMT+0800 (中国标准时间)",
-								progress: 33
-							}, {
-								goodsUrl: '//img14.360buyimg.com/n7/jfs/t6007/205/4099529191/294869/ae4e6d4f/595dcf19Ndce3227d.jpg!q90.jpg',
-								title: '美的(Midea)639升 对开门冰箱 19分钟急速净味 一级能效冷藏双开门杀菌智能家用双变频节能 BCD-639WKPZM(E)',
-								type: '容量大，速冻',
-								deliveryTime: '保质5年',
-								price: '2354',
-								date: "Thu Nov 17 2023 13:02:26 GMT+0800 (中国标准时间)",
-								progress: 33
-							}
-						],
-					}
 				],
-				value1: 1,
-				value2: 1,
 				options1: [{
 						label: '默认排序',
-						value: 1
+						value: 0
 					},
 					{
 						label: '价格升序',
-						value: 2
-					},
-					{
-						label: '价格降序',
-						value: 3
-					}
-				],
-				loadStatus: ['loadmore', 'loadmore', 'loadmore'],
-				options2: [{
-						label: '销量降序',
 						value: 1
 					},
 					{
-						label: '销量升序',
-						value: 2
+						label: '价格降序',
+						value: -1
+					}
+				],
+				options2: [{
+						label: '默认排序',
+						value: 0
+					}, {
+						label: '销量降序',
+						value: -1
 					},
-				]
+					{
+						label: '销量升序',
+						value: 1
+					},
+				],
+				loadStatus: ['loadmore', 'loadmore', 'loadmore'],
+				pageNum: 0,
+				sortSetting: {
+					saleSort: 0,
+					timeSort: 0,
+					priceSort: 0
+				},
+				tabProdList: [
+					[],
+					[]
+				],
 			};
 		},
 		onLoad(query) {
 			if (query.keyword)
 				this.keyword = query.keyword
+			this.getSearchProdList()
 		},
 		// 到底部加载更多 
 		onReachBottom() {
-			this.loadStatus[this.current] = 'loading'
-			setTimeout(() => {
-				this.loadStatus[this.current] = 'loadmore'
-			}, 1200);
+			this.loadMore();
 		},
 		methods: {
+			// 加载更多
+			loadMore() {
+				this.loadStatus[this.current] = 'loading'
+				if (this.current !== 2) {
+					this.getSearchProdList()
+				}
+				this.loadStatus[this.current] = 'loadmore'
+			},
+			// 获取搜索商品列表
+			async getSearchProdList() {
+				const {
+					GetProdListRsp,
+					QuerySummaryRsp
+				} = await this.$u.api.prod.search({
+					SearchProdListReq: {
+						keyword: this.keyword,
+						saleSort: this.sortSetting.timeSort ? 0 : this.sortSetting.saleSort,
+						timeSort: this.sortSetting.timeSort,
+						priceSort: this.sortSetting.timeSort ? 0 : this.sortSetting.priceSort
+					},
+					QueryPagingParamsReq: {
+						offset: this.pagenum,
+						queryCount: 8
+					}
+				})
+				if (QuerySummaryRsp.dataAmount === 0) {
+					// 到底了 
+					this.pageNum = this.pageNum - 1
+					this.loadStatus[this.current] = 'nomore'
+				} else {
+					this.tabProdList[this.swiperCurrent] =
+						this.tabProdList[this.swiperCurrent].concat(GetProdListRsp.prodList)
+				}
+				this.pageNum = this.pageNum + 1
+			},
+			// 提交搜索
 			searchSubmit(word) {
-				console.log(word)
+				// 清空prodList
+				this.tabProdList = [
+					[],
+					[]
+				]
+				this.pageNum = 0
+				this.getSearchProdList()
 			},
 			// tabs通知swiper切换
 			tabsChange(index) {
 				this.swiperCurrent = index;
+				if (index !== 2) {
+					this.sortSetting.timeSort = index
+					if (this.tabProdList[index].length === 0)
+						this.getSearchProdList()
+				}
 			},
 			// swiper-item左右移动，通知tabs的滑块跟随移动
 			transition(e) {
@@ -296,18 +286,14 @@
 			animationfinish(e) {
 				let current = e.detail.current;
 				this.$refs.uTabs.setFinishCurrent(current);
-				this.swiperCurrent = current;
 				this.current = current;
+				this.tabsChange(current)
 			},
-
 			gotoShop(id) {
 				uni.navigateTo({
 					url: "/pages/shop/shopDetail?id=" + id
 				})
 			},
-			getOrderList(idx) {
-
-			}
 		}
 	}
 </script>

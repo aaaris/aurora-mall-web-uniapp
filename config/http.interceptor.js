@@ -6,7 +6,9 @@
 const install = (Vue, vm) => {
 	// 此为自定义配置参数，具体参数见上方说明
 	Vue.config.globalProperties.$u.http.setConfig({
-		// baseUrl: 'http://172.30.206.89:8201', // 请求的本域名
+		// 本地环境
+		// baseUrl: 'http://172.30.206.89:8201/mall-admin', // 请求的本域名
+		// 测试mock环境
 		baseUrl: 'https://mock.apifox.cn/m1/1830376-0-default',
 		method: 'POST',
 		// 设置为json，返回后会对数据进行一次JSON.parse()
@@ -37,9 +39,9 @@ const install = (Vue, vm) => {
 
 		// 方式四，如果token放在了Storage本地存储中，拦截是每次请求都执行的
 		// 所以哪怕您重新登录修改了Storage，下一次的请求将会是最新值
-		const tokenInfoStr = uni.getStorageSync('tokenInfo');
+		const token = uni.getStorageSync('token');
 		// 如果没token,也不是跳转到登录页,提示登录
-		if (tokenInfoStr == "" && config.url !== '/user/login') {
+		if (token == "" && config.url !== '/mall-admin/user/login') {
 			uni.showToast({
 				title: '请先登录',
 				icon: 'error'
@@ -49,10 +51,7 @@ const install = (Vue, vm) => {
 			}, 1500)
 			return false;
 		}
-		if (tokenInfoStr !== "") {
-			let tokenInfo = JSON.parse(tokenInfoStr)
-			config.header.token = tokenInfo.token;
-		}
+		config.header.token = token;
 		// 可以对某个url进行特别处理，此url参数为this.$u.get(url)中的url值
 		// if (config.url == '/user/login') config.header.noToken = true;
 		// 最后需要将config进行return
@@ -74,16 +73,16 @@ const install = (Vue, vm) => {
 			const {
 				data: res
 			} = await uni.request({
-				url: Vue.config.globalProperties.$u.http.config.baseUrl + '/user/reflushToken',
+				url: Vue.config.globalProperties.$u.http.config.baseUrl +
+					'/mall-common/jwt/refreshToken',
 				method: 'get',
 			})
 			if (res.code == 200) {
 				// 如果返回200，说明更新成功
 				console.log("reflushToken success")
 				// 更新pinia中存储的token信息
-				uni.setStorageSync('tokenInfo', JSON.stringify({
-					token: res.data.token,
-					refreshToken: res.data.refreshToken,
+				uni.setStorageSync('token', JSON.stringify({
+					token: res.data,
 				}));
 				// 重新发送业务请求
 				let obj = Vue.config.globalProperties.$u.http.options;

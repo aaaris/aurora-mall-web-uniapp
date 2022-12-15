@@ -160,7 +160,7 @@
 							sku.select = tmp
 						}
 					})
-				}) 
+				})
 			},
 			// 更新type
 			updateType() {
@@ -179,9 +179,19 @@
 			// 加入购物车
 			addCart() {
 				this.updateType()
-				uni.showToast({
-					title: '加入购物车成功',
-					icon: 'success'
+				this.$u.api.cart.addItem({
+					id: this.prod.id,
+					count: this.prod.count
+				}).then((res) => {
+					uni.showToast({
+						icon: 'success',
+						title: '加入成功！'
+					})
+				}).catch((err) => {
+					uni.showToast({
+						icon: 'error',
+						title: '加入失败！'
+					})
 				})
 			},
 			// 立即下单
@@ -204,7 +214,7 @@
 			// 确认sku
 			skuConfirm(stat) {
 				this.updateType()
-				uni.$emit('selectCofirm', stat === undefined ? stat : JSON.parse(JSON.stringify(this.prod))) 
+				uni.$emit('selectCofirm', stat === undefined ? stat : JSON.parse(JSON.stringify(this.prod)))
 				this.$emit('update:show', false)
 			}
 		},

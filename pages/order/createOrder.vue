@@ -33,7 +33,7 @@
 				</view>
 				<!-- 购物项主体，店铺商品 -->
 				<view class="u-p-l-30 u-p-r-30 ">
-					<view class="item u-skeleton-fillet" v-for="(prod,index2) in item.prods" :key="prod.title">
+					<view class="item u-skeleton-fillet" v-for="(prod,index2) in item.prodList" :key="prod.title">
 						<!-- 商品图片 -->
 						<image mode="aspectFill" :src="prod.goodsUrl" />
 						<!-- 商品描述 -->
@@ -123,7 +123,7 @@
 			totalPrice() {
 				let price = 0.00
 				this.cartItemList.forEach((shop) => {
-					shop.prods.forEach(item => {
+					shop.prodList.forEach(item => {
 						price += item.count * Number.parseFloat(item.price)
 					})
 				})
@@ -132,11 +132,28 @@
 		},
 		methods: {
 			paySubmit() {
+				let orderList = []
+				this.cartItemList.forEach((item) => {
+					let order = {}
+					order.storeId = item.id
+					order.prodList = []
+					item.prodList.forEach(p => {
+						order.prodList.push({
+							id: p.id,
+							count: p.count
+						})
+					})
+					orderList.push(order)
+				})
 				uni.showLoading({
 					title: '正在支付',
 					mask: true
 				});
-				setTimeout(function() {
+				this.$u.api.order.createOrder({
+					AddOrderReq: {
+						orderList
+					}
+				}).then(() => {
 					uni.hideLoading();
 					uni.switchTab({
 						url: "/pages/index/cart"
@@ -145,7 +162,7 @@
 						title: "下单成功！",
 						mask: true
 					})
-				}, 2000);
+				})
 			},
 		}
 	}

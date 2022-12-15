@@ -12,8 +12,8 @@
 		<view>
 			<u-tabs :isScroll="false" v-model="current" :list="[{name:'正在疯抢'},{name:'抢先看'}]" active-color="#dd524d"
 				@change="changeTab"></u-tabs>
-			<prodList v-if="current === 0" :list="tabList1" :isKill="true"></prodList>
-			<prodList v-if="current === 1" :list="tabList2" :isKill="true"></prodList>
+			<prodList v-if="current === 0" :list="tabProdList[0]" :isKill="true"></prodList>
+			<prodList v-if="current === 1" :list="tabProdList[1]" :isKill="true"></prodList>
 			<u-loadmore :status="loadStatu" bgColor="#f2f2f2" @loadmore="getOrderList"></u-loadmore>
 		</view>
 	</view>
@@ -39,8 +39,11 @@
 				},
 				loadStatu: 'loadmore',
 				prodList: [],
-				tabList1: [],
-				tabList2: []
+				tabProdList: [
+					[],
+					[]
+				],
+				pageNum: 0
 			}
 		},
 		onLoad() {
@@ -77,9 +80,10 @@
 					progress: 0
 				}
 			]
-			console.log(this.prodList)
-			this.tabList1 = this.prodList.filter(p => Date.now() > p.date)
-			this.tabList2 = this.prodList.filter(p => p.date > Date.now())
+			// console.log(this.prodList)
+			// this.tabProdList[0] = this.prodList.filter(p => Date.now() > p.date)
+			// this.tabProdList[1] = this.prodList.filter(p => p.date > Date.now())
+			this.getOrderList()
 		},
 		onReachBottom() {
 			console.log("loading...")
@@ -89,21 +93,43 @@
 			}, 1200);
 		},
 		methods: {
-			getOrderList() {
-				for (let i = 0; i < 3; i++) {
-					let index = this.$u.random(0, this.prodList.length - 1)
-					let data = JSON.parse(JSON.stringify(this.prodList[index]))
-					this.prodList.push(data)
+			async getOrderList() {
+				// for (let i = 0; i < 3; i++) {
+				// 	let index = this.$u.random(0, this.prodList.length - 1)
+				// 	let data = JSON.parse(JSON.stringify(this.prodList[index]))
+				// 	this.prodList.push(data)
+				// }
+				// this.tabList1 = this.prodList.filter(p => Date.now() > p.date)
+				// this.tabList2 = this.prodList.filter(p => p.date > Date.now())
+				const {
+					GetSeckillProdListRsp,
+					QuerySummaryRsp
+				} = await this.$u.api.seckill.getProdList({
+					keyword: this.keyword,
+					QueryPagingParamsReq: {
+						offset: this.pageNum,
+						queryCount: 8
+					}
+				})
+				if (QuerySummaryRsp.dataAmount === 0) {
+					// 到底了 
+					this.pageNum = this.pageNum - 1
+					this.loadStatu = 'nomore'
+				} else {
+					this.tabProdList[0] = this.tabProdList[0].
+					concat(GetSeckillProdListRsp.prodList.filter(p => Date.now() > p.startTime))
+					console.log(this.tabProdList[0])
+					this.tabProdList[1] = this.tabProdList[1].
+					concat(GetSeckillProdListRsp.prodList.filter(p => p.startTime > Date.now()))
 				}
-				this.tabList1 = this.prodList.filter(p => Date.now() > p.date)
-				this.tabList2 = this.prodList.filter(p => p.date > Date.now())
+				this.pageNum = this.pageNum + 1
 				this.loadStatu = 'loadmore'
 			},
 			changeTab(idx) {
 				this.current = idx
 			},
 			gotoSearch() {
-				this.$u.route("/pages/search/search")
+				getOrderList();
 			}
 		}
 	}
