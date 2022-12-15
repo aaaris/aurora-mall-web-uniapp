@@ -13,7 +13,7 @@
 					<u-icon customPrefix="custom-icon" :name="iconStyle[order.dealStat]" size="50" color="#fff">待收货
 					</u-icon>
 					&nbsp;
-					<text style="color: #fff;">{{order.deal}}</text>
+					<text style="color: #fff;">{{dealText[order.dealStat]}}</text>
 				</view>
 				<text v-if="order.dealStat === 1" style="color: #fff;">距离自动取消订单还有{{restTime}}</text>
 				<text v-if="order.dealStat === 3" style="color: #fff;">距离自动确认收货还有{{restTime}}</text>
@@ -40,11 +40,11 @@
 					<u-icon custom-prefix="custom-icon" name="dianpu" size="34">
 					</u-icon>&nbsp;
 					<!-- 店铺名 -->
-					<text>{{order.store}}</text>
+					<text>{{order.storeName}}</text>
 				</view>
 				<!-- 购物项主体，店铺商品 -->
 				<view class="u-p-l-30 u-p-r-30 ">
-					<view class="item u-skeleton-fillet" v-for="(prod,index2) in order.prods" :key="prod.title">
+					<view class="item u-skeleton-fillet" v-for="(prod,index2) in order.prodList" :key="prod.title">
 						<!-- 商品图片 -->
 						<image mode="aspectFill" :src="prod.goodsUrl" />
 						<!-- 商品描述 -->
@@ -125,14 +125,16 @@
 					region: "北京市朝阳区",
 					inUse: true
 				},
+				// 订单状态描述
+				dealText: ["已取消", "待支付", "待发货", "待收货", "已完成"],
 				// 购物项列表，以店铺划分
 				order: {
 					id: 1,
-					store: '',
+					storeNameName: '',
 					deal: '',
 					dealStat: 1,
 					payMode: "",
-					prods: [],
+					prodList: [],
 					createTime: 0
 				},
 				// 加载
@@ -158,12 +160,9 @@
 			uni.$on('gotoDetail', (obj) => {
 				if (obj) {
 					this.order = obj
+					this.loading = false
 				}
 			})
-			setTimeout(() => {
-				this.loading = false
-				console.log(this.order)
-			}, 2000)
 		},
 		onUnload() {
 			uni.$off('gotDetail');
@@ -177,13 +176,14 @@
 		computed: {
 			totalPrice() {
 				let price = 0.00
-				this.order.prods.forEach(item => {
+				this.order.prodList.forEach(item => {
 					price += item.count * Number.parseFloat(item.price)
 				})
 				return price
 			},
 		},
 		methods: {
+			// 提交订单
 			paySubmit() {
 				uni.showLoading({
 					title: '正在支付',
@@ -196,7 +196,11 @@
 					})
 				}, 2000);
 			},
+			// 更新剩余时间
 			updateRestTime() {
+				if (String(this.order.createTime).length < 13) {
+					this.order.createTime *= 1000
+				}
 				let limit = 0
 				if (this.order.dealStat === 1) {
 					limit = (15 * 60 * 1000)
@@ -212,6 +216,7 @@
 				let sec = parseInt(timestamp / 1000 - min * 60)
 				this.restTime = this.order.dealStat === 1 ? `${min}分${sec}秒` : `${day}天${hour}时${min}分${sec}秒`
 			},
+			// 更改订单状态
 			changeOrderStat(stat) {
 				console.log(`change order's stat to ${stat}`)
 			}
