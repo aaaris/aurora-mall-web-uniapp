@@ -630,6 +630,7 @@
 						title: '支付失败！请稍后再试！'
 					})
 				})
+				uni.hideLoading();
 				this.getOrderList();
 			},
 			// 跳转订单详情页
