@@ -70,12 +70,12 @@
 						},
 						// 正则判断为字母或数字
 						{
-							pattern: /^[0-9a-zA-Z]*$/g,
+							pattern: /^[a-zA-Z\u4e00-\u9fa5]*$/g,
 							// 正则检验前先将值转为字符串
 							transform(value) {
 								return String(value);
 							},
-							message: '只能包含字母或数字'
+							message: '只能包含字母或汉字'
 						},
 						// 6-8个字符之间的判断
 						{
@@ -102,9 +102,9 @@
 						}
 					],
 					region: [{
-							required: true,
-							message: '请选择地区',
-							trigger: ['blur', 'change'],
+						required: true,
+						message: '请选择地区',
+						trigger: ['blur', 'change'],
 					}],
 					desc: [{
 							required: true,
@@ -113,12 +113,12 @@
 						},
 						// 正则判断为字母或数字
 						{
-							pattern: /^[0-9a-zA-Z]*$/g,
+							pattern: /^[0-9a-zA-Z\u4e00-\u9fa5]*$/g,
 							// 正则检验前先将值转为字符串
 							transform(value) {
 								return String(value);
 							},
-							message: '只能包含字母或数字'
+							message: '只能包含字母、汉字、数字'
 						},
 						// 6-8个字符之间的判断
 						{
@@ -154,24 +154,24 @@
 						uni.navigateBack({
 							success: () => {
 								uni.showToast({
-									icon:'success',
-									title:'保存成功'
+									icon: 'success',
+									title: '保存成功'
 								})
 							}
 						})
-					}  
+					}
 				});
 			},
 			// 删除收货地址
 			delAddr() {
 				uni.showModal({
-					title:'温馨提示',
-					content:'确定要删除该地址吗？',
+					title: '温馨提示',
+					content: '确定要删除该地址吗？',
 					complete: (res) => {
 						if (res.complete) {
 							uni.showToast({
-								icon:'success',
-								title:'删除成功！',
+								icon: 'success',
+								title: '删除成功！',
 							})
 						}
 					}
