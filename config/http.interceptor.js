@@ -41,7 +41,7 @@ const install = (Vue, vm) => {
 		// 所以哪怕您重新登录修改了Storage，下一次的请求将会是最新值
 		const token = uni.getStorageSync('token');
 		// 如果没token,也不是跳转到登录页,提示登录
-		if (token == "" && config.url !== '/user/login') {
+		if (token == "" && config.url !== '/mall-admin/user/login') {
 			uni.showToast({
 				title: '请先登录',
 				icon: 'error'
